@@ -27,6 +27,7 @@ roscore_process = None  # default : we dont need to run roscore
 # Should be used only by nose ( or other python test tool )
 def rostest_nose_setup_module():
     if not rostest_enabled:
+        # TODO : use ROS_Master() but find a way to terminate it for sure.
         if not rosgraph.masterapi.is_online():
             global roscore_process
             # Trying to solve this : http://answers.ros.org/question/215600/how-can-i-run-roscore-from-python/

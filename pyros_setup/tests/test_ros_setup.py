@@ -12,15 +12,14 @@ import pyros_setup
 import nose
 
 
-rospy = None
-try:
-    import rospy  # this will fail unless
-except ImportError:
-    pyros_setup.ROS_emulate_setup()  # you do the setup as expected by ROS
-    import rospy
-
-
 def test_rospy_imported():
+    rospy = None
+    try:
+        import rospy  # this will fail unless
+    except ImportError:
+        pyros_setup.ROS_emulate_setup()  # you do the setup as expected by ROS
+        import rospy
+
     assert rospy is not None
 
 
