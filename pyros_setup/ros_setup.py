@@ -78,9 +78,10 @@ def ROS_find_workspaces(cmake_env_var=None):
 
     # TODO : more accurate error detection
     except Exception:
-        install_ws = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', '..', 'install'))
-        devel_ws = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', '..', 'devel'))
-        src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', '..', 'src'))
+        # TODO : better guessing
+        install_ws = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'install'))
+        devel_ws = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'devel'))
+        src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'src'))
         distro_path = os.path.abspath('/opt/ros/indigo')
         # setting cmake prefix path - rosout needs this
         for k, p in zip(['distro', 'devel', 'install'], [distro_path, devel_ws, install_ws]):

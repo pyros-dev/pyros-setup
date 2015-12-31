@@ -13,7 +13,8 @@ import nose
 
 
 def test_roscore_started():
-    master = pyros_setup.ROS_Master()
+    ps = pyros_setup.delayed_import()
+    master = ps['ROS_Master']()  # TODO : find better syntax
     assert master.is_online()
 
 
@@ -21,7 +22,7 @@ def test_roslaunch_started():
     try:
         import roslaunch
     except ImportError:
-        pyros_setup.ROS_emulate_setup()  # you do the setup as expected by ROS
+        pyros_setup.delayed_import()  # you do the setup as expected by ROS
         import roslaunch
 
     launch = roslaunch.scriptapi.ROSLaunch()
@@ -29,6 +30,24 @@ def test_roslaunch_started():
 
     assert launch.started
 
+
+def test_rosnode_started():
+    try:
+        import roslaunch
+    except ImportError:
+        pyros_setup.delayed_import()  # you do the setup as expected by ROS
+        import roslaunch
+
+    launch = roslaunch.scriptapi.ROSLaunch()
+    launch.start()
+
+    assert launch.started
+
+    echo_node = roslaunch.core.Node('pyros_test', 'echo.py', name='echo')
+    echo_process = launch.launch(echo_node)
+    assert echo_process.is_alive()
+
+    # TODO : assert node is up and node_init finished ( to avoid exception )
 
 if __name__ == '__main__':
     # forcing nose run from python call
