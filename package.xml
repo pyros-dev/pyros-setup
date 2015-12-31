@@ -1,5 +1,5 @@
 <package>
-  <name>pyros-setup</name>
+  <name>pyros_setup</name>
   <version>0.0.1</version>
   <description>
   Toolsuite for running ROS environments directly from python code, without any specific requirements outside of usual python
