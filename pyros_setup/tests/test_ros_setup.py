@@ -17,11 +17,21 @@ def test_rospy_imported():
     try:
         import rospy  # this will fail unless
     except ImportError:
-        pyros_setup.ROS_emulate_setup()  # you do the setup as expected by ROS
+        global pyros_setup
+        pyros_setup = pyros_setup.delayed_import()  # you do the setup as expected by ROS
         import rospy
 
     assert rospy is not None
 
+    try:
+        import rospy  # this will NOT fail anymore
+        # but this is still valid ( to make sure it will work in both cases with or without ROS env setup )
+        global pyros_setup
+        pyros_setup = pyros_setup.delayed_import()
+        # and we still have access to all imported content
+        assert hasattr(pyros_setup, 'delayed_import')
+    except ImportError:
+        assert False
 
 if __name__ == '__main__':
     # forcing nose run from python call

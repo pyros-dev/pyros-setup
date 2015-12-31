@@ -13,8 +13,13 @@ import nose
 
 
 def test_roscore_started():
-    ps = pyros_setup.delayed_import()
-    master = ps['ROS_Master']()  # TODO : find better syntax
+    try:
+        import rospy
+    except ImportError:
+        global pyros_setup
+        pyros_setup = pyros_setup.delayed_import()
+
+    master = pyros_setup.ROS_Master()
     assert master.is_online()
 
 
