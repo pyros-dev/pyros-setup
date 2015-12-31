@@ -11,14 +11,15 @@ import time
 import rosgraph
 import roslaunch
 
-def ROS_Master():
+
+def get_master(spawn = True):
     """
     Returns an instance of Master to access it via its API
     If needed starts roscore.
     :return:
     """
     master = rosgraph.Master('pyros_setup')
-    if not master.is_online():
+    if not master.is_online() and spawn:
         # Trying to solve this : http://answers.ros.org/question/215600/how-can-i-run-roscore-from-python/
         def ros_core_launch():
             roslaunch.main(['roscore', '--core'])  # same as rostest_main implementation
