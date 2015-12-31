@@ -10,12 +10,6 @@ import time
 #Note : ROS setup must be done before importing this ( by calling ros_setup.ROS_emulate_setup() )
 import rosgraph
 import roslaunch
-# except ImportError:
-#     from . import ros_setup
-#     ros_setup.ROS_emulate_setup()
-#     import rosgraph
-#     import roslaunch
-
 
 def ROS_Master():
     """

@@ -25,26 +25,15 @@ import collections
 #    Maybe not worth it.
 # - TODO : tox + py.test (benchmark)
 
+
 def ROS_setup_rosdistro_env(default_distro=None):
 
-    # TODO : investigate if running the actual setup.bash script (from proper workspace) wouldn't be better :
-    # import os
-    # import sys
-    # import pprint
-    # import subprocess
-    #
-    # command = ['bash', '-c', 'source /opt/ros/indigo/setup.bash && env']
-    #
-    # proc = subprocess.Popen(command, stdout=subprocess.PIPE)
-    #
-    # for line in proc.stdout:
-    #   (key, _, value) = line.partition("=")
-    #   os.environ[key] = value.rstrip()
-    #   if key == 'PYTHONPATH':
-    #       for newp in [p for p in value.split(':') if p not in sys.path]:
-    #           sys.path.append(newp)
-    #
-    # proc.communicate()
+    # Note : running setup.bash script is not really better.
+    # We need to transpose all useful variables to our environment, not only PYTHONPATH.
+    # There would quite a lot of code involved to do this anyway.
+
+    # TODO : investigate how to import and use the devel/_setup_util.py from here...
+    # The goal is to minimize code and simplify maintenance.
 
     default_distro = default_distro or 'indigo'
     # Setting env var like ROS would
@@ -102,29 +91,31 @@ def ROS_setup_ospath(distro_space=None, install_workspace=None, devel_workspace=
     devel_workspace = devel_workspace
 
     # setting path to find commands
-    ospath_roscode = collections.OrderedDict({
-        'install': os.path.join(install_workspace, 'bin') if install_workspace else None,
-        'devel': os.path.join(devel_workspace, 'bin') if devel_workspace else None,
-        'indigo': os.path.join(distro_space, 'bin'),
-    })
+    ospath_roscode = collections.OrderedDict()
+    # We need to enforce the order
+    ospath_roscode['install'] = os.path.join(install_workspace, 'bin') if install_workspace else None
+    ospath_roscode['devel'] = os.path.join(devel_workspace, 'bin') if devel_workspace else None
+    ospath_roscode['indigo'] = os.path.join(distro_space, 'bin')
+
     ospath_roscode_reversed = collections.OrderedDict(reversed(list(ospath_roscode.items())))  # because we prepend
     for k, p in ospath_roscode_reversed.iteritems():
-        if p is not None and os.path.exists(p) and p not in os.environ.get("PATH", []):
+        if p is not None and os.path.exists(p):  # note: even if it already exist in PATH we add it again
             logging.warn("Appending {key} space to OS path".format(key=k))
             os.environ["PATH"] = p + ':' + os.environ.get("PATH", '')
 
     # setting ldlibrary path - rosout needs this
-    ldlibrarypath_roscode = collections.OrderedDict({
-        'install': os.path.join(install_workspace, 'lib') if install_workspace else None,
-        'install_arch': os.path.join(install_workspace, 'lib', 'x86_64-linux-gnu') if install_workspace else None,  # Ref : /opt/ros/indigo/_setup_util.sh
-        'devel': os.path.join(devel_workspace, 'lib') if devel_workspace else None,
-        'devel_arch': os.path.join(devel_workspace, 'lib', 'x86_64-linux-gnu')if devel_workspace else None,  # Ref : /opt/ros/indigo/_setup_util.sh
-        'indigo': os.path.join(distro_space, 'lib'),
-        'indigo_arch': os.path.join(distro_space, 'lib/x86_64-linux-gnu'),  # Ref : /opt/ros/indigo/_setup_util.sh
-    })
+    ldlibrarypath_roscode = collections.OrderedDict()
+    # We need to enforce the order
+    ldlibrarypath_roscode['install'] = os.path.join(install_workspace, 'lib') if install_workspace else None
+    ldlibrarypath_roscode['install_arch'] = os.path.join(install_workspace, 'lib', 'x86_64-linux-gnu') if install_workspace else None  # Ref : /opt/ros/indigo/_setup_util.sh
+    ldlibrarypath_roscode['devel'] = os.path.join(devel_workspace, 'lib') if devel_workspace else None
+    ldlibrarypath_roscode['devel_arch'] = os.path.join(devel_workspace, 'lib', 'x86_64-linux-gnu')if devel_workspace else None  # Ref : /opt/ros/indigo/_setup_util.sh
+    ldlibrarypath_roscode['indigo'] = os.path.join(distro_space, 'lib')
+    ldlibrarypath_roscode['indigo_arch'] = os.path.join(distro_space, 'lib/x86_64-linux-gnu')  # Ref : /opt/ros/indigo/_setup_util.sh
+
     ldlibrarypath_roscode_reversed = collections.OrderedDict(reversed(list(ldlibrarypath_roscode.items())))  # because we prepend
     for k, p in ldlibrarypath_roscode_reversed.iteritems():
-        if p is not None and os.path.exists(p) and p not in os.environ.get("LD_LIBRARY_PATH", []):
+        if p is not None and os.path.exists(p):  # note: even if it already exist in PATH we add it again
             logging.warn("Appending {key} space to LD_LIBRARY_PATH".format(key=k))
             os.environ["LD_LIBRARY_PATH"] = p + ':' + os.environ.get("LD_LIBRARY_PATH", '')
 
@@ -138,11 +129,11 @@ def ROS_setup_pythonpath(distro_space=None, install_workspace=None, devel_worksp
 
     # setting up all python paths
     # CAREFUL : SAME order as setup.bash set the pythonpath
-    pythonpath_roscode = collections.OrderedDict({
-        'install': os.path.join(install_workspace, 'lib', 'python2.7', 'dist-packages') if install_workspace else None,
-        'devel': os.path.join(devel_workspace, 'lib', 'python2.7', 'dist-packages') if devel_workspace else None,
-        'indigo': os.path.join(distro_space, 'lib', 'python2.7', 'dist-packages'),
-    })
+    pythonpath_roscode = collections.OrderedDict()
+    # We need to enforce the order
+    pythonpath_roscode['install'] = os.path.join(install_workspace, 'lib', 'python2.7', 'dist-packages') if install_workspace else None
+    pythonpath_roscode['devel'] = os.path.join(devel_workspace, 'lib', 'python2.7', 'dist-packages') if devel_workspace else None
+    pythonpath_roscode['indigo'] = os.path.join(distro_space, 'lib', 'python2.7', 'dist-packages')
 
     for k, p in pythonpath_roscode.iteritems():
         if p is not None and os.path.exists(p):
@@ -151,7 +142,7 @@ def ROS_setup_pythonpath(distro_space=None, install_workspace=None, devel_worksp
     pythonpath_roscode_reversed = collections.OrderedDict(reversed(list(pythonpath_roscode.items())))  # because we prepend
     for k, p in pythonpath_roscode_reversed.iteritems():
             # setting python path needed only to find ros shell commands (rosmaster)
-            if p is not None and p not in os.environ.get("PYTHONPATH", []):
+            if p is not None:  # note: even if it already exist in PYTHONPATH we add it again to maintain order.
                 os.environ["PYTHONPATH"] = p + ':' + os.environ.get("PYTHONPATH", '')
 
     # This is enough to fix the import.
