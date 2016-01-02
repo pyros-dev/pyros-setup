@@ -12,9 +12,12 @@ install:
   - sudo apt-get install python-rosdep -y
   - sudo `which rosdep` init
   - rosdep update
-# Use rosdep to install rostful-node's dependencies
+# Use rosdep to install pyros-setup's dependencies
   - rosdep install --default-yes --from-paths ./ --rosdistro $CI_ROS_DISTRO
 script:
+# direct python tests with nose
+  - nosetests pyros_setup/tests
+# full ROS setup, build and test
   - source /opt/ros/$CI_ROS_DISTRO/setup.bash
   - mkdir build
   - cd build
