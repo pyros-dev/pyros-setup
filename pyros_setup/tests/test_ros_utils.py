@@ -38,18 +38,22 @@ def test_roscore_started():
     except ImportError:
         global pyros_setup
         pyros_setup = pyros_setup.delayed_import()
+        import rospy
 
     master, roscore = pyros_setup.get_master()
     assert master.is_online()
     if roscore is not None:
         roscore.terminate()
+    rospy.signal_shutdown('test_roscore_started done')
 
 
 def test_roslaunch_started():
     try:
+        import rospy
         import roslaunch
     except ImportError:
         pyros_setup.delayed_import()  # you do the setup as expected by ROS
+        import rospy
         import roslaunch
 
     master, roscore = pyros_setup.get_master()
@@ -63,6 +67,7 @@ def test_roslaunch_started():
 
     if roscore is not None:
         roscore.terminate()
+    rospy.signal_shutdown('test_roslaunch_started done')
 
 
 def test_rosnode_started():
@@ -98,6 +103,7 @@ def test_rosnode_started():
 
     if roscore is not None:
         roscore.terminate()
+    rospy.signal_shutdown('test_rosnode_started done')
 
 if __name__ == '__main__':
     # forcing nose run from python call
