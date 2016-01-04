@@ -19,6 +19,7 @@ def get_master(spawn = True):
     :return:
     """
     master = rosgraph.Master('pyros_setup')
+    roscore_process = None
     if not master.is_online() and spawn:
         # Trying to solve this : http://answers.ros.org/question/215600/how-can-i-run-roscore-from-python/
         def ros_core_launch():
@@ -31,4 +32,4 @@ def get_master(spawn = True):
         while not master.is_online():
             time.sleep(1)
 
-    return master
+    return master, roscore_process

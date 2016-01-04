@@ -25,6 +25,12 @@ class _PyrosSetup(object):
 
 delayed_import = _PyrosSetup.delayed_import
 
+
+def get_master():
+    return delayed_import().get_master()
+
+
 __all__ = [
     'delayed_import',
+    'get_master',
 ]

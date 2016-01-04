@@ -39,8 +39,10 @@ def test_roscore_started():
         global pyros_setup
         pyros_setup = pyros_setup.delayed_import()
 
-    master = pyros_setup.get_master()
+    master, roscore = pyros_setup.get_master()
     assert master.is_online()
+    if roscore is not None:
+        roscore.terminate()
 
 
 def test_roslaunch_started():
@@ -50,10 +52,17 @@ def test_roslaunch_started():
         pyros_setup.delayed_import()  # you do the setup as expected by ROS
         import roslaunch
 
+    master, roscore = pyros_setup.get_master()
+    assert master.is_online()
+
+    time.sleep(2)  # needed until fix for https://github.com/ros/ros_comm/pull/711 is released
     launch = roslaunch.scriptapi.ROSLaunch()
     launch.start()
 
     assert launch.started
+
+    if roscore is not None:
+        roscore.terminate()
 
 
 def test_rosnode_started():
@@ -68,6 +77,10 @@ def test_rosnode_started():
         import rosnode
         import roslaunch
 
+    master, roscore = pyros_setup.get_master()
+    assert master.is_online()
+
+    time.sleep(2)  # needed until fix for https://github.com/ros/ros_comm/pull/711 is released
     launch = roslaunch.scriptapi.ROSLaunch()
     launch.start()
 
@@ -80,8 +93,11 @@ def test_rosnode_started():
     node_api = None
     with timeout(5) as t:
         while not t.timed_out and node_api is None:
-            node_api = rosnode.get_api_uri(pyros_setup.get_master(), 'echo')
+            node_api = rosnode.get_api_uri(master, 'echo')
     assert node_api is not None
+
+    if roscore is not None:
+        roscore.terminate()
 
 if __name__ == '__main__':
     # forcing nose run from python call
