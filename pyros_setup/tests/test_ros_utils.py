@@ -98,7 +98,7 @@ def test_rosnode_started():
     node_api = None
     with timeout(5) as t:
         while not t.timed_out and node_api is None:
-            node_api = rosnode.get_api_uri(master, 'echo')
+            node_api = rosnode.get_api_uri(master, 'echo')  # would be good to find a way to do this without rosnode dependency
     assert node_api is not None
 
     if roscore is not None:
