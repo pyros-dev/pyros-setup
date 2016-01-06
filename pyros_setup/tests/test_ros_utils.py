@@ -47,6 +47,9 @@ def test_roscore_started():
         if roscore is not None:
             roscore.terminate()
         rospy.signal_shutdown('test_roscore_started done')
+        while roscore.is_alive():
+            time.sleep(0.2)  # waiting for roscore to die
+        assert not master.is_online()
 
 
 def test_roslaunch_started():
@@ -62,7 +65,9 @@ def test_roslaunch_started():
     try:
         assert master.is_online()
 
-        time.sleep(2)  # needed until fix for https://github.com/ros/ros_comm/pull/711 is released
+        # hack needed to wait for master until fix for https://github.com/ros/ros_comm/pull/711 is released
+        roslaunch.rlutil.get_or_generate_uuid(None, True)
+
         launch = roslaunch.scriptapi.ROSLaunch()
         launch.start()
 
@@ -72,6 +77,9 @@ def test_roslaunch_started():
         if roscore is not None:
             roscore.terminate()
         rospy.signal_shutdown('test_roslaunch_started done')
+        while roscore.is_alive():
+            time.sleep(0.2)  # waiting for roscore to die
+        assert not master.is_online()
 
 
 def test_rosnode_started():
@@ -90,7 +98,9 @@ def test_rosnode_started():
     try:
         assert master.is_online()
 
-        time.sleep(2)  # needed until fix for https://github.com/ros/ros_comm/pull/711 is released
+        # hack needed to wait for master until fix for https://github.com/ros/ros_comm/pull/711 is released
+        roslaunch.rlutil.get_or_generate_uuid(None, True)
+
         launch = roslaunch.scriptapi.ROSLaunch()
         launch.start()
 
@@ -110,6 +120,9 @@ def test_rosnode_started():
         if roscore is not None:
             roscore.terminate()
         rospy.signal_shutdown('test_rosnode_started done')
+        while roscore.is_alive():
+            time.sleep(0.2)  # waiting for roscore to die
+        assert not master.is_online()
 
 if __name__ == '__main__':
     # forcing nose run from python call
