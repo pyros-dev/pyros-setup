@@ -55,104 +55,126 @@ def ROS_setup_rosdistro_env(default_distro=None):
     if os.environ.get('ROS_MASTER_URI', None) is None:
                 os.environ['ROS_MASTER_URI'] = '/opt/ros/' + distro + '/etc/ros'
 
+    # we return here the workspace for the distro
+    return '/opt/ros/' + distro
 
-def ROS_find_workspaces(cmake_env_var=None):
-    cmake_env_var = cmake_env_var or "CMAKE_PREFIX_PATH"
-    try:
-        workspace_paths = os.environ[cmake_env_var].split(':')
-        install_ws = workspace_paths[0]
-        devel_ws = workspace_paths[1]
-        src_path = devel_ws + "/../src"
-        distro_path = workspace_paths[2]
+def ROS_setup_ros_package_path(workspace):
 
-    # TODO : more accurate error detection
-    except Exception:
-        # TODO : better guessing
-        install_ws = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'install'))
-        devel_ws = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'devel'))
-        src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', 'src'))
-        distro_path = os.path.abspath('/opt/ros/indigo')
-        # setting cmake prefix path - rosout needs this
-        for k, p in zip(['distro', 'devel', 'install'], [distro_path, devel_ws, install_ws]):
-            if os.path.exists(p) and p not in os.environ.get("CMAKE_PREFIX_PATH", []):
-                logging.warn("Appending {key} space to CMake prefix path".format(key=k))
-                os.environ["CMAKE_PREFIX_PATH"] = p + ':' + os.environ.get("CMAKE_PREFIX_PATH", '')
+    # setting cmake prefix path - rosout needs this
+    if os.path.exists(workspace) and workspace not in os.environ.get("CMAKE_PREFIX_PATH", []):
+        logging.warn("Appending workspace {workspace} to CMake prefix path".format(workspace=workspace))
+        os.environ["CMAKE_PREFIX_PATH"] = workspace + ':' + os.environ.get("CMAKE_PREFIX_PATH", '')
 
     # prepending current path for ros package discovery
-    os.environ['ROS_PACKAGE_PATH'] = src_path + ':' + os.environ['ROS_PACKAGE_PATH']
+    if os.path.basename(workspace) == 'devel':  # special case of devel -> we can find src
+        os.environ['ROS_PACKAGE_PATH'] = os.path.join(os.path.dirname(workspace), 'src') + ':' + os.environ['ROS_PACKAGE_PATH']
 
-    return distro_path, install_ws, devel_ws
+
+def ROS_setup_ospath(workspace):
+
+    binpath = os.path.join(workspace, 'bin')
+    if binpath is not None and os.path.exists(binpath):  # note: even if it already exist in PATH we add it again
+        logging.warn("Appending path {binpath} to OS path".format(binpath=binpath))
+        os.environ["PATH"] = binpath + ':' + os.environ.get("PATH", '')
 
 
-def ROS_setup_ospath(distro_space=None, install_workspace=None, devel_workspace=None):
+def ROS_setup_ldlibrarypath(workspace):
+    lib_path = os.path.join(workspace, 'lib')
+    libarch_path = os.path.join(workspace, 'lib', 'x86_64-linux-gnu')
 
-    distro_space = distro_space or ROS_find_workspaces()[0]  # we want to enforce distro workspace
-    install_workspace = install_workspace  # we don't want to enforce install or devel workspace
-    devel_workspace = devel_workspace
+    if libarch_path is not None and os.path.exists(libarch_path):  # note: even if it already exist in PATH we add it again
+        logging.warn("Appending path {libarch_path} to LD_LIBRARY_PATH".format(libarch_path=libarch_path))
+        os.environ["LD_LIBRARY_PATH"] = libarch_path + ':' + os.environ.get("LD_LIBRARY_PATH", '')
 
-    # setting path to find commands
-    ospath_roscode = collections.OrderedDict()
-    # We need to enforce the order
-    ospath_roscode['install'] = os.path.join(install_workspace, 'bin') if install_workspace else None
-    ospath_roscode['devel'] = os.path.join(devel_workspace, 'bin') if devel_workspace else None
-    ospath_roscode['indigo'] = os.path.join(distro_space, 'bin')
+    if lib_path is not None and os.path.exists(lib_path):  # note: even if it already exist in PATH we add it again
+        logging.warn("Appending path {lib_path} to LD_LIBRARY_PATH".format(lib_path=lib_path))
+        os.environ["LD_LIBRARY_PATH"] = lib_path + ':' + os.environ.get("LD_LIBRARY_PATH", '')
 
-    ospath_roscode_reversed = collections.OrderedDict(reversed(list(ospath_roscode.items())))  # because we prepend
-    for k, p in ospath_roscode_reversed.iteritems():
-        if p is not None and os.path.exists(p):  # note: even if it already exist in PATH we add it again
-            logging.warn("Appending {key} space to OS path".format(key=k))
-            os.environ["PATH"] = p + ':' + os.environ.get("PATH", '')
 
-    # setting ldlibrary path - rosout needs this
-    ldlibrarypath_roscode = collections.OrderedDict()
-    # We need to enforce the order
-    ldlibrarypath_roscode['install'] = os.path.join(install_workspace, 'lib') if install_workspace else None
-    ldlibrarypath_roscode['install_arch'] = os.path.join(install_workspace, 'lib', 'x86_64-linux-gnu') if install_workspace else None  # Ref : /opt/ros/indigo/_setup_util.sh
-    ldlibrarypath_roscode['devel'] = os.path.join(devel_workspace, 'lib') if devel_workspace else None
-    ldlibrarypath_roscode['devel_arch'] = os.path.join(devel_workspace, 'lib', 'x86_64-linux-gnu')if devel_workspace else None  # Ref : /opt/ros/indigo/_setup_util.sh
-    ldlibrarypath_roscode['indigo'] = os.path.join(distro_space, 'lib')
-    ldlibrarypath_roscode['indigo_arch'] = os.path.join(distro_space, 'lib/x86_64-linux-gnu')  # Ref : /opt/ros/indigo/_setup_util.sh
+def ROS_setup_pkgconfigpath(workspace):
+    libpkgconfig_path = os.path.join(workspace, 'lib', 'pkgconfig')
+    libarchpkgconfig_path = os.path.join(workspace, 'lib', 'x86_64-linux-gnu', 'pkgconfig')
 
-    ldlibrarypath_roscode_reversed = collections.OrderedDict(reversed(list(ldlibrarypath_roscode.items())))  # because we prepend
-    for k, p in ldlibrarypath_roscode_reversed.iteritems():
-        if p is not None and os.path.exists(p):  # note: even if it already exist in PATH we add it again
-            logging.warn("Appending {key} space to LD_LIBRARY_PATH".format(key=k))
-            os.environ["LD_LIBRARY_PATH"] = p + ':' + os.environ.get("LD_LIBRARY_PATH", '')
+    if libarchpkgconfig_path is not None and os.path.exists(libarchpkgconfig_path):  # note: even if it already exist in PATH we add it again
+        logging.warn("Appending path {libarchpkgconfig_path} to PKG_CONFIG_PATH".format(libarchpkgconfig_path=libarchpkgconfig_path))
+        os.environ["PKG_CONFIG_PATH"] = libarchpkgconfig_path + ':' + os.environ.get("PKG_CONFIG_PATH", '')
+
+    if libpkgconfig_path is not None and os.path.exists(libpkgconfig_path):  # note: even if it already exist in PATH we add it again
+        logging.warn("Appending path {libpkgconfig_path} to PKG_CONFIG_PATH".format(libpkgconfig_path=libpkgconfig_path))
+        os.environ["PKG_CONFIG_PATH"] = libpkgconfig_path + ':' + os.environ.get("PKG_CONFIG_PATH", '')
 
 
 # TODO : check if we can use roslib.load_manifest for all this
-def ROS_setup_pythonpath(distro_space=None, install_workspace=None, devel_workspace=None):
+def ROS_setup_pythonpath(workspace):
 
-    distro_space = distro_space or ROS_find_workspaces()[0]
-    install_workspace = install_workspace
-    devel_workspace = devel_workspace
+    package_path = os.path.join(workspace, 'lib', 'python2.7', 'dist-packages')
 
-    # setting up all python paths
-    # CAREFUL : SAME order as setup.bash set the pythonpath
-    pythonpath_roscode = collections.OrderedDict()
-    # We need to enforce the order
-    pythonpath_roscode['install'] = os.path.join(install_workspace, 'lib', 'python2.7', 'dist-packages') if install_workspace else None
-    pythonpath_roscode['devel'] = os.path.join(devel_workspace, 'lib', 'python2.7', 'dist-packages') if devel_workspace else None
-    pythonpath_roscode['indigo'] = os.path.join(distro_space, 'lib', 'python2.7', 'dist-packages')
+    if package_path is not None and os.path.exists(package_path):
+        logging.warn("Prepending path {package_path} to python path".format(package_path=package_path))
+        # Note : virtualenvs are a much better solution to this problem.
+        # nevertheless we here try to simulate ROS behavior ( working with workspaces )
+        sys.path.insert(1, package_path)
+        # setting python path needed only to find ros shell commands (rosmaster)
+        os.environ["PYTHONPATH"] = package_path + ':' + os.environ.get("PYTHONPATH", '')
 
-    for k, p in pythonpath_roscode.iteritems():
-        if p is not None and os.path.exists(p):
-            logging.warn("Appending {key} space to python path".format(key=k))
-            sys.path.append(p)
-    pythonpath_roscode_reversed = collections.OrderedDict(reversed(list(pythonpath_roscode.items())))  # because we prepend
-    for k, p in pythonpath_roscode_reversed.iteritems():
-            # setting python path needed only to find ros shell commands (rosmaster)
-            if p is not None:  # note: even if it already exist in PYTHONPATH we add it again to maintain order.
-                os.environ["PYTHONPATH"] = p + ':' + os.environ.get("PYTHONPATH", '')
-
-    # This is enough to fix the import.
+    # Only this method is enough to fix the python import issues.
     # However all ROS environment should be setup before importing rospy due to https://github.com/ros/catkin/issues/767
 
 
-def ROS_emulate_setup(distro='indigo', prio_install=False):  # by default we like the devel workspace
+def ROS_find_workspaces(distro, base_path):
+    """
+    Helper function to find your workspaces for you.
+    :param distro: distribution name
+    :param base_path: the base path of your workspace ( should contain devel/ and src/ folder at least )
+    :return: list of workspaces path, directly usable with ROS_emulate_setup
+    """
+
+    cmake_env_var = "CMAKE_PREFIX_PATH"
+    # if CMAKE_PREFIX_PATH is set we can find everything else
+    # useful to fix a broken setup ( can it really happen ? )
+
+    cmake_env_path = os.environ.get(cmake_env_var, '')
+    workspace_paths = cmake_env_path.split(':')
+
+    if not cmake_env_path:  # empty string : we failed looking for it in environment
+        install_ws = os.path.abspath(os.path.join(base_path, 'install'))
+        devel_ws = os.path.abspath(os.path.join(base_path, 'devel'))
+        workspace_paths = []
+        # setting cmake prefix path - rosout needs this
+        for k, p in zip(['devel', 'install'], [devel_ws, install_ws]):
+            if os.path.exists(p) and p not in os.environ.get("CMAKE_PREFIX_PATH", []):
+                logging.warn("Appending {key} space to CMake prefix path".format(key=k))
+                os.environ["CMAKE_PREFIX_PATH"] = p + ':' + os.environ.get("CMAKE_PREFIX_PATH", '')
+                workspace_paths[:0] = [p]  # prepending
+
+    return tuple(workspace_paths)
+
+
+def ROS_emulate_setup(distro=None, *workspaces):
+    """
+    :param distro: ROS distribution for which you want to emulate the setup.bash behavior
+    :param workspaces: workspace arguments, ordered from overlay to underlay :
+        devel_path ( usual workspace development setup )
+         OR
+        install_path ( usual install workspace setup )
+         OR
+        over_devel_path, under_devel_path ( usual workspace development with underlays setup )
+    :return:
+    """
     logging.warn(" => Emulating ROS setup now...")
-    ROS_setup_rosdistro_env(default_distro=distro)
-    distro_ws, install_ws, devel_ws = ROS_find_workspaces()
-    ROS_setup_ospath(distro_ws, install_ws if prio_install else None, devel_ws)
-    ROS_setup_pythonpath(distro_ws, install_ws if prio_install else None, devel_ws)
+
+    distro = distro or 'indigo'
+    distro_path = ROS_setup_rosdistro_env(default_distro=distro)
+
+    # adding distro_path to the workspace list
+    workspaces = list(workspaces) + [distro_path]
+
+    # we need to reverse the order because we prepend in all these functions
+    for w in reversed(workspaces):
+        ROS_setup_ros_package_path(w)
+        ROS_setup_ospath(w)
+        ROS_setup_ldlibrarypath(w)
+        ROS_setup_pkgconfigpath(w)
+        ROS_setup_pythonpath(w)
+
     logging.warn(" => ROS setup emulation done.")

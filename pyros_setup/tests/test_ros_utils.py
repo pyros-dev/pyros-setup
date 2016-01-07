@@ -37,7 +37,7 @@ def test_roscore_started():
         import rospy
     except ImportError:
         global pyros_setup
-        pyros_setup = pyros_setup.delayed_import()
+        pyros_setup = pyros_setup.delayed_import_auto()  # enough to work when in its own workspace
         import rospy
 
     master, roscore = pyros_setup.get_master()
@@ -57,7 +57,7 @@ def test_roslaunch_started():
         import rospy
         import roslaunch
     except ImportError:
-        pyros_setup.delayed_import()  # you do the setup as expected by ROS
+        pyros_setup.delayed_import_auto()  # enough to work when in its own workspace
         import rospy
         import roslaunch
 
@@ -89,7 +89,7 @@ def test_rosnode_started():
         import roslaunch
     except ImportError:
         global pyros_setup
-        pyros_setup = pyros_setup.delayed_import()  # you do the setup as expected by ROS
+        pyros_setup = pyros_setup.delayed_import_auto()  # enough to work when in its own workspace
         import rospy
         import rosnode
         import roslaunch
