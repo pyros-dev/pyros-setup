@@ -47,9 +47,9 @@ def test_roscore_started():
         if roscore is not None:
             roscore.terminate()
         rospy.signal_shutdown('test_roscore_started done')
-        while roscore.is_alive():
+        while roscore and roscore.is_alive():
             time.sleep(0.2)  # waiting for roscore to die
-        assert not master.is_online()
+        assert not (roscore and master.is_online())
 
 
 def test_roslaunch_started():
@@ -77,9 +77,9 @@ def test_roslaunch_started():
         if roscore is not None:
             roscore.terminate()
         rospy.signal_shutdown('test_roslaunch_started done')
-        while roscore.is_alive():
+        while roscore and roscore.is_alive():
             time.sleep(0.2)  # waiting for roscore to die
-        assert not master.is_online()
+        assert not (roscore and master.is_online())
 
 
 def test_rosnode_started():
@@ -120,9 +120,9 @@ def test_rosnode_started():
         if roscore is not None:
             roscore.terminate()
         rospy.signal_shutdown('test_rosnode_started done')
-        while roscore.is_alive():
+        while roscore and roscore.is_alive():
             time.sleep(0.2)  # waiting for roscore to die
-        assert not master.is_online()
+        assert not (roscore and master.is_online())
 
 if __name__ == '__main__':
     # forcing nose run from python call
