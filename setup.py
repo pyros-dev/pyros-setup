@@ -27,7 +27,7 @@ if _CATKIN:  # using distutils : https://docs.python.org/2/distutils
 else:  # using setuptools : http://pythonhosted.org/setuptools/
 
     setup(name='pyros_setup',
-        version='0.0.3',
+        version='0.0.4',
         description='Toolsuite for running ROS environments directly from python code, without any specific requirements outside of usual python',
         url='http://github.com/asmodehn/pyros-setup',
         author='AlexV',
@@ -37,7 +37,6 @@ else:  # using setuptools : http://pythonhosted.org/setuptools/
             'pyros_setup',
             'pyros_setup.tests',
         ],
-        package_dir={'': 'src'},
         # this is better than using package data ( since behavior is a bit different from distutils... )
         include_package_data=True,  # use MANIFEST.in during install.
         install_requires=[
