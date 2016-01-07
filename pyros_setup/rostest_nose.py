@@ -46,6 +46,9 @@ def rostest_nose_teardown_module():
         # finishing all process
         if roscore_process is not None:
             roscore_process.terminate()  # make sure everything is stopped
+            while roscore_process.is_alive():
+                time.sleep(0.2)  # waiting for roscore to die
+            assert not roscore_process.is_alive()
 
 
 def is_rostest_enabled():
