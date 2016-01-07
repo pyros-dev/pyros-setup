@@ -6,7 +6,9 @@ from __future__ import absolute_import
 # this way it can work with or without preset environment
 class _PyrosSetup(object):
     def __init__(self, ros_master):
+        # members simulating a usual imported module
         self.get_master = ros_master
+        self.__file__ = __file__
 
     # encapsulating local imports to delay them until ROS setup is done
     @staticmethod
@@ -31,6 +33,7 @@ class _PyrosSetup(object):
         distro = distro or 'indigo'
         # default basepath working if pyros-setup is directly cloned in your workspace
         # This file think it is in devel/lib/python2.7/dist-packages/pyros_setup for some reason...
+        # NOTE : maybe the default here is a bad idea, making it simpler than it should be for the user...
         base_path = base_path or os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', '..')
 
         try:

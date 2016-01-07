@@ -1,6 +1,6 @@
 <package>
   <name>pyros_setup</name>
-  <version>0.0.2</version>
+  <version>0.0.3</version>
   <description>
   Toolsuite for running ROS environments directly from python code, without any specific requirements outside of usual python
   </description>
