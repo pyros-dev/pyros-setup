@@ -163,7 +163,7 @@ def ROS_emulate_setup(distro=None, *workspaces):
     """
     logging.warn(" => Emulating ROS setup now...")
 
-    distro = distro or 'indigo'
+    distro = distro or 'indigo'  # TODO : investigate if we should use /usr/bin/rosversion to determine default ?
     distro_path = ROS_setup_rosdistro_env(default_distro=distro)
 
     # adding distro_path to the workspace list
