@@ -37,8 +37,8 @@ def rostest_nose_setup_module():
             roscore_process = multiprocessing.Process(target=ros_core_launch)
             roscore_process.start()
 
-        # Workaround until https://github.com/ros/ros_comm/pull/711 is merged and released
-        time.sleep(2)
+        # hack needed to wait for master until fix for https://github.com/ros/ros_comm/pull/711 is released
+        roslaunch.rlutil.get_or_generate_uuid(None, True)
 
 
 def rostest_nose_teardown_module():
