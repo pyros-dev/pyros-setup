@@ -7,6 +7,7 @@ import types
 # this way it can work with or without preset environment
 class _PyrosSetup(types.ModuleType):
     def __init__(self, ros_master):
+        super(_PyrosSetup, self).__init__('pyros_setup','Small setup package to dynamically interface with ROS')
         # members simulating a usual imported module
         self.get_master = ros_master
 

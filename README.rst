@@ -37,7 +37,8 @@ This package is only useful if you use the extra functionnalities ( like get_mas
       import rospy
       import rosgraph
   except ImportError:  # if ROS environment is not setup, we emulate it.
-      pyros_setup = pyros_setup.delayed_import_auto(base_path=os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', '..', '..'))
+      import sys
+      sys.modules["pyros_setup"] = pyros_setup.delayed_import_auto(base_path=os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', '..', '..'))
       import rospy
       import rosgraph
   
@@ -53,4 +54,4 @@ This package is only useful if you use the extra functionnalities ( like get_mas
       master, roscore_process = pyros_setup.get_master()
       assert master.is_online()
 
-
+Note: If you know any easier / less tricky / more pythonic way of handling dynamic imports, let me know!
