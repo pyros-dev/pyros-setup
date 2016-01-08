@@ -54,8 +54,8 @@ delayed_import = _PyrosSetup.delayed_import
 delayed_import_auto = _PyrosSetup.delayed_import_auto
 
 
-def get_master():
-    return delayed_import().get_master()
+def get_master(spawn=True):
+    return delayed_import().get_master(spawn)
 
 
 __all__ = [
