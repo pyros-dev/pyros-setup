@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
+import types
 
 # class to allow (potentially infinite) delayed conditional import.
 # this way it can work with or without preset environment
-class _PyrosSetup(object):
+class _PyrosSetup(types.ModuleType):
     def __init__(self, ros_master):
         # members simulating a usual imported module
         self.get_master = ros_master
-        self.__file__ = __file__
 
     # encapsulating local imports to delay them until ROS setup is done
     @staticmethod
@@ -59,5 +59,6 @@ def get_master():
 
 __all__ = [
     'delayed_import',
+    'delayed_import_auto',
     'get_master',
 ]
