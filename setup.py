@@ -27,7 +27,7 @@ if _CATKIN:  # using distutils : https://docs.python.org/2/distutils
 else:  # using setuptools : http://pythonhosted.org/setuptools/
 
     setup(name='pyros_setup',
-        version='0.0.7',
+        version='0.0.8',
         description='Toolsuite for running ROS environments directly from python code, without any specific requirements outside of usual python',
         url='http://github.com/asmodehn/pyros-setup',
         author='AlexV',
