@@ -7,6 +7,8 @@ find_package(catkin REQUIRED COMPONENTS
     rospy
 )
 catkin_python_setup()
+catkin_package()
+
 # Lint Python modules
 file(GLOB_RECURSE ${PROJECT_NAME}_PY_SRCS
      RELATIVE ${PROJECT_SOURCE_DIR} pyros_setup/*.py)
@@ -20,6 +22,5 @@ if (CATKIN_ENABLE_TESTING)
     ##############################################################################
 
     catkin_add_nosetests(pyros_setup/tests)
-
 
 endif()
