@@ -1,6 +1,3 @@
-from distutils.core import setup
-from catkin_pkg.python_setup import generate_distutils_setup
-
 # This setup is usable by catkin, or on its own as usual python setup.py
 
 _CATKIN = False
@@ -41,6 +38,9 @@ else:  # using setuptools : http://pythonhosted.org/setuptools/
         include_package_data=True,  # use MANIFEST.in during install.
         install_requires=[
             #'catkin_pkg',  # not needed here since this version should not look for package.xml
+        ],
+        test_requires=[
+            'pyros_test'
         ],
         zip_safe=False,  # TODO testing...
     )
