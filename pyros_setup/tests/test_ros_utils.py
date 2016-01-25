@@ -73,6 +73,8 @@ def test_roslaunch_started():
 
         assert launch.started
 
+        launch.stop()
+
     finally:  # to make sure we always shutdown everything, even if test fails
         if roscore is not None:
             roscore.terminate()
@@ -115,6 +117,8 @@ def test_rosnode_started():
             while not t.timed_out and node_api is None:
                 node_api = rosnode.get_api_uri(master, 'echo')  # would be good to find a way to do this without rosnode dependency
         assert node_api is not None
+
+        launch.stop()
 
     finally:  # to make sure we always shutdown everything, even if test fails
         if roscore is not None:
