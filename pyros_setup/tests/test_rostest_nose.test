@@ -1,0 +1,4 @@
+<launch>
+  <node name="talker" pkg="roscpp_tutorials" type="talker"/>
+  <test test-name="test_rostest_nose" pkg="pyros_setup" type="test_rostest_nose.py"/>
+</launch>
