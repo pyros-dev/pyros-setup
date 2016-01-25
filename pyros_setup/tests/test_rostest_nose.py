@@ -47,23 +47,25 @@ def main_test_part(rostest_nose, roslaunch, rospy, rosnode):
         launch = roslaunch.scriptapi.ROSLaunch()
         launch.start()
 
-        package = 'roscpp_tutorials'
-        executable = 'talker'
-        name = 'talker'
+        rospy.set_param('/string_pub_node/topic_name', '~test_str_topic')  # private topic name to not mess things up too much
+        rospy.set_param('/string_pub_node/test_message', 'testing topic discovery')
+        package = 'pyros_test'
+        executable = 'string_pub_node.py'
+        name = 'string_pub_node'
         node = roslaunch.core.Node(package, executable, name)
 
         talker_process = launch.launch(node)
         assert talker_process.is_alive()
 
-        # wait for the node to come up
+    try:
+        # wait for the node to come up (needed for both rostest and nosetest)
         with timeout(5) as t:
-            while not t.timed_out and not rosnode.rosnode_ping("talker", max_count=1):
+            while not t.timed_out and not rosnode.rosnode_ping("string_pub_node", max_count=1):
                 time.sleep(1)
         # TODO: improve this
 
-    try:
         # try a few times
-        assert rosnode.rosnode_ping("talker", max_count=5)
+        assert rosnode.rosnode_ping("string_pub_node", max_count=5)
 
     # we make sure this always run to avoid hanging with child processes
     finally:
@@ -73,7 +75,7 @@ def main_test_part(rostest_nose, roslaunch, rospy, rosnode):
 
             # if running with rostest, we cannot check the shutdown behavior form inside the test
             # so we do it here
-            assert not rosnode.rosnode_ping("talker", max_count=5)
+            assert not rosnode.rosnode_ping("string_pub_node", max_count=5)
 
             rostest_nose.rostest_nose_teardown_module()
 
@@ -134,7 +136,13 @@ class testRosTest(unittest.TestCase):
         assert rostest_nose.is_rostest_enabled()
         # checking setup is done as expected                
 
-        assert rosnode.rosnode_ping("talker", max_count=5)
+        # wait for the node to come up
+        with timeout(5) as t:
+            while not t.timed_out and not rosnode.rosnode_ping("string_pub_node", max_count=1):
+                time.sleep(1)
+        # TODO: improve this
+
+        assert rosnode.rosnode_ping("string_pub_node", max_count=5)
         # note we cannot test cleanup here. Assuming rostest does it properly.
 
     # Tests Needed to validate that tests written for nose with pyros can also work with rostest
