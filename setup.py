@@ -13,6 +13,11 @@ setup(name='pyros_setup',
         'pyros_setup',
         'pyros_setup.tests',
     ],
+    entry_points={
+        'console_scripts': [
+            'pyros_setup = pyros_setup.__main__:nosemain'
+        ]
+    },
     # this is better than using package data ( since behavior is a bit different from distutils... )
     include_package_data=True,  # use MANIFEST.in during install.
     install_requires=[
