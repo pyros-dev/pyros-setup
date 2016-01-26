@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from __future__ import absolute_import
 
 # Adding current package repository in order to be able to import it (if started with python cli)

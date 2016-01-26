@@ -36,9 +36,14 @@ def rostest_nose_setup_module():
 
             roscore_process = multiprocessing.Process(target=ros_core_launch)
             roscore_process.start()
+            while not roscore_process.is_alive():
+                time.sleep(0.2)  # waiting for roscore to be born
+            assert roscore_process.is_alive()
 
         # hack needed to wait for master until fix for https://github.com/ros/ros_comm/pull/711 is released
         roslaunch.rlutil.get_or_generate_uuid(None, True)
+
+        assert rosgraph.masterapi.is_online()
 
 
 def rostest_nose_teardown_module():
@@ -51,7 +56,7 @@ def rostest_nose_teardown_module():
             assert not roscore_process.is_alive()
 
 
-def is_rostest_enabled():
+def is_rostest_enabled():  # TODO : validate that this actually works as expected
     return rostest_enabled
 
 
@@ -64,7 +69,11 @@ def rostest_or_nose_main(package, test_name, test, sysargv=sys.argv):
     if len(rosargs) > 0:
         global rostest_enabled
         rostest_enabled = True
+        print("Running {package} {test.__name__} with rostest as \"{test_name}\"".format(**locals()))
         rostest.rosrun(package, test_name, test, sysargv)
     else:
+
+        print("Running module with nose".format(**locals()))
         # if python => run with nose => import will be managed by nose import ( from source )
         nose.runmodule()
+

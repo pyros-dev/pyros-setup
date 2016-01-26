@@ -12,6 +12,9 @@ To install it::
 
   sudo pip install -i https://testpypi.python.org/pypi pyros_setup
 
+However it is usable from source for ease of development and compatibility testing.
+Just use the branch matching your rosdistro.
+
 Basically it allows you to do this::
 
   try:
