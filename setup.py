@@ -24,8 +24,8 @@ setup(name='pyros_setup',
         #'catkin_pkg',  # not needed here since this version should not look for package.xml
     ],
     test_suite="nose.collector",
-    test_requires=[
-        'pyros_test'
+    tests_require=[
+        #'pyros_test'  # this is required, but not installable by pip (it s a catkin deb package from ROS)
     ],
     zip_safe=False,  # TODO testing...
 )
