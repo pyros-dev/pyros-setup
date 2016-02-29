@@ -62,19 +62,28 @@ def ROS_setup_ros_package_path(workspace):
 
     # setting cmake prefix path - rosout needs this
     if os.path.exists(workspace) and workspace not in os.environ.get("CMAKE_PREFIX_PATH", []):
-        logging.warn("Appending workspace {workspace} to CMake prefix path".format(workspace=workspace))
+        logging.warn("Appending path {workspace} to CMAKE_PREFIX_PATH".format(workspace=workspace))
         os.environ["CMAKE_PREFIX_PATH"] = workspace + ':' + os.environ.get("CMAKE_PREFIX_PATH", '')
 
     # prepending current path for ros package discovery
     if os.path.basename(workspace) == 'devel':  # special case of devel -> we can find src
-        os.environ['ROS_PACKAGE_PATH'] = os.path.join(os.path.dirname(workspace), 'src') + ':' + os.environ['ROS_PACKAGE_PATH']
+        logging.warn("Appending path {workspace_src} to ROS_PACKAGE_PATH".format(workspace_src=os.path.join(os.path.dirname(workspace), 'src')))
+        os.environ['ROS_PACKAGE_PATH'] = os.path.join(os.path.dirname(workspace), 'src') + ':' \
+                                         + os.environ['ROS_PACKAGE_PATH']
+    else:  # TODO : this is a quick fix. investigate this case more
+        logging.warn("Appending path {workspace_stacks} to ROS_PACKAGE_PATH".format(workspace_stacks=os.path.join(workspace, 'stacks')))
+        logging.warn("Appending path {workspace_share} to ROS_PACKAGE_PATH".format(workspace_share=os.path.join(workspace, 'share')))
+        os.environ['ROS_PACKAGE_PATH'] = os.path.join(workspace, 'share') + ':' \
+                                         + os.path.join(workspace, 'stacks') + ':' \
+                                         + os.environ['ROS_PACKAGE_PATH']
+
 
 
 def ROS_setup_ospath(workspace):
 
     binpath = os.path.join(workspace, 'bin')
     if binpath is not None and os.path.exists(binpath):  # note: even if it already exist in PATH we add it again
-        logging.warn("Appending path {binpath} to OS path".format(binpath=binpath))
+        logging.warn("Appending path {binpath} to PATH".format(binpath=binpath))
         os.environ["PATH"] = binpath + ':' + os.environ.get("PATH", '')
 
 
@@ -110,7 +119,7 @@ def ROS_setup_pythonpath(workspace):
     package_path = os.path.join(workspace, 'lib', 'python2.7', 'dist-packages')
 
     if package_path is not None and os.path.exists(package_path):
-        logging.warn("Prepending path {package_path} to python path".format(package_path=package_path))
+        logging.warn("Prepending path {package_path} to PYTHONPATH".format(package_path=package_path))
         # Note : virtualenvs are a much better solution to this problem.
         # nevertheless we here try to simulate ROS behavior ( working with workspaces )
         sys.path.insert(1, package_path)
