@@ -1,18 +1,24 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(pyros_setup)
 
-# Minimal Python module setup
-find_package(catkin REQUIRED COMPONENTS
-    roslint
-    rospy
-)
-catkin_python_setup()
-catkin_package()
+include(cmake/python-venv.cmake)
 
-# Lint Python modules
-file(GLOB_RECURSE ${PROJECT_NAME}_PY_SRCS
-     RELATIVE ${PROJECT_SOURCE_DIR} pyros_setup/*.py)
-roslint_python(${${PROJECT_NAME}_PY_SRCS})
+# Minimal Python module setup
+# This assume catkin is installed along with a minimal ROS system.
+find_package(catkin REQUIRED COMPONENTS
+    rospy
+    rosgraph
+    roslaunch
+    rostest
+)
+
+# Building a virtualenv in catkin workspace
+
+# installing requirements
+
+#catkin_python_setup()
+catkin_package()
+catkin_python_venv()
 
 ## Unit tests
 if (CATKIN_ENABLE_TESTING)
