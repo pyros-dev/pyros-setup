@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
+import logging
 import types
+
 
 # class to allow (potentially infinite) delayed conditional import.
 # this way it can work with or without preset environment
 class _PyrosSetup(types.ModuleType):
     def __init__(self, ros_master):
-        super(_PyrosSetup, self).__init__('pyros_setup','Small setup package to dynamically interface with ROS')
+        super(_PyrosSetup, self).__init__('pyros_setup', 'Small setup package to dynamically interface with ROS')
         # members simulating a usual imported module
         self.get_master = ros_master
 
@@ -21,8 +23,12 @@ class _PyrosSetup(types.ModuleType):
         except ImportError:
             from .ros_setup import ROS_emulate_setup
             ROS_emulate_setup(distro, *workspaces)
-            import rospy
-            from .ros_utils import get_master
+            try:
+                import rospy
+                from .ros_utils import get_master
+            except ImportError:
+                logging.warn("rospy not found. ROS setup failed !")
+                raise
 
         # we return a relay of imported names, accessible the same way a direct import would be.
         return _PyrosSetup(get_master)
@@ -44,8 +50,12 @@ class _PyrosSetup(types.ModuleType):
             from .ros_setup import ROS_find_workspaces, ROS_emulate_setup
             workspaces = ROS_find_workspaces(distro, base_path)
             ROS_emulate_setup(distro, *workspaces)
-            import rospy
-            from .ros_utils import get_master
+            try:
+                import rospy
+                from .ros_utils import get_master
+            except ImportError:
+                logging.warn("rospy not found. ROS setup failed !")
+                raise
 
         # we return a relay of imported names, accessible the same way a direct import would be.
         return _PyrosSetup(get_master)
