@@ -3,7 +3,7 @@
 from setuptools import setup
 
 setup(name='pyros_setup',
-    version='0.0.12',
+    version='0.0.13',
     description='Toolsuite for running ROS environments directly from python code, without any specific requirements outside of usual python',
     url='http://github.com/asmodehn/pyros-setup',
     author='AlexV',

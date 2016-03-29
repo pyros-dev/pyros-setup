@@ -1,17 +1,15 @@
-macro(catkin_pip_install)
-    set(NPM_UPDATE_BIN "/usr/bin/npm")
-    set(NPM_UPDATE "update")
+macro(catkin_pip_install_requirements devel_path)
+    # devel_path should be set to ${CATKIN_DEVEL_PREFIX}/${CATKING_GLOBAL_PYTHON_DESTINATION
+    set(PIP_INSTALL_REQ_DEVEL "/usr/bin/pip install -r requirements.txt -t ${devel_path}")
 
-    message(STATUS "    ... Installing Pip requirements")
-    message(STATUS "    ... CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
+    message(STATUS "    ... Installing Pip requirements from ${CMAKE_CURRENT_SOURCE_DIR} in ${devel_path}.")
 
-    # Not sure whether there is a way to make it custom target
-    safe_execute_process(
-      COMMAND  ${NPM_UPDATE_BIN} ${NPM_UPDATE}
+    execute_process(
+      COMMAND  ${PIP_INSTALL_REQ_DEVEL}
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-      RESULT_VARIABLE NPM_RESULT
-      OUTPUT_VARIABLE NPM_VARIABLE)
+      RESULT_VARIABLE PIP_RESULT
+      OUTPUT_VARIABLE PIP_VARIABLE)
 
-    message(STATUS "    ... Done.. [${NPM_RESULT}]: ${NPM_VARIABLE}")
+    message(STATUS "    ... Done.. [${PIP_RESULT}]: ${PIP_VARIABLE}")
 
 endmacro()

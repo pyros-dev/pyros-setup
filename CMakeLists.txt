@@ -14,20 +14,24 @@ find_package(catkin REQUIRED COMPONENTS
     rospy
 )
 
-# We need to install the pip dependencies in the workspace being built
-catkin_pip_install()
+# We need to do the catkin python setup to create the workspace
+# before installing pip requirements
+# catkin_python_setup() # MAYBE NOT
 
-# Installing cmake extras
-set(${PROJECT_NAME}_MODULES "")
-list(APPEND ${PROJECT_NAME}_MODULES catkin-pip.cmake)
+# We need to install the pip dependencies in the workspace being created
+catkin_pip_install_requirements(${CATKIN_DEVEL_PREFIX}/${CATKIN_GLOBAL_PYTHON_DESTINATION})
 
-catkin_package(
-  CFG_EXTRAS ${${PROJECT_NAME}_MODULES}
-)
+# Installing cmake extras in case others want to use it (maybe useless?)
+#set(${PROJECT_NAME}_MODULES "")
+#list(APPEND ${PROJECT_NAME}_MODULES catkin-pip.cmake)
 
-install(DIRECTORY cmake
-        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
+#catkin_package(
+#  CFG_EXTRAS ${${PROJECT_NAME}_MODULES}
+#)
+
+#install(DIRECTORY cmake
+#        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+#)
 
 
 ## Unit tests
