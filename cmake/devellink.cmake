@@ -1,10 +1,7 @@
-
-macro(generate_symlink_devel)
+macro(generate_symlink_devel link path)
     # Usage : generate_symlink_devel link path
-    # This creates a symlink in your current source dir, so that normal python finds catkin generated classes in devel/
-
-    set(link "${CMAKE_CURRENT_SOURCE_DIR}/src/pyros/cfg")
-    set(path "${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_PYTHON_DESTINATION}/cfg")
+    # Example : generate_symlink_devel "${CMAKE_CURRENT_SOURCE_DIR}/src/pyros/cfg" "${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_PYTHON_DESTINATION}/cfg"
+    # This creates a symlink in your current source dir, so that normal python finds catkin generated classes in devel/ via current source dir symlinks
 
     if(NOT EXISTS "${link}" AND EXISTS "${path}")
         message(STATUS "linking catkin generated classes from ${path} to source space in ${link}")
