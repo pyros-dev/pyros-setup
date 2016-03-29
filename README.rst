@@ -32,7 +32,7 @@ Basically it allows you to do this::
 
 
 A ROS package WILL BE also provided ( should BECOME a Third Party Release to minimize changes between the two versions )
-This package is only useful if you use the extra functionnalities ( like get_master ) even if your ROS system is already loaded::
+This package is only useful if you use the extra functionality ( like get_master ) even if your ROS system is already loaded::
 
   import pyros_setup
   

@@ -13,7 +13,7 @@
   <author email="asmodehn@gmail.com">AlexV</author>
   <maintainer email="asmodehn@gmail.com">AlexV</maintainer>
 
-  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>cmake</buildtool_depend>
 
   <build_depend>roslint</build_depend>
 
