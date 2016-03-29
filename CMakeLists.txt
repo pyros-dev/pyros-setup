@@ -4,6 +4,7 @@ project(pyros_setup)
 # For ease of use, this CMakeLists allows to use this code from source, as if it were a normal catkin package.
 # However no ROS/catkin debian package is provided for it.
 # It is just a pip package that your packages should depend on (using rosdep dependency mechanism).
+# We should follow closely https://github.com/gerkey/ros1_external_use
 
 # Using our own catkin extras
 include(cmake/catkin-pip.cmake)
