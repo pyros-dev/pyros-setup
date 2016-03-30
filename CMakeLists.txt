@@ -19,7 +19,7 @@ find_package(catkin REQUIRED COMPONENTS
 # catkin_python_setup() # MAYBE NOT
 
 # We need to install the pip dependencies in the workspace being created
-catkin_pip_install_requirements(${CATKIN_DEVEL_PREFIX}/${CATKIN_GLOBAL_PYTHON_DESTINATION})
+catkin_pip_install_requirements()
 
 # Installing cmake extras in case others want to use it (maybe useless?)
 #set(${PROJECT_NAME}_MODULES "")
