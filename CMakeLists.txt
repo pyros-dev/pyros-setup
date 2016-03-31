@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(pyros_setup)
 
+include(cmake/python-venv.cmake)
+
 # For ease of use, this CMakeLists allows to use this code from source, as if it were a normal catkin package.
 # However no ROS/catkin debian package is provided for it.
 # It is just a pip package that your packages should depend on (using rosdep dependency mechanism).
@@ -10,9 +12,20 @@ project(pyros_setup)
 include(cmake/catkin-pip.cmake)
 
 # Minimal Python module setup - catkin is assumed preinstalled along with ROS
+# This assume catkin is installed along with a minimal ROS system.
 find_package(catkin REQUIRED COMPONENTS
     rospy
+    rosgraph
+    roslaunch
+    rostest
 )
+
+# Building a virtualenv in catkin workspace
+
+# installing requirements
+
+catkin_package()
+catkin_python_venv()
 
 # We need to do the catkin python setup to create the workspace
 # before installing pip requirements
