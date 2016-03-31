@@ -3,8 +3,8 @@
 # Useful for using all python tools ( tests, IDE, etc. ) without having to do all the ROS setup beforehand
 from __future__ import absolute_import
 
+import os
 import multiprocessing
-
 import time
 
 #Note : ROS setup must be done before importing this ( by calling ros_setup.ROS_emulate_setup() )
@@ -33,3 +33,7 @@ def get_master(spawn = True):
             time.sleep(1)
 
     return master, roscore_process
+
+
+def get_ros_home():
+    return os.environ.get('ROS_HOME', os.path.join(os.environ['HOME'], '.ros'))
