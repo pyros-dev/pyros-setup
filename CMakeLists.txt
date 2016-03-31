@@ -3,11 +3,8 @@ project(pyros_setup)
 
 # For ease of use, this CMakeLists allows to use this code from source, as if it were a normal catkin package.
 # However no ROS/catkin debian package is provided for it.
-# It is just a pip package that your packages should depend on (using rosdep dependency mechanism).
+# It is just a pip package that your packages should depend on (using rosdep pip dependency mechanism).
 # We should follow closely https://github.com/gerkey/ros1_external_use
-
-# Using our own catkin extras
-# include(cmake/catkin-pip.cmake)
 
 # Minimal Python module setup - catkin is assumed preinstalled along with ROS
 # This assume catkin is installed along with a minimal ROS system.
@@ -20,8 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 )
 
-# SHOULD WE pass requirements from here ? maybe not...
-catkin_pip_setup() #${CATKIN_PIP_REQUIREMENTS_PATH}/catkin-pip-latest.req)
+catkin_pip_setup()
 
 # We need to install the pip dependencies in the workspace being created
 catkin_pip_requirements(${CMAKE_CURRENT_SOURCE_DIR}/requirements.txt)

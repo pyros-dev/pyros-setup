@@ -6,14 +6,13 @@ Pyros-setup
 
 Toolsuite for running ROS environments directly from python code, without any specific requirements outside of usual python.
 
-This WILL BE a pure python package, to be installed in your system, in order to allow easy ROS access from your python environment. 
+This is a pure python package, to be installed in your system, in order to allow easy ROS access from your python environment.
 
 To install it::
 
   sudo pip install -i https://testpypi.python.org/pypi pyros_setup
 
-However it is usable from source for ease of development and compatibility testing.
-Just use the branch matching your rosdistro.
+However it is also usable by catkin from source for ease of development and compatibility testing.
 
 Basically it allows you to do this::
 
@@ -30,31 +29,7 @@ Basically it allows you to do this::
       import rosgraph
       import rosnode
 
-
-A ROS package WILL BE also provided ( should BECOME a Third Party Release to minimize changes between the two versions )
-This package is only useful if you use the extra functionality ( like get_master ) even if your ROS system is already loaded::
-
-  import pyros_setup
-  
-  try:
-      import rospy
-      import rosgraph
-  except ImportError:  # if ROS environment is not setup, we emulate it.
-      import sys
-      sys.modules["pyros_setup"] = pyros_setup.delayed_import_auto(base_path=os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', '..', '..'))
-      import rospy
-      import rosgraph
-  
-  
-  roscore_process = None
-  master = None
-  launch = None
-  
-  
-  def setup_module():
-      global master
-      global roscore_process
-      master, roscore_process = pyros_setup.get_master()
-      assert master.is_online()
+A ROS package WILL NOT be provided, since there is no simple and clean way to turn a pure python package into a catkin package.
+If you want to depend on pyros-setup, you should use the rosdep pip dependency mechanism.
 
 Note: If you know any easier / less tricky / more pythonic way of handling dynamic imports, let me know!
