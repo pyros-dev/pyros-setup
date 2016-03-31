@@ -29,6 +29,24 @@ Basically it allows you to do this::
       import rosgraph
       import rosnode
 
+This allows you to use your own package as a normal python package, with python workflow (example using virtualenvwrapper)::
+
+  $ mkvirtualenv my_package_venv --system-site-packages
+  (my_package_venv)$ pip install -r requirements.txt
+  (my_package_venv)$ python -m my_package
+  (my_package_venv)$ nosetests
+  (my_package_venv)$ deactivate
+  $
+
+OR using the python workflow from inside a catkin workspace::
+
+  $ source /opt/ros/indigo/setup.bash
+  $ cd existing_catkin_ws
+  $ catkin_make
+  $ source devel/setup.bash
+  $ python -m my_package
+  $ nosetests
+
 A ROS package WILL NOT be provided, since there is no simple and clean way to turn a pure python package into a catkin package.
 If you want to depend on pyros-setup, you should use the rosdep pip dependency mechanism.
 
