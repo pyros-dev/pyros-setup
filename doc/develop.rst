@@ -10,15 +10,16 @@ Only using pyros from its pip package should be enough.
 
 Developing such interfacing code needs to be done carefully : 
 
-- pyros-setup needs to be fully functional as a pip package. dynamically discovering ROS dependencies, and providing them to python users.
+- pyros-setup needs to be fully functional as a pip package. dynamically discovering ROS environment and dependencies, and providing them to python users.
 => a pip package is provided
 
-- pyros-setup needs to be usable in ROS as a normal ros package so that ROS developers can also leverage it in their development.
-=> a ROS package is provided
+- pyros-setup needs to be usable in ROS as a normal ros package as much as possible, so that developing it along with ROS is as painless as possible.
+=> pyros-setup should be usable from source as a usual catkin package in a catkin workspace.
+=> pyros-setup pip package should be installable via rosdep, so that other packages can depend on it.
+It is currently not possible for a normal python package to fully integrate with catkin deb packages without heavy ROS specific modifications, so a deb package will not be provided.
+Instead, packages who want to depend on it, should use the rosdep pip dependency.
+Note : The mid-term consequences are still widely unknown...
 
-Both package should not conflict on a user system.
-The ROS package is used (if installed) when ROS is setup (setup.bash sourced).
-The pip package is used (if installed) when ROS is not setup (setup.bash not sourced).
 
 Development Environment Setup
 -----------------------------

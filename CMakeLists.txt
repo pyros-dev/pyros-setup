@@ -24,8 +24,8 @@ find_package(catkin REQUIRED COMPONENTS
 
 # installing requirements
 
-catkin_package()
-catkin_python_venv()
+#catkin_package()
+#catkin_python_venv()
 
 # We need to do the catkin python setup to create the workspace
 # before installing pip requirements
