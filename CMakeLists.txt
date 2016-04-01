@@ -14,10 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
     rosgraph
     roslaunch
     rostest
-
 )
-
-catkin_pip_setup()
 
 # We need to install the pip dependencies in the workspace being created
 catkin_pip_requirements(${CMAKE_CURRENT_SOURCE_DIR}/requirements.txt)

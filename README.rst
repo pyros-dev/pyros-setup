@@ -12,6 +12,31 @@ To install it::
 
   sudo pip install -i https://testpypi.python.org/pypi pyros_setup
 
+To run the self tests, using entry_points defined in setup.py::
+
+  pyros_setup
+
+OR using the python package directly::
+
+  python -m pyros_setup
+
+OR using nosetests specifically::
+
+  nosetests pyros_setup
+
+It can also be used from source inside a catkin workspace in the same way.
+The workspace act as a virtual environment (using https://github.com/asmodehn/catkin_pure_python).
+This is useful for development along with ROS packages::
+
+  $ catkin_make
+  $ source devel/setup.bash
+  $ python -m pyros_setup
+  $ pyros_setup
+  $ nosetests pyros_setup
+
+
+
+
 However it is also usable by catkin from source for ease of development and compatibility testing.
 
 Basically it allows you to do this::
@@ -29,23 +54,6 @@ Basically it allows you to do this::
       import rosgraph
       import rosnode
 
-This allows you to use your own package as a normal python package, with python workflow (example using virtualenvwrapper)::
-
-  $ mkvirtualenv my_package_venv --system-site-packages
-  (my_package_venv)$ pip install -r requirements.txt
-  (my_package_venv)$ python -m my_package
-  (my_package_venv)$ nosetests
-  (my_package_venv)$ deactivate
-  $
-
-OR using the python workflow from inside a catkin workspace::
-
-  $ source /opt/ros/indigo/setup.bash
-  $ cd existing_catkin_ws
-  $ catkin_make
-  $ source devel/setup.bash
-  $ python -m my_package
-  $ nosetests
 
 A ROS package WILL NOT be provided, since there is no simple and clean way to turn a pure python package into a catkin package.
 If you want to depend on pyros-setup, you should use the rosdep pip dependency mechanism.
