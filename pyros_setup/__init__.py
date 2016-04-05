@@ -8,12 +8,12 @@ import types
 
 import sys
 
-from ._setup import _PyrosSetup
+from ._setup import _PyrosSetup, deprecated
 
 
 delayed_import = _PyrosSetup.delayed_import
 delayed_import_auto = _PyrosSetup.delayed_import_auto
-delayed_import_config = _PyrosSetup.delayed_import_config
+delayed_import_new = _PyrosSetup.delayed_import_new
 
 
 #
@@ -28,9 +28,13 @@ def get_ros_home():
 
 
 __all__ = [
+    'config',  # we expose the config subpackage if other want to use it (pyros does)
+
+    'deprecated',
+
     'delayed_import',
     'delayed_import_auto',
-    'delayed_import_config',
+    'delayed_import_new',
 
     'get_master',
     'get_ros_home',

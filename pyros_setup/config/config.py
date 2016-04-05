@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    pyros-setup.config
-    ~~~~~~~~~~~~~~~~~~
+    pyros-setup.config.config
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Implements the configuration related objects.
     Inspired from flask project
@@ -13,10 +13,6 @@ import errno
 import six
 
 from .import_string import import_string
-
-#from werkzeug.utils import import_string
-#from ._compat import string_types, iteritems
-#from . import json
 
 
 class ConfigAttribute(object):
@@ -189,8 +185,6 @@ class Config(dict):
     def from_mapping(self, *mapping, **kwargs):
         """Updates the config like :meth:`update` ignoring items with non-upper
         keys.
-
-        .. versionadded:: 1.0
         """
         mappings = []
         if len(mapping) == 1:
@@ -252,3 +246,8 @@ class Config(dict):
 
     def __repr__(self):
         return '<%s %s>' % (self.__class__.__name__, dict.__repr__(self))
+
+__all__ = [
+    'Config',
+    'ConfigAttribute',
+]
