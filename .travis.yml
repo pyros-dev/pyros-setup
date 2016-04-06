@@ -1,7 +1,16 @@
 sudo: required
 dist: trusty
-language: generic
-install:
+# this will setup everything needed for our python environments
+language: python
+python:
+  - "2.7"
+# command to install dependencies
+install: "pip install -r requirements.txt"
+# command to run tests
+script: nosetests
+
+#this install all the ROS stuff
+before_install:
   - export CI_ROS_DISTRO=indigo
   - echo $CI_ROS_DISTRO
 # Add ROS repositories
@@ -14,11 +23,18 @@ install:
   - rosdep update
 # Use rosdep to install pyros-setup's dependencies
   - rosdep install --default-yes --from-paths ./ --rosdistro $CI_ROS_DISTRO
+
+# Installing pip dependencies in the provided virtualenv
+install:
+  - pip install -q -r requirements.txt
+  - pip install -q -e .
+
 script:
-# direct python tests with nose on source
-  - nosetests pyros_setup/tests
+# The main thing : python package tests
+  - python setup.py test
+
 #
-# full ROS setup, build and test
+# full ROS setup, build and test, to make sure it will still work for ROS development
 #
   - source /opt/ros/$CI_ROS_DISTRO/setup.bash
   - mkdir build
