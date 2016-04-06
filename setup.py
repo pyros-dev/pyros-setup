@@ -3,7 +3,7 @@
 from setuptools import setup
 
 setup(name='pyros_setup',
-    version='0.0.13',
+    version='0.1.0',
     description='Toolsuite for running ROS environments directly from python code, without any specific requirements outside of usual python',
     url='http://github.com/asmodehn/pyros-setup',
     author='AlexV',
@@ -25,7 +25,7 @@ setup(name='pyros_setup',
     ],
     test_suite="nose.collector",
     tests_require=[
-        #'pyros_test'  # this is required, but not installable by pip (it s a catkin deb package from ROS)
+        'nose>=1.3.7'
     ],
     zip_safe=False,  # TODO testing...
 )

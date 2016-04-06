@@ -1,6 +1,10 @@
 <package>
+  <!--
+   This file is mostly here to provide ros dependencies when this project is built with catkin
+   A normal pip package is provided for it, but it currently does not support being built as a ROS package.
+   -->
   <name>pyros_setup</name>
-  <version>0.0.12</version>
+  <version>0.1.0</version>
   <description>
   Toolsuite for running ROS environments directly from python code, without any specific requirements outside of usual python
   </description>
