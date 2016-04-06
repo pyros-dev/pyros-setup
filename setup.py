@@ -22,6 +22,8 @@ setup(name='pyros_setup',
     include_package_data=True,  # use MANIFEST.in during install.
     install_requires=[
         #'catkin_pkg',  # not needed here since this version should not look for package.xml
+        'six',
+        'importlib'
     ],
     test_suite="nose.collector",
     tests_require=[

@@ -6,13 +6,12 @@
     Implements the configuration related objects.
     Inspired from flask project
 """
+import importlib
 import json
 import os
 import types
 import errno
 import six
-
-from .import_string import import_string
 
 
 class ConfigAttribute(object):
@@ -154,7 +153,7 @@ class Config(dict):
         :param obj: an import name or object
         """
         if isinstance(obj, (str, unicode)):
-            obj = import_string(obj)
+            obj = importlib.import_module(obj)
         for key in dir(obj):
             if key.isupper():
                 self[key] = getattr(obj, key)

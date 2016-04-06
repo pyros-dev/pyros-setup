@@ -31,6 +31,31 @@ def teardown_function():
 
 
 @nose.tools.with_setup(setup_function, teardown_function)
+def test_rospy_imported_config():
+    rospy = None
+
+    # Careful this might mean the system installed one if you re not working in virtualenv
+    import pyros_setup
+    try:
+        import rospy  # this will fail unless
+    except ImportError:
+        # Proper New way
+        # TODO : make this work with module/import, instead of class/instantiation
+        pyros_setup.configurable_import(instance_relative_config=False)\
+            .configure('tests/testing.cfg')\
+            .activate()  # you do the setup as expected by ROS
+        import rospy
+
+    assert rospy is not None
+
+    try:
+        # we now have access to all imported content (directly or through redirection _PyrosSetup class)
+        assert hasattr(pyros_setup, 'configurable_import')
+    except ImportError:
+        assert False
+
+
+@nose.tools.with_setup(setup_function, teardown_function)
 def test_rospy_imported():
     rospy = None
 
@@ -74,31 +99,6 @@ def test_rospy_imported_auto():
     try:
         # we now have access to all imported content (directly or through redirection _PyrosSetup class)
         assert hasattr(pyros_setup, 'delayed_import_auto')
-    except ImportError:
-        assert False
-
-
-@nose.tools.with_setup(setup_function, teardown_function)
-def test_rospy_imported_config():
-    rospy = None
-
-    # Careful this might mean the system installed one if you re not working in virtualenv
-    import pyros_setup
-    try:
-        import rospy  # this will fail unless
-    except ImportError:
-        # Proper New way
-        # TODO : make this work with module/import, instead of class/instantiation
-        pyros_setup.delayed_import_config(config_file='testing.cfg',
-                                          import_name='test_setup',
-                                          instance_relative_config=False).activate()  # you do the setup as expected by ROS
-        import rospy
-
-    assert rospy is not None
-
-    try:
-        # we now have access to all imported content (directly or through redirection _PyrosSetup class)
-        assert hasattr(pyros_setup, 'delayed_import_config')
     except ImportError:
         assert False
 
