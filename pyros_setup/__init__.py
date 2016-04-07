@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
+from ._version import __version__
+
 import logging
 import os
 import pkgutil
@@ -116,6 +118,7 @@ def get_ros_home():
 
 
 __all__ = [
+    '__version__',
     'ConfigHandler',  # we expose the config subpackage if other want to use it (pyros does)
 
     'deprecated',

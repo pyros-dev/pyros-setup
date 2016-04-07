@@ -2,6 +2,9 @@
 # using setuptools : http://pythonhosted.org/setuptools/
 from setuptools import setup
 
+with open('pyros_setup/_version.py') as vf:
+    exec(vf.read())
+
 setup(name='pyros_setup',
     version='0.1.0',
     description='Toolsuite for running ROS environments directly from python code, without any specific requirements outside of usual python',
