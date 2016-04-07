@@ -5,7 +5,7 @@ before_install:
 # Install our ROS stuff
   - bash rosutils/install_ros.sh indigo ./
 # Install our python dependencies
-  - sudo apt-get install python2.7 virtualenvwrapper
+  - sudo apt-get install python2.7 virtualenvwrapper -y
 
 install:
   # Making a virtualenv for python 2.7 and installing pip dependencies and package in it
