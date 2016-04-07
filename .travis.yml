@@ -2,36 +2,29 @@ sudo: required
 dist: trusty
 language: generic
 
+# TODO : we can combine python language and test multiple python version in matrix here (2 and 3 matching platform version)
+
 env:
-  - WORKON_HOME="/opt/_virtual_envs/"
+  # This will trigger a usual ros catkin build to make sure it still works
+  - PURE_PYTHON=false
+  # This will trigger python build
+  - PURE_PYTHON=true
+
+# This is the same for all builds
 before_install:
-# Install our ROS stuff
+  # Install ROS. We always need it on system.
   - bash rosutils/install_ros.sh indigo ./
-# Install our python dependencies
+  # Install python 2.7
   - sudo apt-get install python2.7 virtualenvwrapper -y
   - source "/usr/share/virtualenvwrapper/virtualenvwrapper.sh"
 
 install:
-# Making a virtualenv for python 2.7 and installing pip dependencies and package in it
-  - mkvirtualenv --system-site-packages python_2.7_ros
-  - workon python_2.7_ros
-  - pip install -q -r requirements.txt
-  - pip install -q .
-  - deactivate
-
-# Make sure build works for ROS
-  - bash rosutils/build_devel.sh indigo
-  - bash rosutils/build_install.sh
+  - if [ "$PURE_PYTHON" == "true" ]; then (mkvirtualenv --system-site-packages -r requirements.txt -i . -q python_2.7_ros); fi
+  - if [ "$PURE_PYTHON" == "false" ]; then (bash rosutils/build_devel.sh indigo && bash rosutils/build_install.sh); fi
 
 script:
-# The main thing : python package tests in virtualenv
-  - workon python_2.7_ros
-  - python setup.py test
-  - deactivate
-# Make sure we get devel version and run tests on it
-  - bash rosutils/test_devel.sh
-# Now using installed version and testing
-  - bash rosutils/test_install.sh
+  - if [ "$PURE_PYTHON" == "true" ]; then (workon python_2.7_ros && python setup.py test); fi
+  - if [ "$PURE_PYTHON" == "false" ]; then (bash rosutils/test_devel.sh && bash rosutils/test_install.sh); fi
 
 notifications:
   email: false
