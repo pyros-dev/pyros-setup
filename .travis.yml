@@ -1,14 +1,19 @@
 sudo: required
 dist: trusty
+language: generic
 
+env:
+  - DEBIAN_FRONTEND=noninteractive
+  - WORKON_HOME="/opt/_virtual_envs/"
 before_install:
 # Install our ROS stuff
   - bash rosutils/install_ros.sh indigo ./
 # Install our python dependencies
   - sudo apt-get install python2.7 virtualenvwrapper -y
+  - source "/usr/bin/virtualenvwrapper.sh"
 
 install:
-  # Making a virtualenv for python 2.7 and installing pip dependencies and package in it
+# Making a virtualenv for python 2.7 and installing pip dependencies and package in it
   - mkvirtualenv --system-site-packages python_2.7_ros
   - workon python_2.7_ros
   - pip install -q -r requirements.txt
