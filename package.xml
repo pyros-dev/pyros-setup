@@ -1,4 +1,5 @@
-<package>
+<?xml version="1.0"?>
+<package format="2">
   <name>pyros_setup</name>
   <version>0.0.12</version>
   <description>
@@ -13,27 +14,22 @@
   <author email="asmodehn@gmail.com">AlexV</author>
   <maintainer email="asmodehn@gmail.com">AlexV</maintainer>
 
-  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend version_gte="0.6.18">catkin</buildtool_depend>
 
-  <build_depend>roslint</build_depend>
+  <depend version_gte="1.11.19">rospy</depend>
+  <depend version_gte="1.11.19">rosgraph</depend>
+  <depend version_gte="1.11.19">roslaunch</depend>
+  <depend version_gte="1.11.19">rostest</depend>
 
-  <build_depend>rospy</build_depend>
-  <build_depend>rosgraph</build_depend>
-  <build_depend>roslaunch</build_depend>
-  <build_depend>rostest</build_depend>
-
-  <run_depend>rospy</run_depend>
-  <run_depend>rosgraph</run_depend>
-  <run_depend>roslaunch</run_depend>
-  <run_depend>rostest</run_depend>
+  <build_depend version_gte="0.10.0">roslint</build_depend>
 
   <!-- these dependencies are only for testing -->
-  <test_depend>rosunit</test_depend>
-  <test_depend>rosnode</test_depend>
-  <test_depend>pyros_test</test_depend>
+  <test_depend version_gte="1.11.12">rosunit</test_depend>
+  <test_depend version_gte="1.11.19">rosnode</test_depend>
+  <test_depend version_gte="0.0.3">pyros_test</test_depend>
 
   <!-- documentation dependencies -->
-  <build_depend>python-catkin-pkg</build_depend>
+  <doc_depend version_gte="0.2.10">python-catkin-pkg</doc_depend>
 
   <export>
     <rosdoc config="rosdoc.yaml" />
