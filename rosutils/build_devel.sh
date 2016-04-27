@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -x
 CI_ROS_DISTRO=$1
 source /opt/ros/$CI_ROS_DISTRO/setup.bash
 mkdir build
