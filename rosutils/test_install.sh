@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-set -x
 cd build
 source install/setup.bash
+
+echo $PYTHONPATH
 nosetests pyros_setup.tests

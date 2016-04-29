@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
-set -x
 cd build
+
+echo $PYTHONPATH
 make -j1 install
