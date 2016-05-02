@@ -18,7 +18,7 @@
   <author email="asmodehn@gmail.com">AlexV</author>
   <maintainer email="asmodehn@gmail.com">AlexV</maintainer>
 
-  <buildtool_depend version_gte="0.6.18">cmake</buildtool_depend>
+  <buildtool_depend version_gte="0.6.18">catkin</buildtool_depend>
   <build_depend version_gte="0.0.5">catkin_pure_python</build_depend>
 
   <depend version_gte="1.11.19">rospy</depend>
