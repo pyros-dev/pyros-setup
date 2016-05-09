@@ -1,7 +1,7 @@
 Pyros-setup
 ===========
 
-.. image:: https://travis-ci.org/asmodehn/pyros-setup.svg?branch=indigo
+.. image:: https://travis-ci.org/asmodehn/pyros-setup.svg?branch=master
     :target: https://travis-ci.org/asmodehn/pyros-setup
 
 Toolsuite for running ROS environments directly from python code, without any specific requirements outside of usual python.
