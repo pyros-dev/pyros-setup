@@ -12,5 +12,3 @@ sudo apt-get update
 sudo apt-get install python-rosdep -y
 sudo `which rosdep` init
 rosdep update
-# Use rosdep to install current package dependencies
-rosdep install --default-yes --from-paths $PKG_PATH --rosdistro $CI_ROS_DISTRO
