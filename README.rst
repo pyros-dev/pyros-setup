@@ -49,9 +49,14 @@ Basically it allows you to do this::
       import rosgraph
       import rosnode
 
+With mysetup.cfg in pyros-setup instance folder containing::
+
+  import os
+  WORKSPACES=[os.path.join('home', 'user', 'ROS', 'workspace', 'devel')]
+  DISTRO='indigo'
 
 If you want your package to depend on pyros-setup, you can choose to :
- - use python dependency mechanism (via pip requirements or setup.py install_requires, using the pip package).
+ - use python dependency mechanism (via setup.py install_requires, using the pip package).
  - use ros dependency mechanism (via rosdep, using the ROS package or the pip package)
 
-Note: If you know any easier / less tricky / more pythonic way of handling dynamic imports, let me know!
+Note: If you know any easier / less tricky / more pythonic way of handling configurable dynamic imports, let me know!
