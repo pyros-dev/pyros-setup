@@ -2,6 +2,9 @@
 # using setuptools : http://pythonhosted.org/setuptools/
 from setuptools import setup
 
+with open('pyros_setup/_version.py') as vf:
+    exec(vf.read())
+
 setup(name='pyros_setup',
     version='0.1.0',
     description='Toolsuite for running ROS environments directly from python code, without any specific requirements outside of usual python',
@@ -11,6 +14,7 @@ setup(name='pyros_setup',
     license='BSD',
     packages=[
         'pyros_setup',
+        'pyros_setup.config',
         'pyros_setup.tests',
     ],
     entry_points={
@@ -22,6 +26,8 @@ setup(name='pyros_setup',
     include_package_data=True,  # use MANIFEST.in during install.
     install_requires=[
         #'catkin_pkg',  # not needed here since this version should not look for package.xml
+        'six',
+        'importlib'
     ],
     test_suite="nose.collector",
     tests_require=[
