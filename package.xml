@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 <package format="2">
+  <!--
+   This file is mostly here to provide ros dependencies when this project is built with catkin
+   A normal pip package is provided for it, but it currently does not support being built as a ROS package.
+   -->
   <name>pyros_setup</name>
-  <version>0.0.12</version>
+  <version>0.1.0</version>
   <description>
   Toolsuite for running ROS environments directly from python code, without any specific requirements outside of usual python
   </description>
@@ -15,12 +19,14 @@
   <maintainer email="asmodehn@gmail.com">AlexV</maintainer>
 
   <buildtool_depend version_gte="0.6.18">catkin</buildtool_depend>
+  <build_depend version_gte="0.0.5">catkin_pure_python</build_depend>
 
   <depend version_gte="1.11.19">rospy</depend>
   <depend version_gte="1.11.19">rosgraph</depend>
   <depend version_gte="1.11.19">roslaunch</depend>
   <depend version_gte="1.11.19">rostest</depend>
 
+  <!-- These should be installed along with catkin and minimal ROS system -->
   <build_depend version_gte="0.10.0">roslint</build_depend>
 
   <!-- these dependencies are only for testing -->

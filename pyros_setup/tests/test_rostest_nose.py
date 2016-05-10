@@ -4,7 +4,9 @@ from __future__ import absolute_import
 # Adding current package repository in order to be able to import it (if started with python cli)
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+current_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+# if not current_path in sys.path:  # this gets in the way with ROs emulated setup
+sys.path.insert(1, current_path)  # sys.path[0] is always current path as per python spec
 import time
 
 # importing current package
