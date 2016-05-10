@@ -10,7 +10,7 @@ This is a pure python package, to be installed in your system, in order to allow
 
 To install it::
 
-  sudo pip install -i https://testpypi.python.org/pypi pyros_setup
+  pip install pyros_setup
 
 To run the self tests, using entry_points defined in setup.py::
 
@@ -34,28 +34,24 @@ This is useful for development along with ROS packages::
   $ pyros_setup
   $ nosetests pyros_setup
 
-
-
-
-However it is also usable by catkin from source for ease of development and compatibility testing.
-
 Basically it allows you to do this::
 
+  import pyros_setup
   try:
       import rospy
       import roslaunch
       import rosgraph
       import rosnode
   except ImportError:  # if ROS environment is not setup, we emulate it.
-      import pyros_setup
-      pyros_setup = pyros_setup.delayed_import_auto(base_path=os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', '..', '..'))
+      pyros_setup.configurable_import().configure('mysetup.cfg').activate()  # this will use mysetup.cfg from pyros-setup instance folder
       import rospy
       import roslaunch
       import rosgraph
       import rosnode
 
 
-A ROS package WILL NOT be provided, since there is no simple and clean way to turn a pure python package into a catkin package.
-If you want to depend on pyros-setup, you should use the rosdep pip dependency mechanism.
+If you want your package to depend on pyros-setup, you can choose to :
+ - use python dependency mechanism (via pip requirements or setup.py install_requires, using the pip package).
+ - use ros dependency mechanism (via rosdep, using the ROS package or the pip package)
 
 Note: If you know any easier / less tricky / more pythonic way of handling dynamic imports, let me know!

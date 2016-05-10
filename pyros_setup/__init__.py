@@ -43,10 +43,14 @@ class _PyrosSetup(ConfigImport):
 
     def _attempt_import_fix(self):
         from .ros_setup import ROS_emulate_setup
-        # we want this to expect in case of bad config, because default_config has to have these fields.
+        # we want this to except in case of bad config, because default_config has to have these fields.
         ROS_emulate_setup(self.config['DISTRO'], *self.config['WORKSPACES'])
 
     def activate(self):
+        """
+        Activate import relay (via setting sys.modules[])
+        :return: self
+        """
         super(_PyrosSetup, self).activate()
 
         # defining shortcuts after successful import
@@ -54,7 +58,6 @@ class _PyrosSetup(ConfigImport):
         self.get_ros_home = self.ros_utils.get_ros_home
 
         return self
-
 
     # encapsulating local imports to delay them until ROS setup is done
     @classmethod
@@ -94,6 +97,14 @@ class _PyrosSetup(ConfigImport):
 
     @classmethod
     def configurable_import(cls, instance_path=None, instance_relative_config=True, root_path=None):
+        """
+        Configure an import relay, using a configuration file (found in the instance or root path).
+        This is designed after Flask instance configuration mechanism http://flask.pocoo.org/docs/0.10/config/#instance-folders
+        :param instance_path: path to the instance folder. defaults to a sensible 'instance' location (refer to Flask doc)
+        :param instance_relative_config: whether the configuration file is in the instance folder (or the root_path)
+        :param root_path: path to the application's folder
+        :return:
+        """
         # we return a relay of imported names, accessible the same way a direct import would be.
         module_redirect = cls(
             instance_path=instance_path,
@@ -105,6 +116,7 @@ class _PyrosSetup(ConfigImport):
 delayed_import = _PyrosSetup.delayed_import
 delayed_import_auto = _PyrosSetup.delayed_import_auto
 configurable_import = _PyrosSetup.configurable_import
+
 
 #
 #  Until these are redefined by pyros_setup configuration, they are available with default configuration
