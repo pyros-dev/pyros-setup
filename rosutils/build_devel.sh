@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 
 CI_ROS_DISTRO=$1
-PKG_PATH=$2
-
-# Use rosdep to install current package dependencies
-rosdep install --default-yes --from-paths $PKG_PATH --rosdistro $CI_ROS_DISTRO
-
 source /opt/ros/$CI_ROS_DISTRO/setup.bash
 mkdir build
 cd build
