@@ -8,6 +8,9 @@ Toolsuite for running ROS environments directly from python code, without any sp
 
 This is a pure python package, to be installed in your system, in order to allow easy ROS access from your python environment.
 
+HowTo install
+^^^^^^^^^^^^^
+
 To install it::
 
   pip install pyros_setup
@@ -34,6 +37,10 @@ This is useful for development along with ROS packages::
   $ pyros_setup
   $ nosetests pyros_setup
 
+
+HowTo code
+^^^^^^^^^^
+
 Basically it allows you to do this::
 
   import pyros_setup
@@ -55,8 +62,18 @@ With mysetup.cfg in pyros-setup instance folder containing::
   WORKSPACES=[os.path.join('home', 'user', 'ROS', 'workspace', 'devel')]
   DISTRO='indigo'
 
-If you want your package to depend on pyros-setup, you can choose to :
- - use python dependency mechanism (via setup.py install_requires, using the pip package).
- - use ros dependency mechanism (via rosdep, using the ROS package or the pip package)
 
 Note: If you know any easier / less tricky / more pythonic way of handling configurable dynamic imports, let me know!
+
+HowTo deploy
+^^^^^^^^^^^^
+
+If you want to use pyros-setup, you should use the pip package, since the whole point is to provide access to ROS from pure python environment.
+This is now possible thanks to [catkin_pure_python](https://github.com/asmodehn/catkin_pure_python)
+
+For simpler pyros-setup development, and for use from an installed ROS package, a pyros-setup ROS package is currently provided.
+But this is only temporary, until a pure python ubuntu deb package can be provided.
+
+Roadmap :
+
+- [ ] A launchpad project to generate a ubuntu package, to be able to use ROS packages directly, without any extra shell setup.
