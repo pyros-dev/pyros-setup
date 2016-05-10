@@ -13,14 +13,14 @@ env:
 # This is the same for all builds
 before_install:
   # Install ROS. We always need it on system.
-  - bash rosutils/install_ros.sh indigo ./
+  - bash rosutils/install_ros.sh
   # Install python 2.7
   - sudo apt-get install python2.7 virtualenvwrapper -y
   - source "/usr/share/virtualenvwrapper/virtualenvwrapper.sh"
 
 install:
   - if [ "$PURE_PYTHON" == "true" ]; then (mkvirtualenv --system-site-packages -r requirements.txt -i . -q python_2.7_ros); fi
-  - if [ "$PURE_PYTHON" == "false" ]; then (bash rosutils/build_devel.sh indigo && bash rosutils/build_install.sh); fi
+  - if [ "$PURE_PYTHON" == "false" ]; then (bash rosutils/build_devel.sh indigo ./ && bash rosutils/build_install.sh); fi
 
 script:
   - if [ "$PURE_PYTHON" == "true" ]; then (workon python_2.7_ros && python setup.py test); fi
