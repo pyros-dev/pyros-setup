@@ -42,6 +42,7 @@ class _PyrosSetup(ConfigImport):
                                           default_config=self._default_config)
 
     def _attempt_import_fix(self):
+        logging.warning("Error detected while importing ROS python modules. Attempting fix via ROS setup emulation...")
         from .ros_setup import ROS_emulate_setup
         # we want this to except in case of bad config, because default_config has to have these fields.
         ROS_emulate_setup(self.config['DISTRO'], *self.config['WORKSPACES'])

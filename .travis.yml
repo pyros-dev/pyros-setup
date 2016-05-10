@@ -13,7 +13,9 @@ env:
 # This is the same for all builds
 before_install:
   # Install ROS. We always need it on system.
-  - bash rosutils/install_ros.sh indigo ./
+  - bash rosutils/install_ros.sh
+  # Install package ROS dependencies (needed until we can package a standard python deb for pyros-setup. see https://github.com/asmodehn/pyros-setup/issues/16)
+  - rosdep install --default-yes --from-paths ./ --rosdistro indigo
   # Install python 2.7
   - sudo apt-get install python2.7 virtualenvwrapper -y
   - source "/usr/share/virtualenvwrapper/virtualenvwrapper.sh"

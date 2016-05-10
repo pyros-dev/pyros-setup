@@ -7,12 +7,12 @@ import os
 import multiprocessing
 import time
 
-#Note : ROS setup must be done before importing this ( by calling ros_setup.ROS_emulate_setup() )
+# Note : ROS setup must be done before importing this ( by calling ros_setup.ROS_emulate_setup() )
 import rosgraph
 import roslaunch
 
 
-def get_master(spawn = True):
+def get_master(spawn=True):
     """
     Returns an instance of Master to access it via its API
     If needed starts roscore.
