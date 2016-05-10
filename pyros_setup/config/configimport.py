@@ -87,12 +87,21 @@ class ConfigImport(types.ModuleType):
         except ImportError:
             # fix because it seems we need it
             self._fix_imports()
-            # Try again and let it break explicitely
+            # Try again and be explicit when it breaks
             for n, m in six.iteritems(self.relay_import_dict):
-                if isinstance(m, tuple):
-                    symbols[n] = importlib.import_module(m[0], m[1])
-                else:
-                    symbols[n] = importlib.import_module(m)
+                try:
+                    if isinstance(m, tuple):
+                        symbols[n] = importlib.import_module(m[0], m[1])
+                    else:
+                        symbols[n] = importlib.import_module(m)
+                except ImportError as ie:
+                    logging.error("importlib.import_module{m} FAILED : {msg}".format(
+                        m=m if isinstance(m, tuple) else "(" + m + ")",  # just to get the correct code in log output
+                        msg=ie.message)
+                    )
+                    mod = ie.message.split()[-1]
+                    logging.error("Make sure you have installed the ros-<distro>-{mod} package".format(mod=mod))
+                    raise
 
         for n in symbols.keys():
             # establishing internal relays:
