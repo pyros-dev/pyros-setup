@@ -74,6 +74,14 @@ This is now possible thanks to [catkin_pure_python](https://github.com/asmodehn/
 For simpler pyros-setup development, and for use from an installed ROS package, a pyros-setup ROS package is currently provided.
 But this is only temporary, until a pure python ubuntu deb package can be provided.
 
-Roadmap :
+Remarks
+^^^^^^^
 
-- [ ] A launchpad project to generate a ubuntu package, to be able to use ROS packages directly, without any extra shell setup.
+Although it would technically be possible to build a ROS package from this source, this will NOT be done.
+The catkin build system is only here to help having pyros-setup in a source workspace while developing on it.
+When using ROS directly this package is not needed, and having it installed among ROS packages would cause much confusion when importing packages.
+
+Roadmap
+^^^^^^^
+
+- [ ] A launchpad project to generate a ubuntu deb package, to be able to have pyros-setup as a deb dependency from other ROS/python packages (pyros, etc.).
