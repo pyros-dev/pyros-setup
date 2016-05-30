@@ -34,5 +34,7 @@ fi
 #uploading package and pushing tags
 python setup.py sdist upload -r $1
 
+# TODO : pythonsetup.py publish is probably more clear : http://www.pydanny.com/python-dot-py-tricks.html
+
 #TODO : documentation release
 
