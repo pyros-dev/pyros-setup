@@ -11,7 +11,7 @@ import types
 import sys
 
 from .utils import deprecated
-from .config import ConfigImport, ConfigHandler
+from pyros_config import ConfigImport, ConfigHandler
 
 
 # class to allow delayed conditional import, with behavior based on configuration.

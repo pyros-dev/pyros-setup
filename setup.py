@@ -14,7 +14,6 @@ setup(name='pyros_setup',
     license='BSD',
     packages=[
         'pyros_setup',
-        'pyros_setup.config',
         'pyros_setup.tests',
     ],
     entry_points={
@@ -27,7 +26,8 @@ setup(name='pyros_setup',
     install_requires=[
         #'catkin_pkg',  # not needed here since this version should not look for package.xml
         'six',
-        'importlib'
+        'importlib',
+        'pyros_config>=0.1.0'
     ],
     test_suite="nose.collector",
     tests_require=[
