@@ -29,10 +29,8 @@ setup(name='pyros_setup',
         'importlib',
         'pyros_config>=0.1.0'
     ],
-    test_suite="nose.collector",
-    tests_require=[
-        'nose>=1.3.7'
-    ],
+    setup_requires=['pytest-runner'],
+    tests_require=['pytest'],
     zip_safe=False,  # TODO testing...
 )
 
