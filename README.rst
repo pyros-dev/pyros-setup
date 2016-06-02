@@ -28,7 +28,7 @@ OR using nosetests specifically::
   nosetests pyros_setup
 
 It can also be used from source inside a catkin workspace in the same way.
-The workspace act as a virtual environment (using https://github.com/asmodehn/catkin_pure_python).
+The workspace act as a virtual environment (using https://github.com/asmodehn/catkin_pip).
 This is useful for development along with ROS packages::
 
   $ catkin_make
@@ -69,7 +69,7 @@ HowTo deploy
 ^^^^^^^^^^^^
 
 If you want to use pyros-setup, you should use the pip package, since the whole point is to provide access to ROS from pure python environment.
-This is now possible thanks to [catkin_pure_python](https://github.com/asmodehn/catkin_pure_python)
+This is now possible thanks to [catkin_pip](https://github.com/asmodehn/catkin_pip)
 
 For simpler pyros-setup development, and for use from an installed ROS package, a pyros-setup ROS package is currently provided.
 But this is only temporary, until a pure python ubuntu deb package can be provided.

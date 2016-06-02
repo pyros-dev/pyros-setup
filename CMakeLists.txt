@@ -9,7 +9,7 @@ project(pyros_setup)
 # Minimal Python module setup - catkin is assumed preinstalled along with ROS
 # This assume catkin is installed along with a minimal ROS system.
 find_package(catkin REQUIRED COMPONENTS
-    catkin_pure_python
+    catkin_pip
     rospy
     rosgraph
     roslaunch
