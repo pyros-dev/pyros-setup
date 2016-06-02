@@ -6,7 +6,7 @@ with open('pyros_setup/_version.py') as vf:
     exec(vf.read())
 
 setup(name='pyros_setup',
-    version='0.1.0',
+    version=__version__,
     description='Toolsuite for running ROS environments directly from python code, without any specific requirements outside of usual python',
     url='http://github.com/asmodehn/pyros-setup',
     author='AlexV',
@@ -24,9 +24,8 @@ setup(name='pyros_setup',
     # this is better than using package data ( since behavior is a bit different from distutils... )
     include_package_data=True,  # use MANIFEST.in during install.
     install_requires=[
-        #'catkin_pkg',  # not needed here since this version should not look for package.xml
         'six',
-        'importlib',
+        #'importlib',  # if not needed if python >2.7 or python >3.0
         'pyros_config>=0.1.0'
     ],
     setup_requires=['pytest-runner'],

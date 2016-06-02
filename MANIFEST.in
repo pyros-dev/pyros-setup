@@ -1,2 +1,2 @@
 include requirements.txt
-include package.xml
+include tox.ini
