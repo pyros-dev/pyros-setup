@@ -67,15 +67,21 @@ def ROS_setup_ros_package_path(workspace):
 
     # prepending current path for ros package discovery
     if os.path.basename(workspace) == 'devel':  # special case of devel -> we can find src
-        logging.warn("Appending path {workspace_src} to ROS_PACKAGE_PATH".format(workspace_src=os.path.join(os.path.dirname(workspace), 'src')))
-        os.environ['ROS_PACKAGE_PATH'] = os.path.join(os.path.dirname(workspace), 'src') + ':' \
-                                         + os.environ['ROS_PACKAGE_PATH']
+        src_path = os.path.join(os.path.dirname(workspace), 'src')
+        if src_path is not None and os.path.exists(src_path):
+            logging.warn("Appending path {workspace_src} to ROS_PACKAGE_PATH".format(workspace_src=src_path))
+            os.environ['ROS_PACKAGE_PATH'] = src_path + ':' + os.environ['ROS_PACKAGE_PATH']
+
     else:  # TODO : this is a quick fix. investigate this case more
-        logging.warn("Appending path {workspace_stacks} to ROS_PACKAGE_PATH".format(workspace_stacks=os.path.join(workspace, 'stacks')))
-        logging.warn("Appending path {workspace_share} to ROS_PACKAGE_PATH".format(workspace_share=os.path.join(workspace, 'share')))
-        os.environ['ROS_PACKAGE_PATH'] = os.path.join(workspace, 'share') + ':' \
-                                         + os.path.join(workspace, 'stacks') + ':' \
-                                         + os.environ['ROS_PACKAGE_PATH']
+        stacks_path = os.path.join(os.path.dirname(workspace), 'stacks')
+        if stacks_path is not None and os.path.exists(stacks_path):
+            logging.warn("Appending path {workspace_stacks} to ROS_PACKAGE_PATH".format(workspace_stacks=stacks_path))
+            os.environ['ROS_PACKAGE_PATH'] = stacks_path + ':' + os.environ['ROS_PACKAGE_PATH']
+
+        share_path = os.path.join(os.path.dirname(workspace), 'share')
+        if share_path is not None and os.path.exists(share_path):
+            logging.warn("Appending path {workspace_share} to ROS_PACKAGE_PATH".format(workspace_share=share_path))
+            os.environ['ROS_PACKAGE_PATH'] = share_path + ':' + os.environ['ROS_PACKAGE_PATH']
 
 
 
