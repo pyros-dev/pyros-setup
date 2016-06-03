@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 from __future__ import absolute_import
 
-# Adding current package repository in order to be able to import it
-# if started with python cli, since relative import from non-package are forbidden
 import sys
 import os
 
@@ -28,6 +26,8 @@ def setup():
     sys.path.insert(1, current_path)  # sys.path[0] is always current path as per python spec
     # FIXME : this stack up at every test (to avoid the previous ROs emulated setup to find a different pyros_setup
     # TODO We need a better way...
+    # also since we change to py.test hte self import thingy is not really what we want to do
+    # We should use python setup.py develop instead.
 
 
 def test_rospy_imported_config(setup, cmdopt):
@@ -99,9 +99,3 @@ def test_rospy_imported_auto(setup):
     except ImportError:
         assert False
 
-
-# TODO : fix this, we need each test to run in an isolated environment(=> forced multiprocess)?
-# currently you need to manually comment all test you do not want to run...
-if __name__ == '__main__':
-    # forcing nose run from python call
-    pytest.runmodule()
