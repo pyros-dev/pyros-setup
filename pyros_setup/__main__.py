@@ -1,24 +1,11 @@
+from __future__ import absolute_import
+from __future__ import print_function
+
 import sys
-import os
-import nose
-import pkg_resources
-
-_path = pkg_resources.resource_filename("pyros_setup", "__main__.py")
-_parent = os.path.normpath(os.path.join(os.path.dirname(_path), ".."))
-
-
-def nosemain():
-    args = sys.argv + [opt for opt in
-   ("--exe",
-    "--all-modules",
-    "--traverse-namespace",
-    "--verbosity=2",
-    "--with-id",
-    "--with-xunit",
-    "--where=%s" % _parent)
-    if opt not in sys.argv
-    ]
-    nose.run(argv=args)
+import pytest
 
 if __name__ == "__main__":
-    nosemain()
+
+    if len(sys.argv) > 1 and sys.argv[1] == '--pytest':
+        sys.exit(pytest.main(sys.argv[2:]))
+
