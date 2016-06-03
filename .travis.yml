@@ -17,7 +17,8 @@ env:
   - DISTRO=indigo
   - DISTRO=jade
 
-# This is the same for all builds
+# We need to get a ROS distro to be able to test pyros-setup
+# from different virtualenv using site-packages.
 before_install:
   # Install ROS. We always need it on system.
   - bash rosutils/install_ros.sh
@@ -28,7 +29,10 @@ install:
   - pip install tox tox-travis
 
 script:
-  - tox
+  # Tox doesn't work currently (doesnt include dist-packages in its venvs path for some reason...)
+  # - tox
+  - python setup.py develop
+  - py.test pyros_setup --distro $DISTRO
 
 notifications:
   email: false

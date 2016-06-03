@@ -2,5 +2,4 @@
 --extra-index-url https://testpypi.python.org/simple/
 
 pytest>=2.5.1
-tox>=1.7
 
