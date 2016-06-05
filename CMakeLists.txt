@@ -27,18 +27,9 @@ catkin_package()
 if (CATKIN_ENABLE_TESTING)
 
     ############
-    # Nose Tests
+    # Tests
     ############
 
-    catkin_add_nosetests(pyros_setup/tests)
-    # this test needs to be executable for rostest, so we need to add it specifically for nose
-    catkin_add_nosetests(pyros_setup/tests/test_rostest_nose.py)
-
-    ###########
-    # ROS Tests
-    ###########
-
-    find_package(rostest REQUIRED)
-    add_rostest(pyros_setup/tests/test_rostest_nose.test)
+    catkin_add_pytests(pyros_setup/tests)
 
 endif()
