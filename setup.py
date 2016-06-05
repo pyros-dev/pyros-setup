@@ -18,7 +18,7 @@ setup(name='pyros_setup',
     ],
     entry_points={
         'console_scripts': [
-            'pyros_setup = pyros_setup.__main__:nosemain'
+            'pyros_setup = pyros_setup.__main__:main'
         ]
     },
     # this is better than using package data ( since behavior is a bit different from distutils... )
@@ -26,7 +26,7 @@ setup(name='pyros_setup',
     install_requires=[
         'six',
         #'importlib',  # if not needed if python >2.7 or python >3.0
-        'pyros_config>=0.1.0'
+        'pyros_config>=0.1.2'
     ],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],

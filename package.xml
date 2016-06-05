@@ -27,12 +27,12 @@
   <depend version_gte="1.11.19">rostest</depend>
 
   <!-- these dependencies are provided via catkin/ROS only -->
-  <depend version_gte="0.1.0">pyros_utils</depend>
+  <depend version_gte="0.1.2">pyros_utils</depend>
 
   <!-- These dependencies are provided via pip, and are useless here
        since this package should not be installed with catkin
        -->
-  <!-- <depend version_gte="0.1.0">pyros_config</depend> -->
+  <!-- <depend version_gte="0.1.2">pyros_config</depend> -->
 
   <!-- These should be installed along with catkin and minimal ROS system -->
   <build_depend version_gte="0.10.0">roslint</build_depend>
