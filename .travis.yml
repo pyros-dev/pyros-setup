@@ -26,7 +26,8 @@ before_install:
   - rosdep install --default-yes --from-paths ./ --rosdistro $DISTRO
 
 install:
-  - pip install tox tox-travis
+  # we need recent tox
+  - pip install tox tox-travis --upgrade
 
 script:
   # Tox doesn't work currently (doesnt include dist-packages in its venvs path for some reason...)
