@@ -3,4 +3,4 @@ cd build
 source install/setup.bash
 
 echo $PYTHONPATH
-nosetests pyros_setup.tests
+py.test --pyargs pyros_setup

@@ -25,11 +25,14 @@ setup(name='pyros_setup',
     include_package_data=True,  # use MANIFEST.in during install.
     install_requires=[
         'six',
-        #'importlib',  # if not needed if python >2.7 or python >3.0
-        'pyros_config>=0.1.2'
+        'pyros_config>=0.1.2',
+        'pytest>=2.5.1'
     ],
-    setup_requires=['pytest-runner'],
-    tests_require=['pytest'],
+    setup_requires=[
+        'pytest-runner'
+    ],
+    tests_require=[
+    ],
     zip_safe=False,  # TODO testing...
 )
 
