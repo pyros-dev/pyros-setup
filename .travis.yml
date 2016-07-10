@@ -28,10 +28,10 @@ before_install:
   - rosdep install --default-yes --from-paths ./ --rosdistro $DISTRO
 
 install:
-  - if [ -z ${PYTHON+undef} ]; then (bash rosutils/build_devel.sh $DISTRO && bash rosutils/build_install.sh); else (mkvirtualenv --system-site-packages -r requirements.txt -i . -q python_${PYTHON}_ros); fi
+  - if [ -z ${PYTHON+undef} ]; then (bash rosutils/build_devel.sh $DISTRO && bash rosutils/build_install.sh); else (mkvirtualenv --system-site-packages -i . -q python_${PYTHON}_ros); fi
 
 script:
-  - if [ -z ${PYTHON+undef} ]; then (bash rosutils/test_devel.sh && bash rosutils/test_install.sh); else (workon python_${PYTHON}_ros && python setup.py develop && py.test --pyargs pyros_setup); fi
+  - if [ -z ${PYTHON+undef} ]; then (bash rosutils/test_devel.sh && bash rosutils/test_install.sh); else (workon python_${PYTHON}_ros && py.test --pyargs pyros_setup --distro ${DISTRO}); fi
 
 notifications:
   email: false
