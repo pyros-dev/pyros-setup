@@ -10,12 +10,18 @@ env:
   # This will check any ROS distro with any python interpreter
   # supported on this OS
   - CI_ROS_DISTRO=indigo ROS_FLOW=devel
-  - CI_ROS_DISTRO=indigo ROS_FLOW=install
+  # CAREFUL Pyros-Setup is a hybrid package
+  # => install ros flow is not supported (pip dependencies will not be found)
+  # => making a ROS package from it is not supported (and not needed anyway).
+  # - CI_ROS_DISTRO=indigo ROS_FLOW=install
   - CI_ROS_DISTRO=indigo PYTHON=2.7
   - CI_ROS_DISTRO=indigo PYTHON=3.4
 
   - CI_ROS_DISTRO=jade ROS_FLOW=devel
-  - CI_ROS_DISTRO=jade ROS_FLOW=install
+  # CAREFUL Pyros-Setup is a hybrid package
+  # => install ros flow is not supported (pip dependencies will not be found)
+  # => making a ROS package from it is not supported (and not needed anyway).
+  # - CI_ROS_DISTRO=jade ROS_FLOW=install
   - CI_ROS_DISTRO=jade PYTHON=2.7
   - CI_ROS_DISTRO=jade PYTHON=3.4
   # TODO : pypy + pypy3
