@@ -1,12 +1,33 @@
 # PYTHON PACKAGING
 # using setuptools : http://pythonhosted.org/setuptools/
+import os
+import sys
 from setuptools import setup
 
 with open('pyros_setup/_version.py') as vf:
     exec(vf.read())
 
+
+if sys.argv[-1] == 'publish':
+
+    os.system("python setup.py sdist")
+    os.system("python setup.py bdist_wheel")
+    # OLD way:
+    #os.system("python setup.py sdist bdist_wheel upload")
+    # NEW way:
+    # Ref: https://packaging.python.org/distributing/
+    os.system("twine upload dist/*")
+    print("You probably want to also tag the version now:")
+    print("  python setup.py tag")
+    sys.exit()
+
+if sys.argv[-1] == 'tag':
+    os.system("git tag -a {0} -m 'version {0}'".format(__version__))
+    os.system("git push --tags")
+    sys.exit()
+
 setup(name='pyros_setup',
-    version='0.1.0',
+    version=__version__,
     description='Toolsuite for running ROS environments directly from python code, without any specific requirements outside of usual python',
     url='http://github.com/asmodehn/pyros-setup',
     author='AlexV',
@@ -14,24 +35,24 @@ setup(name='pyros_setup',
     license='BSD',
     packages=[
         'pyros_setup',
-        'pyros_setup.config',
         'pyros_setup.tests',
     ],
     entry_points={
         'console_scripts': [
-            'pyros_setup = pyros_setup.__main__:nosemain'
+            'pyros_setup = pyros_setup.__main__:main'
         ]
     },
     # this is better than using package data ( since behavior is a bit different from distutils... )
     include_package_data=True,  # use MANIFEST.in during install.
     install_requires=[
-        #'catkin_pkg',  # not needed here since this version should not look for package.xml
         'six',
-        'importlib'
+        'pyros_config>=0.1.2',
+        'pytest>=2.5.1'
     ],
-    test_suite="nose.collector",
+    setup_requires=[
+        'pytest-runner'
+    ],
     tests_require=[
-        'nose>=1.3.7'
     ],
     zip_safe=False,  # TODO testing...
 )

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
   <!--
-   This file is mostly here to provide ros dependencies when this project is built with catkin
-   A normal pip package is provided for it, but it currently does not support being built as a ROS package.
+   This file is mostly here to provide ros dependencies when this project is built with catkin from source.
+   A normal pip package is provided for it, but it is not built as a ROS package.
    -->
   <name>pyros_setup</name>
   <version>0.1.0</version>
@@ -19,12 +19,20 @@
   <maintainer email="asmodehn@gmail.com">AlexV</maintainer>
 
   <buildtool_depend version_gte="0.6.18">catkin</buildtool_depend>
-  <build_depend version_gte="0.1.2">catkin_pure_python</build_depend>
+  <build_depend version_gte="0.1.10">catkin_pip</build_depend>
 
   <depend version_gte="1.11.19">rospy</depend>
   <depend version_gte="1.11.19">rosgraph</depend>
   <depend version_gte="1.11.19">roslaunch</depend>
   <depend version_gte="1.11.19">rostest</depend>
+
+  <!-- these dependencies are provided via catkin/ROS only -->
+  <depend version_gte="0.1.2">pyros_utils</depend>
+
+  <!-- These dependencies are provided via pip, and are useless here
+       since this package should not be installed with catkin
+       -->
+  <!-- <depend version_gte="0.1.2">pyros_config</depend> -->
 
   <!-- These should be installed along with catkin and minimal ROS system -->
   <build_depend version_gte="0.10.0">roslint</build_depend>

@@ -9,7 +9,7 @@ project(pyros_setup)
 # Minimal Python module setup - catkin is assumed preinstalled along with ROS
 # This assume catkin is installed along with a minimal ROS system.
 find_package(catkin REQUIRED COMPONENTS
-    catkin_pure_python
+    catkin_pip
     rospy
     rosgraph
     roslaunch
@@ -17,7 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 # We need to install the pip dependencies in the workspace being created
-catkin_pip_requirements(${CMAKE_CURRENT_SOURCE_DIR}/requirements.txt)
+catkin_pip_requirements(${CMAKE_CURRENT_SOURCE_DIR}/dev-requirements.txt)
 
 # defining current package as a package that should be managed by pip (not catkin - even though we make it usable with workspaces)
 catkin_pip_setup()
@@ -27,18 +27,9 @@ catkin_package()
 if (CATKIN_ENABLE_TESTING)
 
     ############
-    # Nose Tests
+    # Tests
     ############
 
-    catkin_add_nosetests(pyros_setup/tests)
-    # this test needs to be executable for rostest, so we need to add it specifically for nose
-    catkin_add_nosetests(pyros_setup/tests/test_rostest_nose.py)
-
-    ###########
-    # ROS Tests
-    ###########
-
-    find_package(rostest REQUIRED)
-    add_rostest(pyros_setup/tests/test_rostest_nose.test)
+    catkin_add_pytests(pyros_setup/tests)
 
 endif()

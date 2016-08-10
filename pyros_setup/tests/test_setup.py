@@ -1,16 +1,18 @@
 #!/usr/bin/env python
 from __future__ import absolute_import
 
-# Adding current package repository in order to be able to import it
-# if started with python cli, since relative import from non-package are forbidden
 import sys
 import os
 
-# importing nose
-import nose
+import pytest
+
+@pytest.fixture
+def cmdopt(request):
+    return request.config.getoption("--distro")
 
 
-def setup_function():
+@pytest.fixture
+def setup():
     # We make sure sys.modules is clear of our test modules for each test we run here
     for m in [mk for mk in sys.modules.keys() if mk.startswith('rospy')]:
         sys.modules.pop(m, None)
@@ -24,14 +26,11 @@ def setup_function():
     sys.path.insert(1, current_path)  # sys.path[0] is always current path as per python spec
     # FIXME : this stack up at every test (to avoid the previous ROs emulated setup to find a different pyros_setup
     # TODO We need a better way...
+    # also since we change to py.test hte self import thingy is not really what we want to do
+    # We should use python setup.py develop instead.
 
 
-def teardown_function():
-    pass
-
-
-@nose.tools.with_setup(setup_function, teardown_function)
-def test_rospy_imported_config():
+def test_rospy_imported_config(setup, cmdopt):
     rospy = None
 
     # Careful this might mean the system installed one if you re not working in virtualenv
@@ -42,7 +41,7 @@ def test_rospy_imported_config():
         # Proper New way
         # TODO : make this work with module/import, instead of class/instantiation
         pyros_setup.configurable_import(instance_relative_config=False)\
-            .configure('tests/testing.cfg')\
+            .configure('tests/testing_' + cmdopt + '.cfg')\
             .activate()  # you do the setup as expected by ROS
         import rospy
 
@@ -55,8 +54,7 @@ def test_rospy_imported_config():
         assert False
 
 
-@nose.tools.with_setup(setup_function, teardown_function)
-def test_rospy_imported():
+def test_rospy_imported(setup):
     rospy = None
 
     # Careful this might mean the system installed one if you re not working in virtualenv
@@ -79,8 +77,7 @@ def test_rospy_imported():
         assert False
 
 
-@nose.tools.with_setup(setup_function, teardown_function)
-def test_rospy_imported_auto():
+def test_rospy_imported_auto(setup):
     rospy = None
 
     # Careful this might mean the system installed one if you re not working in virtualenv
@@ -102,9 +99,3 @@ def test_rospy_imported_auto():
     except ImportError:
         assert False
 
-
-# TODO : fix this, we need each test to run in an isolated environment(=> forced multiprocess)?
-# currently you need to manually comment all test you do not want to run...
-if __name__ == '__main__':
-    # forcing nose run from python call
-    nose.runmodule()

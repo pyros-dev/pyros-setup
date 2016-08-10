@@ -11,7 +11,7 @@ import types
 import sys
 
 from .utils import deprecated
-from .config import ConfigImport, ConfigHandler
+from pyros_config import ConfigImport, ConfigHandler
 
 
 # class to allow delayed conditional import, with behavior based on configuration.
@@ -27,8 +27,6 @@ class _PyrosSetup(ConfigImport):
 
         relay_import_dict = {
             'rospy': 'rospy',  # early except to detect errors and prevent unintentional useless workarounds
-            'ros_utils': ('.ros_utils', __package__),
-            'rostest_nose': ('.rostest_nose', __package__),
         }
         fix_imports = self._attempt_import_fix
 
@@ -53,10 +51,6 @@ class _PyrosSetup(ConfigImport):
         :return: self
         """
         super(_PyrosSetup, self).activate()
-
-        # defining shortcuts after successful import
-        self.get_master = self.ros_utils.get_master
-        self.get_ros_home = self.ros_utils.get_ros_home
 
         return self
 
@@ -119,27 +113,10 @@ delayed_import_auto = _PyrosSetup.delayed_import_auto
 configurable_import = _PyrosSetup.configurable_import
 
 
-#
-#  Until these are redefined by pyros_setup configuration, they are available with default configuration
-#
-def get_master(spawn=True):
-    return delayed_import().get_master(spawn)
-
-
-def get_ros_home():
-    return delayed_import().get_ros_home()
-
-
 __all__ = [
     '__version__',
-    'ConfigHandler',  # we expose the config subpackage if other want to use it (pyros does)
-
-    'deprecated',
 
     'delayed_import',
     'delayed_import_auto',
     'configurable_import',
-
-    'get_master',
-    'get_ros_home',
 ]
