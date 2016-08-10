@@ -2,8 +2,9 @@
 set -e
 
 # These variables need to be setup before calling this script:
-# CI_ROS_DISTRO [indigo | jade]
 # ROS_FLOW [devel | install]
+
+cd build
 
 if [ "$ROS_FLOW" == "devel" ]; then
     source devel/setup.bash

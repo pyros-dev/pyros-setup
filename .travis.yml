@@ -9,15 +9,15 @@ branches:
 env:
   # This will check any ROS distro with any python interpreter
   # supported on this OS
-  - DISTRO=indigo ROS_FLOW=devel
-  - DISTRO=indigo ROS_FLOW=install
-  - DISTRO=indigo PYTHON=2.7
-  - DISTRO=indigo PYTHON=3.4
+  - CI_ROS_DISTRO=indigo ROS_FLOW=devel
+  - CI_ROS_DISTRO=indigo ROS_FLOW=install
+  - CI_ROS_DISTRO=indigo PYTHON=2.7
+  - CI_ROS_DISTRO=indigo PYTHON=3.4
 
-  - DISTRO=jade ROS_FLOW=devel
-  - DISTRO=jade ROS_FLOW=install
-  - DISTRO=jade PYTHON=2.7
-  - DISTRO=jade PYTHON=3.4
+  - CI_ROS_DISTRO=jade ROS_FLOW=devel
+  - CI_ROS_DISTRO=jade ROS_FLOW=install
+  - CI_ROS_DISTRO=jade PYTHON=2.7
+  - CI_ROS_DISTRO=jade PYTHON=3.4
   # TODO : pypy + pypy3
 
 # We need to get a ROS distro to be able to test pyros-setup
@@ -28,13 +28,13 @@ before_install:
   # Install python and required packages on system if needed
   - if [ -z ${PYTHON+undef} ]; then echo "Python virtual env not used"; else sudo apt-get install python${PYTHON} virtualenvwrapper -y && source "/usr/share/virtualenvwrapper/virtualenvwrapper.sh"; fi
   # Install package ROS dependencies (needed until we can package a standard python deb for pyros-setup. see https://github.com/asmodehn/pyros-setup/issues/16)
-  - rosdep install --default-yes --from-paths ./ --rosdistro $DISTRO
+  - rosdep install --default-yes --from-paths ./ --rosdistro $CI_ROS_DISTRO
 
 install:
   - if [ -z ${PYTHON+undef} ]; then (bash rosutils/travis_build.sh); else (mkvirtualenv --system-site-packages -i . -q python_${PYTHON}_ros); fi
 
 script:
-  - if [ -z ${PYTHON+undef} ]; then (bash rosutils/travis_checks.sh); else (workon python_${PYTHON}_ros && python -m pytest --pyargs pyros_setup --distro ${DISTRO}); fi
+  - if [ -z ${PYTHON+undef} ]; then (bash rosutils/travis_checks.sh); else (workon python_${PYTHON}_ros && python -m pytest --pyargs pyros_setup --distro ${CI_ROS_DISTRO}); fi
 
 notifications:
   email: false
