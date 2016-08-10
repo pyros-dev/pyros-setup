@@ -33,7 +33,7 @@ before_install:
   - bash rosutils/install_ros.sh
   # Install python and required packages on system if needed
   - if [ -z ${PYTHON+undef} ]; then echo "Python virtual env not used"; else sudo apt-get install python${PYTHON} virtualenvwrapper -y && source "/usr/share/virtualenvwrapper/virtualenvwrapper.sh"; fi
-  # Install package ROS dependencies (needed until we can package a standard python deb for pyros-setup. see https://github.com/asmodehn/pyros-setup/issues/16)
+  # Install package ROS dependencies
   - rosdep install --default-yes --from-paths ./ --rosdistro $CI_ROS_DISTRO
 
 install:
