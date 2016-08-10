@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
   <!--
-   This file is mostly here to provide ros dependencies when this project is built with catkin
-   A normal pip package is provided for it, but it currently does not support being built as a ROS package.
+   This file is mostly here to provide ros dependencies when this project is built with catkin from source.
+   A normal pip package is provided for it, but it is not built as a ROS package.
    -->
   <name>pyros_setup</name>
   <version>0.1.0</version>

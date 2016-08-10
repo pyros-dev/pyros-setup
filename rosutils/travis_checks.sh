@@ -17,5 +17,5 @@ elif [ "$ROS_FLOW" == "install" ]; then
     source install/setup.bash
 
     echo PYTHONPATH = $PYTHONPATH
-    python -m pytest --pyargs pyzmp
+    python -m pytest --pyargs pyros_setup
 fi

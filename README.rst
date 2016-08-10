@@ -71,17 +71,10 @@ HowTo deploy
 If you want to use pyros-setup, you should use the pip package, since the whole point is to provide access to ROS from pure python environment.
 This is now possible thanks to [catkin_pip](https://github.com/asmodehn/catkin_pip)
 
-For simpler pyros-setup development, and for use from an installed ROS package, a pyros-setup ROS package is currently provided.
-But this is only temporary, until a pure python ubuntu deb package can be provided.
 
 Remarks
 ^^^^^^^
 
 Although it would technically be possible to build a ROS package from this source, this will NOT be done.
 The catkin build system is only here to help having pyros-setup in a source workspace while developing on it.
-When using ROS directly this package is not needed, and having it installed among ROS packages would cause much confusion when importing packages.
-
-Roadmap
-^^^^^^^
-
-- [ ] A launchpad project to generate a ubuntu deb package, to be able to have pyros-setup as a deb dependency from other ROS/python packages (pyros, etc.).
+When using ROS directly this package is not needed, and having it installed among ROS packages would cause much user confusion when importing packages.
