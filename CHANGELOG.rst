@@ -1,8 +1,26 @@
 Changelog
 =========
 
+%%version%% (unreleased)
+------------------------
+
+- Turning pyros-setup in a pure python package, since it should never be
+  used with ROS environment setup anyway. [alexv]
+
+- Added __file__ and __version__ to pyros_setup import relay class.
+  improved deprecated decorator. improved warnings. [alexv]
+
+- Improving main entrypoint with --version and --help. [alexv]
+
+- Improved main entry point for self test. [alexv]
+
+- Added site-packages to PYTHONPATH to support catkin_pip hybrid
+  workspaces. replaced deprecated logging methods. [alexv]
+
 0.1.1 (2016-08-11)
 ------------------
+
+- Preparing 0.1.1. [alexv]
 
 - Quick docs cleanup. [alexv]
 
@@ -112,8 +130,8 @@ Changelog
   setup into config_refactor. [alexv]
 
   Conflicts:
-    rosutils/build_devel.sh
-    rosutils/build_install.sh
+  	rosutils/build_devel.sh
+  	rosutils/build_install.sh
 
 - Ros package still depending on catkin afterall. [alexv]
 
@@ -196,7 +214,7 @@ Changelog
   into cmake_buildtool. [alexv]
 
   Conflicts:
-    CMakeLists.txt
+  	CMakeLists.txt
 
 - First experiment with using a virtualenv in devel workspace. [AlexV]
 
@@ -234,7 +252,7 @@ Changelog
   [AlexV]
 
   Conflicts:
-    setup.py
+  	setup.py
 
 - Adding simple entrypoint to run nose tests. [AlexV]
 
@@ -269,8 +287,8 @@ Changelog
   improve_rostests. [alexv]
 
   Conflicts:
-    CMakeLists.txt
-    README.rst
+  	CMakeLists.txt
+  	README.rst
 
 - Improved tests for rostest_nose module to make sure rostest still
   works. [alexv]
