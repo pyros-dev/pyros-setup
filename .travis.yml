@@ -9,7 +9,10 @@ branches:
 env:
   # This will check any ROS distro with any python interpreter
   # supported on this OS
-  - CI_ROS_DISTRO=indigo ROS_FLOW=devel
+
+  # Disabling ROS workflow checks since pyros_setup should be used only with pip dependencies, only when catkin is not avialable.
+  # Removing this usecase to avoid confusion, and temptation to create a ROS package from it.
+  # - CI_ROS_DISTRO=indigo ROS_FLOW=devel
   # CAREFUL Pyros-Setup is a hybrid package
   # => install ros flow is not supported (pip dependencies will not be found)
   # => making a ROS package from it is not supported (and not needed anyway).
@@ -17,7 +20,9 @@ env:
   - CI_ROS_DISTRO=indigo PYTHON=2.7
   - CI_ROS_DISTRO=indigo PYTHON=3.4
 
-  - CI_ROS_DISTRO=jade ROS_FLOW=devel
+  # Disabling ROS workflow checks since pyros_setup should be used only with pip dependencies, only when catkin is not avialable.
+  # Removing this usecase to avoid confusion, and temptation to create a ROS package from it.
+  # - CI_ROS_DISTRO=jade ROS_FLOW=devel
   # CAREFUL Pyros-Setup is a hybrid package
   # => install ros flow is not supported (pip dependencies will not be found)
   # => making a ROS package from it is not supported (and not needed anyway).
