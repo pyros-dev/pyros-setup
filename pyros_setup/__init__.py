@@ -30,6 +30,12 @@ class _PyrosSetup(ConfigImport):
         }
         fix_imports = self._attempt_import_fix
 
+        self.deprecated = deprecated
+
+        # Needed for the module to have a "__file__" and a "__version__" attribute
+        self.__file__ = __file__
+        self.__version__ = __version__
+
         super(_PyrosSetup, self).__init__('pyros_setup',
                                           'Small setup package to dynamically interface with ROS',
                                           relay_import_dict=relay_import_dict,
@@ -115,7 +121,7 @@ configurable_import = _PyrosSetup.configurable_import
 
 __all__ = [
     '__version__',
-
+    'deprecated',
     'delayed_import',
     'delayed_import_auto',
     'configurable_import',
