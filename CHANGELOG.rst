@@ -1,8 +1,10 @@
 Changelog
 =========
 
-%%version%% (unreleased)
-------------------------
+0.1.2 (2016-08-11)
+------------------
+
+- Changelog. [alexv]
 
 - Turning pyros-setup in a pure python package, since it should never be
   used with ROS environment setup anyway. [alexv]
