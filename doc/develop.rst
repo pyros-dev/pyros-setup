@@ -28,7 +28,7 @@ To work on lowlevel package like pyros-setup and guarantee close compatibility b
 And to be able to quickly learn the code and identify issues in underlying dependencies, sources are always better.
 
 ROS From Source (ubuntu)
---------------------
+------------------------
  Ref : http://wiki.ros.org/indigo/Installation/Source
 
 Setting up ROS package repositories (maybe not needed if we get everything from source. better to skip this to make sure we know when rosdep wants to grab ROS packages)
