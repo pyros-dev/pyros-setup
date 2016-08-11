@@ -6,6 +6,7 @@ import os
 
 import pytest
 
+
 @pytest.fixture
 def cmdopt(request):
     return request.config.getoption("--distro")
@@ -26,8 +27,8 @@ def setup():
     sys.path.insert(1, current_path)  # sys.path[0] is always current path as per python spec
     # FIXME : this stack up at every test (to avoid the previous ROs emulated setup to find a different pyros_setup
     # TODO We need a better way...
-    # also since we change to py.test hte self import thingy is not really what we want to do
-    # We should use python setup.py develop instead.
+    # also since we change to py.test the self import thingy is not really what we want to do
+    # Maybe we should use python setup.py develop/install instead ?
 
 
 def test_rospy_imported_config(setup, cmdopt):

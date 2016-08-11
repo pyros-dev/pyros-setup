@@ -58,29 +58,30 @@ def ROS_setup_rosdistro_env(default_distro=None):
     # we return here the workspace for the distro
     return '/opt/ros/' + distro
 
+
 def ROS_setup_ros_package_path(workspace):
 
     # setting cmake prefix path - rosout needs this
     if os.path.exists(workspace) and workspace not in os.environ.get("CMAKE_PREFIX_PATH", []):
-        logging.warn("Appending path {workspace} to CMAKE_PREFIX_PATH".format(workspace=workspace))
+        logging.warning("Appending path {workspace} to CMAKE_PREFIX_PATH".format(workspace=workspace))
         os.environ["CMAKE_PREFIX_PATH"] = workspace + ':' + os.environ.get("CMAKE_PREFIX_PATH", '')
 
     # prepending current path for ros package discovery
     if os.path.basename(workspace) == 'devel':  # special case of devel -> we can find src
         src_path = os.path.join(os.path.dirname(workspace), 'src')
         if src_path is not None and os.path.exists(src_path):
-            logging.warn("Appending path {workspace_src} to ROS_PACKAGE_PATH".format(workspace_src=src_path))
+            logging.warning("Appending path {workspace_src} to ROS_PACKAGE_PATH".format(workspace_src=src_path))
             os.environ['ROS_PACKAGE_PATH'] = src_path + ':' + os.environ['ROS_PACKAGE_PATH']
 
     else:  # TODO : this is a quick fix. investigate this case more
         stacks_path = os.path.join(os.path.dirname(workspace), 'stacks')
         if stacks_path is not None and os.path.exists(stacks_path):
-            logging.warn("Appending path {workspace_stacks} to ROS_PACKAGE_PATH".format(workspace_stacks=stacks_path))
+            logging.warning("Appending path {workspace_stacks} to ROS_PACKAGE_PATH".format(workspace_stacks=stacks_path))
             os.environ['ROS_PACKAGE_PATH'] = stacks_path + ':' + os.environ['ROS_PACKAGE_PATH']
 
         share_path = os.path.join(os.path.dirname(workspace), 'share')
         if share_path is not None and os.path.exists(share_path):
-            logging.warn("Appending path {workspace_share} to ROS_PACKAGE_PATH".format(workspace_share=share_path))
+            logging.warning("Appending path {workspace_share} to ROS_PACKAGE_PATH".format(workspace_share=share_path))
             os.environ['ROS_PACKAGE_PATH'] = share_path + ':' + os.environ['ROS_PACKAGE_PATH']
 
 
@@ -89,7 +90,7 @@ def ROS_setup_ospath(workspace):
 
     binpath = os.path.join(workspace, 'bin')
     if binpath is not None and os.path.exists(binpath):  # note: even if it already exist in PATH we add it again
-        logging.warn("Appending path {binpath} to PATH".format(binpath=binpath))
+        logging.warning("Appending path {binpath} to PATH".format(binpath=binpath))
         os.environ["PATH"] = binpath + ':' + os.environ.get("PATH", '')
 
 
@@ -98,11 +99,11 @@ def ROS_setup_ldlibrarypath(workspace):
     libarch_path = os.path.join(workspace, 'lib', 'x86_64-linux-gnu')
 
     if libarch_path is not None and os.path.exists(libarch_path):  # note: even if it already exist in PATH we add it again
-        logging.warn("Appending path {libarch_path} to LD_LIBRARY_PATH".format(libarch_path=libarch_path))
+        logging.warning("Appending path {libarch_path} to LD_LIBRARY_PATH".format(libarch_path=libarch_path))
         os.environ["LD_LIBRARY_PATH"] = libarch_path + ':' + os.environ.get("LD_LIBRARY_PATH", '')
 
     if lib_path is not None and os.path.exists(lib_path):  # note: even if it already exist in PATH we add it again
-        logging.warn("Appending path {lib_path} to LD_LIBRARY_PATH".format(lib_path=lib_path))
+        logging.warning("Appending path {lib_path} to LD_LIBRARY_PATH".format(lib_path=lib_path))
         os.environ["LD_LIBRARY_PATH"] = lib_path + ':' + os.environ.get("LD_LIBRARY_PATH", '')
 
 
@@ -111,29 +112,33 @@ def ROS_setup_pkgconfigpath(workspace):
     libarchpkgconfig_path = os.path.join(workspace, 'lib', 'x86_64-linux-gnu', 'pkgconfig')
 
     if libarchpkgconfig_path is not None and os.path.exists(libarchpkgconfig_path):  # note: even if it already exist in PATH we add it again
-        logging.warn("Appending path {libarchpkgconfig_path} to PKG_CONFIG_PATH".format(libarchpkgconfig_path=libarchpkgconfig_path))
+        logging.warning("Appending path {libarchpkgconfig_path} to PKG_CONFIG_PATH".format(libarchpkgconfig_path=libarchpkgconfig_path))
         os.environ["PKG_CONFIG_PATH"] = libarchpkgconfig_path + ':' + os.environ.get("PKG_CONFIG_PATH", '')
 
     if libpkgconfig_path is not None and os.path.exists(libpkgconfig_path):  # note: even if it already exist in PATH we add it again
-        logging.warn("Appending path {libpkgconfig_path} to PKG_CONFIG_PATH".format(libpkgconfig_path=libpkgconfig_path))
+        logging.warning("Appending path {libpkgconfig_path} to PKG_CONFIG_PATH".format(libpkgconfig_path=libpkgconfig_path))
         os.environ["PKG_CONFIG_PATH"] = libpkgconfig_path + ':' + os.environ.get("PKG_CONFIG_PATH", '')
 
 
 # TODO : check if we can use roslib.load_manifest for all this
 def ROS_setup_pythonpath(workspace):
 
-    package_path = os.path.join(workspace, 'lib', 'python2.7', 'dist-packages')
+    package_paths = [
+        os.path.join(workspace, 'lib', 'python2.7', 'dist-packages'),  # default for catkin
+        os.path.join(workspace, 'lib', 'python2.7', 'site-packages'),  # catkin_pip can create this in workspaces and we need to be able to access it
+    ]
 
-    if package_path is not None and os.path.exists(package_path):
-        logging.warn("Prepending path {package_path} to PYTHONPATH".format(package_path=package_path))
-        # Note : virtualenvs are a much better solution to this problem.
-        # nevertheless we here try to simulate ROS behavior ( working with workspaces )
-        sys.path.insert(1, package_path)
-        # setting python path needed only to find ros shell commands (rosmaster)
-        os.environ["PYTHONPATH"] = package_path + ':' + os.environ.get("PYTHONPATH", '')
+    for pp in package_paths:
+        if pp is not None and os.path.exists(pp):
+            logging.warning("Prepending path {package_path} to PYTHONPATH".format(package_path=pp))
+            # Note : virtualenvs are a much better solution to this problem.
+            # nevertheless we here try to simulate ROS behavior ( working with workspaces )
+            sys.path.insert(1, pp)
+            # setting python path needed only to find ros shell commands (rosmaster)
+            os.environ["PYTHONPATH"] = pp + ':' + os.environ.get("PYTHONPATH", '')
 
     # Only this method is enough to fix the python import issues.
-    # However all ROS environment should be setup before importing rospy due to https://github.com/ros/catkin/issues/767
+    # However it is expected that the whole ROS environment is setup before importing rospy, to avoid unknown issues.
 
 
 def ROS_find_workspaces(distro, base_path):
@@ -158,7 +163,7 @@ def ROS_find_workspaces(distro, base_path):
         # setting cmake prefix path - rosout needs this
         for k, p in zip(['devel', 'install'], [devel_ws, install_ws]):
             if os.path.exists(p) and p not in os.environ.get("CMAKE_PREFIX_PATH", []):
-                logging.warn("Appending {key} space to CMake prefix path".format(key=k))
+                logging.warning("Appending {key} space to CMake prefix path".format(key=k))
                 os.environ["CMAKE_PREFIX_PATH"] = p + ':' + os.environ.get("CMAKE_PREFIX_PATH", '')
                 workspace_paths[:0] = [p]  # prepending
 
@@ -176,7 +181,7 @@ def ROS_emulate_setup(distro=None, *workspaces):
         over_devel_path, under_devel_path ( usual workspace development with underlays setup )
     :return:
     """
-    logging.warn(" => Emulating ROS setup now for distro {0} and workspaces {1}".format(distro, workspaces))
+    logging.warning(" => Emulating ROS setup now for distro {0} and workspaces {1}".format(distro, workspaces))
 
     distro = distro or 'indigo'  # TODO : investigate if we should use /usr/bin/rosversion to determine default ?
     distro_path = ROS_setup_rosdistro_env(default_distro=distro)
@@ -192,4 +197,4 @@ def ROS_emulate_setup(distro=None, *workspaces):
         ROS_setup_pkgconfigpath(w)
         ROS_setup_pythonpath(w)
 
-    logging.warn(" => ROS setup emulation done.")
+    logging.warning(" => ROS setup emulation done.")
