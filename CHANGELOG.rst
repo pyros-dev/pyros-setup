@@ -1,163 +1,410 @@
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package pyros_setup
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog
+=========
+
+0.1.1 (2016-08-11)
+------------------
+
+- Quick docs cleanup. [alexv]
+
+- Merge pull request #25 from asmodehn/extract_utils_config. [AlexV]
+
+  Extract utils config
+
+- Cosmetics. [alexv]
+
+- Requiring catkin_pip minimum 0.1.10, in order to fail on ros install
+  flow since some of our pip dependencies are not satisfied by ros debs
+  (and we dont want them to in this python package). [alexv]
+
+- Disabling travis checks for ros install flow since this package is not
+  aimed at being installed or released as a ROS package. [alexv]
+
+- Review documentation. fixing travis test. [alexv]
+
+- Renaming DISTRO -> CI_ROS_DISTRO variable from travis config. [alexv]
+
+- Separating devel and install flow for ros travis checks. added publish
+  and tag methods to setup.py an removed pypi_release script. improved
+  setup.cfg and added doc requirements. [alexv]
+
+- Reviewing travis for test and cosmetics. [AlexV]
+
+- Reviewing tox and tests. [AlexV]
+
+- Comments for tox. [AlexV]
+
+- New test strategy for travis. since we need to use system packages, we
+  cant use travis python language build environment. [AlexV]
+
+- Forcing travis to get latest tox. [AlexV]
+
+- Fixed tox.ini to set venvs properly and make tests pass. [AlexV]
+
+- Fixing tests to be run with pytest from catkin. [AlexV]
+
+- Fixed main entrypoint for pytest. fixed pyros-utils and pyros-config
+  dependencies version. [AlexV]
+
+- Now adding path to ROS_PACKLAGE_PATH only if it exists. [alexv]
+
+- Fixing test for pytest. [alexv]
+
+- Travis now using py.test directly since tox doesnt work refined
+  tox.ini improving gitignore. [alexv]
+
+- Now using pytest for self test. [alexv]
+
+- Using renamed catkin_pip. [alexv]
+
+- Setting up python environments and tox. fixing version in setup.py.
+  [alexv]
+
+- Restructuring to a pure python package with pytest and tox testing, on
+  indigo and jade. pytest passing (remove *.pyc). tox failing. [alexv]
+
+- Cleaning up pyros_utils related code. [alexv]
+
+- Cleaning up pyros_config related code. [alexv]
+
+- Now requiring catkin_pure_python 0.1.2. comments. [alexv]
+
+- Updating for catkin_pure_python 0.1.0. [AlexV]
+
+- Bumping minimum required catkin_pure_python version to 0.0.8 to not
+  write to install workspace before make install. [alexv]
+
+- Merge pull request #19 from asmodehn/travis_rosdeps_check. [AlexV]
+
+  Travis rosdeps check
+
+- Improved readme, mentioning to use pip package and catkin_pure_python.
+  [alexv]
+
+- Hopefully fixing travis build dependencies problem, for now... [alexv]
+
+- Improved error message when import fails. [alexv]
+
+- Fixing rosdep install step in travis. [alexv]
+
+- Now installing ros dependencies in ros build script to check ros
+  dependencies can also be retrieved from python workflow. [alexv]
+
+- Added doc about config file contents. [alexv]
+
+- Updated docs. cosmetics. [alexv]
 
 0.1.0 (2016-05-10)
 ------------------
-* adding missing config package to setup.py
-* ros package still depending on catkin afterall
-* modifying ros utils script to improve debug for python and pip behavior
-* helping debug of rosutils scripts
-* rosutils scripts changing to build directory before doing anything else
-* now using package v2 format
-* fixing rosutils scripts.
-* adding package version
-* mention shadowrobot buildtools in readme.
-* attempting matrix build.
-* fixing virtualenvwrapper setup script path on ubuntu.
-  removed debian_frontend already setup on travis trusty image.
-* fixing virtualenvwrapper setup.
-* force yes for python virtualenv install.
-* adding shell script to isolate ros setup during travis test.
-  improved travis build to test usage from both python venv and ROS.
-* now running python test (in venvs) from travis.
-* set next version number. cosmetics.
-* added a default config file to be used by client programs for default ros configuration.
-  now using importlib instead of custom import_string()
-  separated packagebound, confighandler, and config import classes
-  simplified setup
-  fixed tests
-* master is now default branch. fixing travis badge url.
-* fiddling around with configuration to make it usable from pyros.
-* first version after refactor to handle config file. good enough for self tests to use it.
-* fixes for latest catkin_pure_python.
-  readme improvements
-* improving readme
-* cleanup doc and comments.
-* now depending on catkin_pure_python.
-* working pip install requirements in catkin workspace
-* added simple method to get ros_home.
-* first verison of cmake creating a venv to store packages.
-* added comments...
-* fixing pip install command
-* trying to install pip requirements ni devel space. notworking yet
-* comments
-* broken cmake stub for catkin-pip
-* setting cmake as buildtool
-* improved error message when ROs setup fails
-* first experiment with using a virtualenv in devel workspace.
-* fixed logic for ros_package_path when not a devel workspace.
-  cosmetics.
-* Contributors: AlexV, alexv
+
+- Generating changelog. [alexv]
+
+- Merge pull request #13 from asmodehn/cmake_buildtool. [AlexV]
+
+  python package mutation
+
+- Merge pull request #17 from asmodehn/config_refactor. [AlexV]
+
+  Config refactor
+
+- Adding missing config package to setup.py. [alexv]
+
+- Merge branch 'cmake_buildtool' of https://github.com/asmodehn/pyros-
+  setup into config_refactor. [alexv]
+
+  Conflicts:
+    rosutils/build_devel.sh
+    rosutils/build_install.sh
+
+- Ros package still depending on catkin afterall. [alexv]
+
+- Modifying ros utils script to improve debug for python and pip
+  behavior. [AlexV]
+
+- Helping debug of rosutils scripts. [alexv]
+
+- Rosutils scripts changing to build directory before doing anything
+  else. [AlexV]
+
+- Merge branch 'master' of https://github.com/asmodehn/pyros-setup into
+  cmake_buildtool Also setting minimum version for catkin_pure_python
+  Conflicts:    package.xml. [alexv]
+
+- Merge pull request #18 from asmodehn/package_v2. [AlexV]
+
+  now using package v2 format
+
+- Now using package v2 format. [alexv]
+
+- Merge pull request #12 from asmodehn/fix_package_path. [AlexV]
+
+  fixed logic for ros_package_path when not a devel workspace.
+
+- Fixed logic for ros_package_path when not a devel workspace.
+  cosmetics. [alexv]
+
+- Master is now default branch. fixing travis badge url. [alexv]
+
+- Fixing rosutils scripts. [alexv]
+
+- Adding package version. [alexv]
+
+- Merge branch 'cmake_buildtool' of https://github.com/asmodehn/pyros-
+  setup into config_refactor. [alexv]
+
+- Mention shadowrobot buildtools in readme. [alexv]
+
+- Attempting matrix build. [alexv]
+
+- Fixing virtualenvwrapper setup script path on ubuntu. removed
+  debian_frontend already setup on travis trusty image. [alexv]
+
+- Fixing virtualenvwrapper setup. [alexv]
+
+- Force yes for python virtualenv install. [alexv]
+
+- Adding shell script to isolate ros setup during travis test. improved
+  travis build to test usage from both python venv and ROS. [alexv]
+
+- Now running python test (in venvs) from travis. [alexv]
+
+- Set next version number. cosmetics. [alexv]
+
+- Added a default config file to be used by client programs for default
+  ros configuration. now using importlib instead of custom
+  import_string() separated packagebound, confighandler, and config
+  import classes simplified setup fixed tests. [alexv]
+
+- Fiddling around with configuration to make it usable from pyros.
+  [alexv]
+
+- First version after refactor to handle config file. good enough for
+  self tests to use it. [alexv]
+
+- Fixes for latest catkin_pure_python. readme improvements. [alexv]
+
+- Improving readme. [alexv]
+
+- Cleanup doc and comments. [alexv]
+
+- Now depending on catkin_pure_python. [alexv]
+
+- Working pip install requirements in catkin workspace. [alexv]
+
+- Added simple method to get ros_home. [alexv]
+
+- Merge branch 'python-venv' of https://github.com/asmodehn/pyros-setup
+  into cmake_buildtool. [alexv]
+
+  Conflicts:
+    CMakeLists.txt
+
+- First experiment with using a virtualenv in devel workspace. [AlexV]
+
+- First verison of cmake creating a venv to store packages. [AlexV]
+
+- Added comments... [alexv]
+
+- Fixing pip install command. [alexv]
+
+- Trying to install pip requirements ni devel space. notworking yet.
+  [AlexV]
+
+- Comments. [AlexV]
+
+- Broken cmake stub for catkin-pip. [AlexV]
+
+- Setting cmake as buildtool. [AlexV]
+
+- Improved error message when ROs setup fails. [AlexV]
 
 0.0.12 (2016-02-10)
 -------------------
-* v0.012
-* fixing nose dependency version and removing test pip dependency on catkin package pyros_test
-* Contributors: AlexV, alexv
+
+- V0.012. [AlexV]
+
+- Fixing nose dependency version and removing test pip dependency on
+  catkin package pyros_test. [alexv]
 
 0.0.11 (2016-01-26)
 -------------------
-* preparing 0.0.11
-* adding simple entrypoint to run nose tests
-* now running setup.py only with setuptools.
-  adding nose.collector as test runner for setup.py.
-  shutting down roslaunch before exiting tests.
-* Contributors: AlexV
+
+- Preparing 0.0.11. [AlexV]
+
+- Merge branch 'indigo' of https://github.com/asmodehn/pyros-setup.
+  [AlexV]
+
+  Conflicts:
+    setup.py
+
+- Adding simple entrypoint to run nose tests. [AlexV]
+
+- Now running setup.py only with setuptools. adding nose.collector as
+  test runner for setup.py. shutting down roslaunch before exiting
+  tests. [AlexV]
 
 0.0.10 (2016-01-25)
 -------------------
-* Revert "removing executable flag from test_rostest_nose since it can now be executed with nose as well as rostest"
+
+- Merge pull request #6 from asmodehn/improve_rostests. [AlexV]
+
+  Improve rostests
+
+- Revert "removing executable flag from test_rostest_nose since it can
+  now be executed with nose as well as rostest" [alexv]
+
   This reverts commit b915beba3731eb03c1bd187bba05af1c337e8034.
-* removing executable flag from test_rostest_nose since it can now be executed with nose as well as rostest
-* improving travis tests to run on devel and install version.
-* replacing talker test node by a pyros_test node to not change dependency list.
-  also make rostest wait on it, otherwise it can fail.
-* preparing v0.0.10
-* improved tests for rostest_nose module to make sure rostest still works.
-* Contributors: AlexV, alexv
+
+- Removing executable flag from test_rostest_nose since it can now be
+  executed with nose as well as rostest. [alexv]
+
+- Improving travis tests to run on devel and install version. [alexv]
+
+- Replacing talker test node by a pyros_test node to not change
+  dependency list. also make rostest wait on it, otherwise it can fail.
+  [alexv]
+
+- Preparing v0.0.10. [alexv]
+
+- Merge branch 'master' of https://github.com/asmodehn/pyros-setup into
+  improve_rostests. [alexv]
+
+  Conflicts:
+    CMakeLists.txt
+    README.rst
+
+- Improved tests for rostest_nose module to make sure rostest still
+  works. [alexv]
 
 0.0.9 (2016-01-09)
 ------------------
-* prepring 0.0.9
-* adding nose in requirements.txt
-  removing unprotected catkin import in setup.py
-* Contributors: AlexV
 
-0.0.8 (2016-01-08 20:16)
-------------------------
-* preparing 0.0.8
-* adding catkin_package() cmake command
-* Contributors: alexv
+- Prepring 0.0.9. [AlexV]
 
-0.0.7 (2016-01-08 18:07)
-------------------------
-* preparing 0.0.7
-* cleaning up dependencies since uneeded python-six breaks buildfarm for EOLed saucy
-* Contributors: alexv
+- Adding nose in requirements.txt removing unprotected catkin import in
+  setup.py. [AlexV]
 
-0.0.6 (2016-01-08 15:48)
-------------------------
-* preparing 0.0.6
-* adding parameter to get_master in the case delayed_import is not called
-* improved dynamic module behavior.
-* improving module for delayed import
-* improved README rst formatting
-* added code samples to README to make aim clear
-* change doc in README to explicitely target python package
-* Contributors: alexv
+0.0.8 (2016-01-08)
+------------------
 
-0.0.5 (2016-01-08 11:55)
-------------------------
-* version to 0.0.5
-* readding package.xml in egg while we use catkin_pkg to break the egg
-* Contributors: alexv
+- Preparing 0.0.8. [alexv]
 
-0.0.4 (2016-01-07 20:40)
-------------------------
-* preparing for 0.0.4 pypi release
-* adding useful files for pypi release.
-* playing with python sdist and eggs for release on pypi.
-* adding gitignore to hide those .pyc
-* using shadow-fixed repo for travis
+- Adding catkin_package() cmake command. [alexv]
+
+0.0.7 (2016-01-08)
+------------------
+
+- Preparing 0.0.7. [alexv]
+
+- Cleaning up dependencies since uneeded python-six breaks buildfarm for
+  EOLed saucy. [alexv]
+
+0.0.6 (2016-01-08)
+------------------
+
+- Preparing 0.0.6. [alexv]
+
+- Adding parameter to get_master in the case delayed_import is not
+  called. [alexv]
+
+- Improved dynamic module behavior. [alexv]
+
+- Improving module for delayed import. [alexv]
+
+- Improved README rst formatting. [alexv]
+
+- Added code samples to README to make aim clear. [alexv]
+
+- Change doc in README to explicitely target python package. [alexv]
+
+0.0.5 (2016-01-08)
+------------------
+
+- Version to 0.0.5. [alexv]
+
+- Readding package.xml in egg while we use catkin_pkg to break the egg.
+  [alexv]
+
+0.0.4 (2016-01-07)
+------------------
+
+- Preparing for 0.0.4 pypi release. [alexv]
+
+- Merge branch 'indigo' of https://github.com/asmodehn/pyros-setup into
+  indigo. [alexv]
+
+- Merge branch 'indigo' of https://github.com/asmodehn/pyros-setup into
+  indigo. [alexv]
+
+- Using shadow-fixed repo for travis. [AlexV]
+
   This way we can get latest dependency to test latest version of source, which probably makes more sense than testing stable.
-* Contributors: AlexV, alexv
 
-0.0.3 (2016-01-07 18:30:07 +0900)
----------------------------------
+- Adding gitignore to hide those .pyc. [alexv]
 
-0.0.2 (2016-01-07 18:30:07 +0900)
----------------------------------
-* changing package version to 0.0.2
-* todo comment for detecting default distro
-* added delayed_import_auto to make workspace discovery explicit.
-  simplified implementation (most methods deal with only one workspace at a time)
-  improved tests.
-* fixing tests
-* better workaround for ros_comm issue 711
-* adding check to teardown module, to make sure roscore is really dead.
-* fixing tests, no matter the time it takes to start/stop processes.
-* adding pyros_test as test dependency.
-* adding finally clause to test to cleanup even if tests fail.
-* cosmetics
-* adding travis badge.
-* Contributors: alexv
+- Adding useful files for pypi release. [alexv]
+
+- Playing with python sdist and eggs for release on pypi. [alexv]
+
+0.0.2 (2016-01-07)
+------------------
+
+- Changing package version to 0.0.2. [alexv]
+
+- Todo comment for detecting default distro. [alexv]
+
+- Added delayed_import_auto to make workspace discovery explicit.
+  simplified implementation (most methods deal with only one workspace
+  at a time) improved tests. [alexv]
+
+- Fixing tests. [alexv]
+
+- Better workaround for ros_comm issue 711. [alexv]
+
+- Adding check to teardown module, to make sure roscore is really dead.
+  [alexv]
+
+- Fixing tests, no matter the time it takes to start/stop processes.
+  [alexv]
+
+- Adding pyros_test as test dependency. [alexv]
+
+- Adding finally clause to test to cleanup even if tests fail. [alexv]
+
+- Cosmetics. [alexv]
+
+- Adding travis badge. [alexv]
 
 0.0.1 (2016-01-04)
 ------------------
-* adding rosnode as testdependency. cosmetics.
-* fixing tests shutting down properly.
-* fix direct import when ROS is already setup
-  now returning roscore_process when getting master to allow termination.
-  tests still broken
-* adding nosetests command to travis file
-* adding travis file
-* renamed ROS_Master to get_master since we return the same as the rospy function.
-* improved delayed import to work recursively if needed
-* fixed ordered dict to keep env vars ordering and remove checks that might break this ordering.
-* improved __init_\_ to delay setup and imports. now testing node starting.
-  moved testpkg in separate repo.
-* adding test for core and launch. added base structure for test pkg.
-* addded rospy import test
-* first commit, extracted code from pyros
-* Contributors: AlexV, alexv
+
+- Adding rosnode as testdependency. cosmetics. [alexv]
+
+- Fixing tests shutting down properly. [alexv]
+
+- Fix direct import when ROS is already setup now returning
+  roscore_process when getting master to allow termination. tests still
+  broken. [alexv]
+
+- Adding nosetests command to travis file. [AlexV]
+
+- Adding travis file. [AlexV]
+
+- Renamed ROS_Master to get_master since we return the same as the rospy
+  function. [alexv]
+
+- Improved delayed import to work recursively if needed. [alexv]
+
+- Fixed ordered dict to keep env vars ordering and remove checks that
+  might break this ordering. [alexv]
+
+- Improved __init__ to delay setup and imports. now testing node
+  starting. moved testpkg in separate repo. [alexv]
+
+- Adding test for core and launch. added base structure for test pkg.
+  [alexv]
+
+- Addded rospy import test. [alexv]
+
+- First commit, extracted code from pyros. [alexv]
+
+
