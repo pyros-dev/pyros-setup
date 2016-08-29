@@ -40,10 +40,22 @@ def test_rospy_imported_config(setup, cmdopt):
         import rospy  # this will fail unless
     except ImportError:
         # Proper New way
-        # TODO : make this work with module/import, instead of class/instantiation
-        pyros_setup.configurable_import(instance_relative_config=False)\
-            .configure('tests/testing_' + cmdopt + '.cfg')\
-            .activate()  # you do the setup as expected by ROS
+
+        # no need to change package settings here, but we still need to call the configuration step for the import...
+        pyros_setup = pyros_setup.configurable_import()
+
+        # Loading instance configuration
+        pyros_setup.configure()
+
+        if cmdopt:
+            # dynamically replacing the configured distro we got from default config
+            # with the one specified interactively for this test, if present.
+            pyros_setup.configure({'DISTRO': cmdopt})
+            # We need to allow this to fail if the instance configuration is not setup properly (no option),
+            # this way the user can debug and fix his configuration.
+
+        pyros_setup.activate()  # you do the setup as expected by ROS
+
         import rospy
 
     assert rospy is not None
@@ -51,52 +63,6 @@ def test_rospy_imported_config(setup, cmdopt):
     try:
         # we now have access to all imported content (directly or through redirection _PyrosSetup class)
         assert hasattr(pyros_setup, 'configurable_import')
-    except ImportError:
-        assert False
-
-
-def test_rospy_imported(setup):
-    rospy = None
-
-    # Careful this might mean the system installed one if you re not working in virtualenv
-    import pyros_setup
-    try:
-        import rospy  # this will fail unless
-    except ImportError:
-        # Proper Old bwcompat way
-        # sys.modules['pyros_setup'] = pyros_setup.delayed_import()  # you do the setup as expected by ROS
-        # But here we just want to replace only local symbol (and avoid replacing all 'import' calls)
-        pyros_setup = pyros_setup.delayed_import()  # you do the setup as expected by ROS
-        import rospy
-
-    assert rospy is not None
-
-    try:
-        # we now have access to all imported content (directly or through redirection _PyrosSetup class)
-        assert hasattr(pyros_setup, 'delayed_import')
-    except ImportError:
-        assert False
-
-
-def test_rospy_imported_auto(setup):
-    rospy = None
-
-    # Careful this might mean the system installed one if you re not working in virtualenv
-    import pyros_setup
-    try:
-        import rospy  # this will fail unless
-    except ImportError:
-        # Proper way
-        sys.modules['pyros_setup'] = pyros_setup.delayed_import_auto()  # you do the setup as expected by ROS
-        # But this still works
-        # pyros_setup = pyros_setup.delayed_import_auto()  # you do the setup as expected by ROS
-        import rospy
-
-    assert rospy is not None
-
-    try:
-        # we now have access to all imported content (directly or through redirection _PyrosSetup class)
-        assert hasattr(pyros_setup, 'delayed_import_auto')
     except ImportError:
         assert False
 

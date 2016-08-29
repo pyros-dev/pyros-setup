@@ -23,9 +23,9 @@ OR using the python package directly::
 
   python -m pyros_setup
 
-OR using nosetests specifically::
+OR using pytest specifically::
 
-  nosetests pyros_setup
+  py.test --pyargs pyros_setup
 
 It can also be used from source inside a catkin workspace in the same way.
 The workspace act as a virtual environment (using https://github.com/asmodehn/catkin_pip).
@@ -35,7 +35,7 @@ This is useful for development along with ROS packages::
   $ source devel/setup.bash
   $ python -m pyros_setup
   $ pyros_setup
-  $ nosetests pyros_setup
+  $ py.test --pyargs pyros_setup
 
 
 HowTo code
