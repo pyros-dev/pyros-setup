@@ -12,7 +12,8 @@ def main():
             sys.exit(errno)
         if sys.argv[1] == '--version':
             import pyros_setup  # import only if needed
-            print("pyros_setup from {0} version {1}".format(pyros_setup.__file__, pyros_setup.__version__))
+            # following pip version output format
+            print("pyros_setup {0} from {1} (python {2})".format(pyros_setup.__version__, pyros_setup.__file__, sys.version[:3]))
             return
         if sys.argv[1] == '--help':
             print("Pyros_setup is a tool to help you manipulate python environment setup.")
