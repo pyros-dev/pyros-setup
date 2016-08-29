@@ -200,7 +200,7 @@ def ROS_emulate_setup(distro=None, *workspaces):
     # we need to reverse the order because we prepend in all these functions
     for w in reversed(workspaces):
         if not os.path.exists(w):
-            logging.warning("Configured workspace {pp} not found. Please double check your configuration. Skipping...".format(**locals()))
+            logging.warning("Configured workspace {w} not found. Please double check your configuration. Skipping...".format(**locals()))
         else:
             ROS_setup_ros_package_path(w)
             ROS_setup_ospath(w)
