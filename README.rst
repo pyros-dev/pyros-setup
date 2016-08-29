@@ -27,6 +27,10 @@ OR using pytest specifically::
 
   py.test --pyargs pyros_setup
 
+OR via tox to test multiple env at once (with only one ROS distro) ::
+
+  tox -- --distro=indigo
+
 It can also be used from source inside a catkin workspace in the same way.
 The workspace act as a virtual environment (using https://github.com/asmodehn/catkin_pip).
 This is useful for development along with ROS packages::
