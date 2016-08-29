@@ -7,6 +7,15 @@ from setuptools import setup
 with open('pyros_setup/_version.py') as vf:
     exec(vf.read())
 
+# Best Flow :
+# git changelog >CHANGELOG.rst
+# git commit "updating changelog"
+# change version in code and changelog
+# git commit "v<M.m.p>"
+# python setup.py publish
+# python setup.py tag
+# => try to do a simple "release" command
+
 
 if sys.argv[-1] == 'publish':
 
