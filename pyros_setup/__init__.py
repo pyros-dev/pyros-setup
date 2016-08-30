@@ -13,6 +13,11 @@ import sys
 from .utils import deprecated
 from pyros_config import ConfigImport, ConfigHandler
 
+# Configuring logging default handler
+import logging
+_logger = logging.getLogger(__package__)
+_logger.addHandler(logging.NullHandler())
+
 
 # class to allow delayed conditional import, with behavior based on configuration.
 # This way it can work with or without preset environment
@@ -46,7 +51,7 @@ class _PyrosSetup(ConfigImport):
                                           default_config=self._default_config)
 
     def _attempt_import_fix(self):
-        logging.warning("Error detected while importing ROS python modules. Attempting fix via ROS setup emulation...")
+        _logger.warning("Error detected while importing ROS python modules. Attempting fix via ROS setup emulation...")
         from .ros_setup import ROS_emulate_setup
         # we want this to except in case of bad config, because default_config has to have these fields.
         ROS_emulate_setup(self.config['DISTRO'], *self.config['WORKSPACES'])

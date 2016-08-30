@@ -3,6 +3,47 @@ from __future__ import print_function
 
 import sys
 
+# logging configuration should be here to not be imported by python users of pyros_setup.
+# only used from command line
+
+import logging.config
+# Setting up logging for this test
+logging.config.dictConfig(
+    {
+        'version': 1,
+        'formatters': {
+            'verbose': {
+                'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+            },
+            'simple': {
+                'format': '%(levelname)s %(name)s:%(message)s'
+            },
+        },
+        'handlers': {
+            'null': {
+                'level': 'DEBUG',
+                'class': 'logging.NullHandler',
+            },
+            'console': {
+                'level': 'DEBUG',
+                'class': 'logging.StreamHandler',
+                'formatter': 'simple'
+            },
+        },
+        'loggers': {
+            'pyros_config': {
+                'handlers': ['console'],
+                'level': 'INFO',
+                'propagate': False,
+            },
+            'pyros_setup': {
+                'handlers': ['console'],
+                'level': 'INFO',
+            }
+        }
+    }
+)
+
 
 def main():
     if len(sys.argv) > 1:

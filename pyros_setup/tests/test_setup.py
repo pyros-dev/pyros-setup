@@ -3,9 +3,7 @@ from __future__ import absolute_import
 
 import sys
 import os
-
 import pytest
-
 
 @pytest.fixture
 def cmdopt(request):
@@ -47,13 +45,15 @@ def test_rospy_imported_config(setup, cmdopt):
 
         pyros_setup.activate()  # you do the setup as expected by ROS
 
+        try:
+            # we now have access to all imported content (directly or through redirection _PyrosSetup class)
+            assert hasattr(pyros_setup, 'configurable_import')
+        except ImportError:
+            assert False
+
         import rospy
 
     assert rospy is not None
 
-    try:
-        # we now have access to all imported content (directly or through redirection _PyrosSetup class)
-        assert hasattr(pyros_setup, 'configurable_import')
-    except ImportError:
-        assert False
+
 
