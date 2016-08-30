@@ -10,42 +10,29 @@ env:
   # This will check any ROS distro with any python interpreter
   # supported on this OS
 
-  # Disabling ROS workflow checks since pyros_setup should be used only with pip dependencies, only when catkin is not avialable.
-  # Removing this usecase to avoid confusion, and temptation to create a ROS package from it.
-  # - CI_ROS_DISTRO=indigo ROS_FLOW=devel
-  # CAREFUL Pyros-Setup is a hybrid package
-  # => install ros flow is not supported (pip dependencies will not be found)
+  # Disabling ROS workflow checks since pyros_setup should be used only with pip dependencies, only when catkin is not available.
   # => making a ROS package from it is not supported (and not needed anyway).
-  # - CI_ROS_DISTRO=indigo ROS_FLOW=install
   - CI_ROS_DISTRO=indigo PYTHON=2.7
   - CI_ROS_DISTRO=indigo PYTHON=3.4
 
-  # Disabling ROS workflow checks since pyros_setup should be used only with pip dependencies, only when catkin is not avialable.
-  # Removing this usecase to avoid confusion, and temptation to create a ROS package from it.
-  # - CI_ROS_DISTRO=jade ROS_FLOW=devel
-  # CAREFUL Pyros-Setup is a hybrid package
-  # => install ros flow is not supported (pip dependencies will not be found)
-  # => making a ROS package from it is not supported (and not needed anyway).
-  # - CI_ROS_DISTRO=jade ROS_FLOW=install
   - CI_ROS_DISTRO=jade PYTHON=2.7
   - CI_ROS_DISTRO=jade PYTHON=3.4
+  # TODO : kinetic + docker
   # TODO : pypy + pypy3
 
 # We need to get a ROS distro to be able to test pyros-setup
 # from different virtualenv using site-packages.
 before_install:
-  # Install ROS. We always need it for testing on system.
+  # Install ROS. We always need it for testing on system, even if we are in a virtualenv.
   - bash rosutils/install_ros.sh
   # Install python and required packages on system if needed
-  - if [ -z ${PYTHON+undef} ]; then echo "Python virtual env not used"; else sudo apt-get install python${PYTHON} virtualenvwrapper -y && source "/usr/share/virtualenvwrapper/virtualenvwrapper.sh"; fi
-  # Install package ROS dependencies
-  - rosdep install --default-yes --from-paths ./ --rosdistro $CI_ROS_DISTRO
+  - sudo apt-get install python${PYTHON} virtualenvwrapper -y && source "/usr/share/virtualenvwrapper/virtualenvwrapper.sh"
 
 install:
-  - if [ -z ${PYTHON+undef} ]; then (bash rosutils/travis_build.sh); else (mkvirtualenv --system-site-packages -i . -q python_${PYTHON}_ros); fi
+  - mkvirtualenv --system-site-packages -i . -q python_${PYTHON}_ros
 
 script:
-  - if [ -z ${PYTHON+undef} ]; then (bash rosutils/travis_checks.sh); else (workon python_${PYTHON}_ros && python -m pytest -s --pyargs pyros_setup --distro ${CI_ROS_DISTRO}); fi
+  - workon python_${PYTHON}_ros && pyros_setup --pytest --distro ${CI_ROS_DISTRO}
 
 notifications:
   email: false
