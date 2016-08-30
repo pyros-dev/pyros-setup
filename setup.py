@@ -2,7 +2,7 @@
 # using setuptools : http://pythonhosted.org/setuptools/
 import os
 import sys
-from setuptools import setup
+import setuptools
 
 with open('pyros_setup/_version.py') as vf:
     exec(vf.read())
@@ -17,25 +17,60 @@ with open('pyros_setup/_version.py') as vf:
 # => try to do a simple "release" command
 
 
-if sys.argv[-1] == 'publish':
+# Clean way to add a custom "python setup.py <command>"
+# Ref setup.py command extension : https://blog.niteoweb.com/setuptools-run-custom-code-in-setup-py/
+class PublishCommand(setuptools.Command):
+    """Command to release this package to Pypi"""
+    description = "releases pyros_setup to Pypi"
+    user_options = []
 
-    os.system("python setup.py sdist")
-    os.system("python setup.py bdist_wheel")
-    # OLD way:
-    #os.system("python setup.py sdist bdist_wheel upload")
-    # NEW way:
-    # Ref: https://packaging.python.org/distributing/
-    os.system("twine upload dist/*")
-    print("You probably want to also tag the version now:")
-    print("  python setup.py tag")
-    sys.exit()
+    def initialize_options(self):
+        """init options"""
+        pass
 
-if sys.argv[-1] == 'tag':
-    os.system("git tag -a {0} -m 'version {0}'".format(__version__))
-    os.system("git push --tags")
-    sys.exit()
+    def finalize_options(self):
+        """finalize options"""
+        pass
 
-setup(name='pyros_setup',
+    def run(self):
+        """runner"""
+
+        os.system("python setup.py sdist")
+        os.system("python setup.py bdist_wheel")
+        # OLD way:
+        # os.system("python setup.py sdist bdist_wheel upload")
+        # NEW way:
+        # Ref: https://packaging.python.org/distributing/
+        os.system("twine upload dist/*")
+        print("You probably want to also tag the version now:")
+        print("  python setup.py tag")
+        sys.exit()
+
+
+# Clean way to add a custom "python setup.py <command>"
+# Ref setup.py command extension : https://blog.niteoweb.com/setuptools-run-custom-code-in-setup-py/
+class TagCommand(setuptools.Command):
+    """Command to release this package to Pypi"""
+    description = "tag a release of pyros_setup"
+    user_options = []
+
+    def initialize_options(self):
+        """init options"""
+        pass
+
+    def finalize_options(self):
+        """finalize options"""
+        pass
+
+    def run(self):
+        """runner"""
+
+        os.system("git tag -a {0} -m 'version {0}'".format(__version__))
+        os.system("git push --tags")
+        sys.exit()
+
+
+setuptools.setup(name='pyros_setup',
     version=__version__,
     description='Toolsuite for running ROS environments directly from python code, without any specific requirements outside of usual python',
     url='http://github.com/asmodehn/pyros-setup',
@@ -52,7 +87,7 @@ setup(name='pyros_setup',
         ]
     },
     # this is better than using package data ( since behavior is a bit different from distutils... )
-    include_package_data=True,  # use MANIFEST.in during install.
+    include_package_data=True,  # use MANIFEST.in when using source dist.
     install_requires=[
         'six',
         'pyros_config>=0.1.2',
@@ -63,6 +98,10 @@ setup(name='pyros_setup',
     ],
     tests_require=[
     ],
-    zip_safe=False,  # TODO testing...
+    cmdclass={
+         'tag': TagCommand,
+         'publish': PublishCommand,
+    },
+    zip_safe=True,
 )
 

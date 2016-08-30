@@ -17,15 +17,15 @@ To install it::
 
 To run the self tests, using entry_points defined in setup.py::
 
-  pyros_setup
+  pyros_setup --pytest
 
 OR using the python package directly::
 
-  python -m pyros_setup
+  python -m pyros_setup --pytest
 
-OR using pytest specifically::
+OR using pytest specifically, optionally specifying the distro you want to use ::
 
-  py.test --pyargs pyros_setup
+  py.test -s --pyargs pyros_setup --distro=indigo
 
 OR via tox to test multiple env at once (with only one ROS distro) ::
 
@@ -39,7 +39,7 @@ This is useful for development along with ROS packages::
   $ source devel/setup.bash
   $ python -m pyros_setup
   $ pyros_setup
-  $ py.test --pyargs pyros_setup
+  $ py.test -s --pyargs pyros_setup --distro=indigo
 
 
 HowTo code

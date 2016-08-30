@@ -8,7 +8,7 @@ def main():
     if len(sys.argv) > 1:
         if sys.argv[1] == '--pytest':
             import pytest  # import only if needed
-            errno = pytest.main(['--pyargs', 'pyros_setup'] + sys.argv[2:])
+            errno = pytest.main(['-s', '--pyargs', 'pyros_setup'] + sys.argv[2:])
             sys.exit(errno)
         elif sys.argv[1] == '--version':
             import pyros_setup  # import only if needed
