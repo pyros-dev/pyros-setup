@@ -15,16 +15,12 @@ def main():
             # following pip version output format
             print("pyros_setup {0} from {1} (python {2})".format(pyros_setup.__version__, pyros_setup.__file__, sys.version[:3]))
             return
-        elif sys.argv[1] == '--genconfig':
-            import pyros_setup  # import only if needed
-            pyros_setup.configurable_import().generate_default_config()
-            return
         elif sys.argv[1] == '--help':
             print("Pyros_setup is a tool to help you manipulate python environment setup.")
             print("It is especially useful with ROS and other environments that rely on system python with PYTHONPATH modifications.")
-            print("Usage: pyros_setup [--pytest | --version | --genconfig | --help]")
+            print("Usage: pyros_setup [--pytest | --version | --help]")
         else:
-            print("Usage: pyros_setup [--pytest | --version | --genconfig | --help]")
+            print("Usage: pyros_setup [--pytest | --version | --help]")
 
     else:
         print("To validate your pyros_setup installation, use : pyros_setup --pytest [<custom pytest arguments>]")
