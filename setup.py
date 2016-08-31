@@ -12,9 +12,11 @@ with open('pyros_setup/_version.py') as vf:
 # git commit "updating changelog"
 # change version in code and changelog
 # git commit "v<M.m.p>"
+# git push
+# WAIT FOR TRAVIS CHECKS
 # python setup.py publish
 # python setup.py tag
-# => try to do a simple "release" command
+# => TODO : try to do a simpler "release" command
 
 
 # Clean way to add a custom "python setup.py <command>"
