@@ -32,12 +32,11 @@ install:
   - mkvirtualenv --system-site-packages -i . -q python_${PYTHON}_ros
 
 script:
-  - workon python_${PYTHON}_ros && mkdir -p testing && cd testing
-  - echo "Testing default detected distro" && pyros_setup --pytest
-  - echo "Testing default created config" && pyros_setup --pytest
+  - workon python_${PYTHON}_ros && mkdir -p testing && cd testing && echo "Testing default detected distro" && pyros_setup --pytest
+  - workon python_${PYTHON}_ros && mkdir -p testing && cd testing && echo "Testing default created config" && pyros_setup --pytest
   # This currently breaks because of https://github.com/pytest-dev/pytest/issues/1889
   # TODO fix it.
-  #- echo "Testing overloaded correct config succeed" && pyros_setup --pytest --distro ${CI_ROS_DISTRO}
+  #- workon python_${PYTHON}_ros && mkdir -p testing && cd testing && echo "Testing overloaded correct config succeed" && pyros_setup --pytest --distro ${CI_ROS_DISTRO}
   # TODO : test that distro not matching travis setup actually fail as expected
 
 notifications:
