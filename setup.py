@@ -37,13 +37,12 @@ class PrepareReleaseCommand(setuptools.Command):
     def run(self):
         """runner"""
 
+        # TODO :
         # $ gitchangelog >CHANGELOG.rst
         # $ git commit CHANGELOG.rst -m "updating changelog"
         # change version in code and changelog
-        # $ git commit CHANGELOG.rst pyros_setup/_version.py -m "v<M.m.p>"
-        # $ git push
-        subprocess.check_call("git commit CHANGELOG.rst pyros_setup/_version.py -m 'v{0}'".format(__version__))
-        subprocess.check_call("git push")
+        subprocess.check_call("git commit CHANGELOG.rst pyros_setup/_version.py -m 'v{0}'".format(__version__), shell=True)
+        subprocess.check_call("git push", shell=True)
 
         print("You should verify travis checks, and you can publish this release with :")
         print("  python setup.py publish")
@@ -68,16 +67,16 @@ class PublishCommand(setuptools.Command):
     def run(self):
         """runner"""
 
-        subprocess.check_call("python setup.py sdist")
-        subprocess.check_call("python setup.py bdist_wheel")
+        subprocess.check_call("python setup.py sdist", shell=True)
+        subprocess.check_call("python setup.py bdist_wheel", shell=True)
         # OLD way:
         # os.system("python setup.py sdist bdist_wheel upload")
         # NEW way:
         # Ref: https://packaging.python.org/distributing/
-        subprocess.check_call("twine upload dist/*")
+        subprocess.check_call("twine upload dist/*", shell=True)
 
-        subprocess.check_call("git tag -a {0} -m 'version {0}'".format(__version__))
-        subprocess.check_call("git push --tags")
+        subprocess.check_call("git tag -a {0} -m 'version {0}'".format(__version__), shell=True)
+        subprocess.check_call("git push --tags", shell=True)
         sys.exit()
 
 
