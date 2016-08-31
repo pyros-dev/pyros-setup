@@ -1,8 +1,21 @@
 Changelog
 =========
 
+%%version%% (unreleased)
+------------------------
+
+- Improved travis test to catch config file errors. [alexv]
+
+- Refined release flow in setup.py comments. [alexv]
+
+- Fixed quoting distro in generated config file. [alexv]
+
 0.1.3 (2016-08-31)
 ------------------
+
+- V0.1.3. [alexv]
+
+- Generating changelog. [alexv]
 
 - Attempting to get travis to workaround https://github.com/pytest-
   dev/pytest/issues/1889. [alexv]
