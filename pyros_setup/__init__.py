@@ -18,13 +18,23 @@ import logging
 _logger = logging.getLogger(__package__)
 _logger.addHandler(logging.NullHandler())
 
+#: Smart Default distro detection (as early as possible)
+if os.path.exists('/opt/ros/kinetic'):
+    DETECTED_DISTRO = 'kinetic'
+elif os.path.exists('/opt/ros/jade'):
+    DETECTED_DISTRO = 'jade'
+elif os.path.exists('/opt/ros/indigo'):
+    DETECTED_DISTRO = 'indigo'
+else:
+    DETECTED_DISTRO = 'unknown'
+
 
 # class to allow delayed conditional import, with behavior based on configuration.
 # This way it can work with or without preset environment
 class _PyrosSetup(ConfigImport):
-    #: Default configuration parameters.
+
     _default_config = {
-        'DISTRO': 'indigo',
+        'DISTRO': DETECTED_DISTRO,
         'WORKSPACES': [],
     }
 
@@ -56,7 +66,7 @@ class _PyrosSetup(ConfigImport):
         # we want this to except in case of bad config, because default_config has to have these fields.
         ROS_emulate_setup(self.config['DISTRO'], *self.config['WORKSPACES'])
 
-    def configure(self, config=None):
+    def configure(self, config=None, ):
         """
         load configuration
         :param config:
@@ -73,10 +83,8 @@ class _PyrosSetup(ConfigImport):
 # Fill in your workspaces here, if you want to dynamically import ROS packages from it.
 WORKSPACES=[]
 
-# You need to specify one of these, depending on your environment
-# DISTRO='indigo'
-# DISTRO='jade'
-DISTRO='kinetic'
+# ROS distribution. Change this value to the ROS distribution you want to use with this environment.
+""" + "DISTRO={0}".format(DETECTED_DISTRO) + """
 """)
 
         return self

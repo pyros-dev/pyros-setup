@@ -39,12 +39,14 @@ logging.config.dictConfig(
             'pyros_setup': {
                 'handlers': ['console'],
                 'level': 'INFO',
+                'propagate': False,
             }
         }
     }
 )
 
 
+# TODO : use click for cleaner command line arg parsing.
 def main():
     if len(sys.argv) > 1:
         if sys.argv[1] == '--pytest':

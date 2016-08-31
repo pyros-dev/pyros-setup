@@ -90,7 +90,7 @@ setuptools.setup(name='pyros_setup',
     include_package_data=True,  # use MANIFEST.in when using source dist.
     install_requires=[
         'six',
-        'pyros_config>=0.1.2',
+        'pyros_config>=0.1.4',
         'pytest>=2.5.1'
     ],
     setup_requires=[
