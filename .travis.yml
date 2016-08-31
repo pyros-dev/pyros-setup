@@ -33,8 +33,11 @@ install:
 
 script:
   - workon python_${PYTHON}_ros && mkdir -p testing && cd testing
-  # testing default distro setup
-  - pyros_setup --pytest
+  - echo "Testing default detected distro" && pyros_setup --pytest
+  - echo "Testing default created config" && pyros_setup --pytest
+  # testing default created config
+  - echo "Testing overloaded correct config succeed" && pyros_setup --pytest --distro ${CI_ROS_DISTRO}
+  # TODO : test that distro not matching travis setup actually fail as expected
 
 notifications:
   email: false
