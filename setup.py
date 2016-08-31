@@ -9,6 +9,7 @@ with open('pyros_setup/_version.py') as vf:
     exec(vf.read())
 
 # Best Flow :
+# Clean previous build & dist
 # $ gitchangelog >CHANGELOG.rst
 # $ git commit CHANGELOG.rst -m "updating changelog"
 # change version in code and changelog

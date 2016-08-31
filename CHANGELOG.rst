@@ -1,8 +1,13 @@
 Changelog
 =========
 
-%%version%% (unreleased)
-------------------------
+0.1.4 (2016-08-31)
+------------------
+
+- Fixing travis python checks. [alexv]
+
+- Now checking exit status during release process. added gitchangelog
+  config, not logging merge anymore. [alexv]
 
 - Commenting travis check breaking because of pytest bug with installed
   tests. [alexv]
@@ -11,9 +16,6 @@ Changelog
   [alexv]
 
 - Tagging changelog. [alexv]
-
-0.1.4 (2016-08-31)
-------------------
 
 - V0.1.4. [alexv]
 
