@@ -8,14 +8,14 @@ with open('pyros_setup/_version.py') as vf:
     exec(vf.read())
 
 # Best Flow :
-# gitchangelog >CHANGELOG.rst
-# git commit CHANGELOG.rst -m "updating changelog"
+# $ gitchangelog >CHANGELOG.rst
+# $ git commit CHANGELOG.rst -m "updating changelog"
 # change version in code and changelog
-# git commit setup.py pyros_setup/_version.py -m "v<M.m.p>"
-# git push
+# $ git commit setup.py pyros_setup/_version.py -m "v<M.m.p>"
+# $ git push
 # WAIT FOR TRAVIS CHECKS
-# python setup.py publish
-# python setup.py tag
+# $ python setup.py publish
+# $ python setup.py tag
 # => TODO : try to do a simpler "release" command
 
 
