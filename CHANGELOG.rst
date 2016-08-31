@@ -1,8 +1,48 @@
 Changelog
 =========
 
+%%version%% (unreleased)
+------------------------
+
+- Attempting to get travis to workaround https://github.com/pytest-
+  dev/pytest/issues/1889. [alexv]
+
+- Now detecting ros distro on config generation. increased pyros_config
+  requirement to support config generation. [alexv]
+
+- Reviewed test and logging configuration. [alexv]
+
+- Now using pyros_setup command to run self test instead of pytest.
+  simplified travis check, dropping ros workflow. [alexv]
+
+- Attempting default config file generation. added troubleshooting
+  section to README. [alexv]
+
+- Remove __init__.py from test folder as detailed in pytest doc. bumped
+  version to 0.1.99 to denote devel. [alexv]
+
+- Improved setup.py with custom commands. Reviewed test, now using
+  py.test -s. Fixed some details in README. [alexv]
+
+- Adding method to generate config file in instance folder. [alexv]
+
+- Adding instructions for running tox. [alexv]
+
+- Following pip format to display version. [alexv]
+
+- Refining config and tests, to fail tests if default config is wrong
+  for user setup. [alexv]
+
+- Adding kinetic configs. [alexv]
+
+- Comments for release workflow. [alexv]
+
+- Fix typo in log message. [alexv]
+
 0.1.2 (2016-08-11)
 ------------------
+
+- V0.1.2. [alexv]
 
 - Changelog. [alexv]
 
