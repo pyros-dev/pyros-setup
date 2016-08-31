@@ -1,8 +1,8 @@
 Changelog
 =========
 
-%%version%% (unreleased)
-------------------------
+0.1.3 (2016-08-31)
+------------------
 
 - Attempting to get travis to workaround https://github.com/pytest-
   dev/pytest/issues/1889. [alexv]
