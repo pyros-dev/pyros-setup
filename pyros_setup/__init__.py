@@ -84,7 +84,7 @@ class _PyrosSetup(ConfigImport):
 WORKSPACES=[]
 
 # ROS distribution. Change this value to the ROS distribution you want to use with this environment.
-""" + "DISTRO={0}".format(DETECTED_DISTRO) + """
+""" + "DISTRO='{0}'".format(DETECTED_DISTRO) + """
 """)
 
         return self
