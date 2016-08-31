@@ -1,6 +1,7 @@
 # PYTHON PACKAGING
 # using setuptools : http://pythonhosted.org/setuptools/
 import os
+import subprocess
 import sys
 import setuptools
 
@@ -11,12 +12,41 @@ with open('pyros_setup/_version.py') as vf:
 # $ gitchangelog >CHANGELOG.rst
 # $ git commit CHANGELOG.rst -m "updating changelog"
 # change version in code and changelog
-# $ git commit CHANGELOG.rst pyros_setup/_version.py -m "v<M.m.p>"
-# $ git push
+# $ python setup.py prepare_release
 # WAIT FOR TRAVIS CHECKS
 # $ python setup.py publish
-# $ python setup.py tag
 # => TODO : try to do a simpler "release" command
+
+
+# Clean way to add a custom "python setup.py <command>"
+# Ref setup.py command extension : https://blog.niteoweb.com/setuptools-run-custom-code-in-setup-py/
+class PrepareReleaseCommand(setuptools.Command):
+    """Command to release this package to Pypi"""
+    description = "prepare a release of pyros_setup"
+    user_options = []
+
+    def initialize_options(self):
+        """init options"""
+        pass
+
+    def finalize_options(self):
+        """finalize options"""
+        pass
+
+    def run(self):
+        """runner"""
+
+        # $ gitchangelog >CHANGELOG.rst
+        # $ git commit CHANGELOG.rst -m "updating changelog"
+        # change version in code and changelog
+        # $ git commit CHANGELOG.rst pyros_setup/_version.py -m "v<M.m.p>"
+        # $ git push
+        subprocess.check_call("git commit CHANGELOG.rst pyros_setup/_version.py -m 'v{0}'".format(__version__))
+        subprocess.check_call("git push")
+
+        print("You should verify travis checks, and you can publish this release with :")
+        print("  python setup.py publish")
+        sys.exit()
 
 
 # Clean way to add a custom "python setup.py <command>"
@@ -37,38 +67,16 @@ class PublishCommand(setuptools.Command):
     def run(self):
         """runner"""
 
-        os.system("python setup.py sdist")
-        os.system("python setup.py bdist_wheel")
+        subprocess.check_call("python setup.py sdist")
+        subprocess.check_call("python setup.py bdist_wheel")
         # OLD way:
         # os.system("python setup.py sdist bdist_wheel upload")
         # NEW way:
         # Ref: https://packaging.python.org/distributing/
-        os.system("twine upload dist/*")
-        print("You probably want to also tag the version now:")
-        print("  python setup.py tag")
-        sys.exit()
+        subprocess.check_call("twine upload dist/*")
 
-
-# Clean way to add a custom "python setup.py <command>"
-# Ref setup.py command extension : https://blog.niteoweb.com/setuptools-run-custom-code-in-setup-py/
-class TagCommand(setuptools.Command):
-    """Command to release this package to Pypi"""
-    description = "tag a release of pyros_setup"
-    user_options = []
-
-    def initialize_options(self):
-        """init options"""
-        pass
-
-    def finalize_options(self):
-        """finalize options"""
-        pass
-
-    def run(self):
-        """runner"""
-
-        os.system("git tag -a {0} -m 'version {0}'".format(__version__))
-        os.system("git push --tags")
+        subprocess.check_call("git tag -a {0} -m 'version {0}'".format(__version__))
+        subprocess.check_call("git push --tags")
         sys.exit()
 
 
@@ -101,7 +109,7 @@ setuptools.setup(name='pyros_setup',
     tests_require=[
     ],
     cmdclass={
-         'tag': TagCommand,
+         'prepare_release': PrepareReleaseCommand,
          'publish': PublishCommand,
     },
     zip_safe=True,

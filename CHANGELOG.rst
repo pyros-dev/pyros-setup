@@ -1,8 +1,23 @@
 Changelog
 =========
 
+%%version%% (unreleased)
+------------------------
+
+- Commenting travis check breaking because of pytest bug with installed
+  tests. [alexv]
+
+- Bumping pyros-config requirement. fixed release flow description.
+  [alexv]
+
+- Tagging changelog. [alexv]
+
 0.1.4 (2016-08-31)
 ------------------
+
+- V0.1.4. [alexv]
+
+- Updating changelog and setup.py release flow comment. [alexv]
 
 - Improved travis test to catch config file errors. [alexv]
 
@@ -79,10 +94,6 @@ Changelog
 
 - Quick docs cleanup. [alexv]
 
-- Merge pull request #25 from asmodehn/extract_utils_config. [AlexV]
-
-  Extract utils config
-
 - Cosmetics. [alexv]
 
 - Requiring catkin_pip minimum 0.1.10, in order to fail on ros install
@@ -146,10 +157,6 @@ Changelog
 - Bumping minimum required catkin_pure_python version to 0.0.8 to not
   write to install workspace before make install. [alexv]
 
-- Merge pull request #19 from asmodehn/travis_rosdeps_check. [AlexV]
-
-  Travis rosdeps check
-
 - Improved readme, mentioning to use pip package and catkin_pure_python.
   [alexv]
 
@@ -171,22 +178,7 @@ Changelog
 
 - Generating changelog. [alexv]
 
-- Merge pull request #13 from asmodehn/cmake_buildtool. [AlexV]
-
-  python package mutation
-
-- Merge pull request #17 from asmodehn/config_refactor. [AlexV]
-
-  Config refactor
-
 - Adding missing config package to setup.py. [alexv]
-
-- Merge branch 'cmake_buildtool' of https://github.com/asmodehn/pyros-
-  setup into config_refactor. [alexv]
-
-  Conflicts:
-  	rosutils/build_devel.sh
-  	rosutils/build_install.sh
 
 - Ros package still depending on catkin afterall. [alexv]
 
@@ -198,19 +190,7 @@ Changelog
 - Rosutils scripts changing to build directory before doing anything
   else. [AlexV]
 
-- Merge branch 'master' of https://github.com/asmodehn/pyros-setup into
-  cmake_buildtool Also setting minimum version for catkin_pure_python
-  Conflicts:    package.xml. [alexv]
-
-- Merge pull request #18 from asmodehn/package_v2. [AlexV]
-
-  now using package v2 format
-
 - Now using package v2 format. [alexv]
-
-- Merge pull request #12 from asmodehn/fix_package_path. [AlexV]
-
-  fixed logic for ros_package_path when not a devel workspace.
 
 - Fixed logic for ros_package_path when not a devel workspace.
   cosmetics. [alexv]
@@ -220,9 +200,6 @@ Changelog
 - Fixing rosutils scripts. [alexv]
 
 - Adding package version. [alexv]
-
-- Merge branch 'cmake_buildtool' of https://github.com/asmodehn/pyros-
-  setup into config_refactor. [alexv]
 
 - Mention shadowrobot buildtools in readme. [alexv]
 
@@ -265,12 +242,6 @@ Changelog
 
 - Added simple method to get ros_home. [alexv]
 
-- Merge branch 'python-venv' of https://github.com/asmodehn/pyros-setup
-  into cmake_buildtool. [alexv]
-
-  Conflicts:
-  	CMakeLists.txt
-
 - First experiment with using a virtualenv in devel workspace. [AlexV]
 
 - First verison of cmake creating a venv to store packages. [AlexV]
@@ -303,12 +274,6 @@ Changelog
 
 - Preparing 0.0.11. [AlexV]
 
-- Merge branch 'indigo' of https://github.com/asmodehn/pyros-setup.
-  [AlexV]
-
-  Conflicts:
-  	setup.py
-
 - Adding simple entrypoint to run nose tests. [AlexV]
 
 - Now running setup.py only with setuptools. adding nose.collector as
@@ -317,10 +282,6 @@ Changelog
 
 0.0.10 (2016-01-25)
 -------------------
-
-- Merge pull request #6 from asmodehn/improve_rostests. [AlexV]
-
-  Improve rostests
 
 - Revert "removing executable flag from test_rostest_nose since it can
   now be executed with nose as well as rostest" [alexv]
@@ -337,13 +298,6 @@ Changelog
   [alexv]
 
 - Preparing v0.0.10. [alexv]
-
-- Merge branch 'master' of https://github.com/asmodehn/pyros-setup into
-  improve_rostests. [alexv]
-
-  Conflicts:
-  	CMakeLists.txt
-  	README.rst
 
 - Improved tests for rostest_nose module to make sure rostest still
   works. [alexv]
@@ -401,12 +355,6 @@ Changelog
 ------------------
 
 - Preparing for 0.0.4 pypi release. [alexv]
-
-- Merge branch 'indigo' of https://github.com/asmodehn/pyros-setup into
-  indigo. [alexv]
-
-- Merge branch 'indigo' of https://github.com/asmodehn/pyros-setup into
-  indigo. [alexv]
 
 - Using shadow-fixed repo for travis. [AlexV]
 
