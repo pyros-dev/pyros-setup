@@ -11,7 +11,7 @@ with open('pyros_setup/_version.py') as vf:
 # $ gitchangelog >CHANGELOG.rst
 # $ git commit CHANGELOG.rst -m "updating changelog"
 # change version in code and changelog
-# $ git commit setup.py pyros_setup/_version.py -m "v<M.m.p>"
+# $ git commit CHANGELOG.rst pyros_setup/_version.py -m "v<M.m.p>"
 # $ git push
 # WAIT FOR TRAVIS CHECKS
 # $ python setup.py publish
@@ -92,7 +92,7 @@ setuptools.setup(name='pyros_setup',
     include_package_data=True,  # use MANIFEST.in when using source dist.
     install_requires=[
         'six',
-        'pyros_config>=0.1.4',
+        'pyros_config>=0.1.5',
         'pytest>=2.5.1'
     ],
     setup_requires=[
