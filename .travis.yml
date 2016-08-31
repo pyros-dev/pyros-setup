@@ -32,7 +32,9 @@ install:
   - mkvirtualenv --system-site-packages -i . -q python_${PYTHON}_ros
 
 script:
-  - workon python_${PYTHON}_ros && pyros_setup --pytest --distro ${CI_ROS_DISTRO}
+  - workon python_${PYTHON}_ros && mkdir -p testing && cd testing
+  # testing default distro setup
+  - pyros_setup --pytest
 
 notifications:
   email: false

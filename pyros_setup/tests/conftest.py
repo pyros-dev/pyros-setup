@@ -7,3 +7,6 @@ def pytest_addoption(parser):
     #if not conflict:
         parser.addoption("--distro", action="store", default=None,
             help="distro: indigo or jade or kinetic")
+        # Note this is useful to explicitly set the ROS distro while testing
+        # and ensuring we fail when we should, and properly warn the user.
+        # TODO : check expected failure with travis
