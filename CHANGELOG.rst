@@ -1,8 +1,27 @@
 Changelog
 =========
 
+0.1.5 (2016-09-02)
+------------------
+
+- Now doing virtualenvwrapper setup in container at each step. [alexv]
+
+- Now doing virtualenvwrapper setup inside container. [alexv]
+
+- Checking if explicit virtualenv setup is actually needed. [alexv]
+
+- Attempting travis docker build and enabling kinetic check. [alexv]
+
+- Fixed ROS_ETC_DIR and ROS_PACKAGE_PATH setup. adding debug logs.
+  cosmetics. [alexv]
+
+- Running release commands from setup.py using subprocess shell call.
+  [alexv]
+
 0.1.4 (2016-08-31)
 ------------------
+
+- Updated changelog. [alexv]
 
 - Fixing travis python checks. [alexv]
 
