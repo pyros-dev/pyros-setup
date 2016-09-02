@@ -46,7 +46,7 @@ install:
   # Install python and required packages on system if needed
   - docker exec -ti ${CONTAINER_NAME} apt-get install python${PYTHON} virtualenvwrapper -y
   # Doing virtualenv required setup
-  #- docker exec -ti ${CONTAINER_NAME} /bin/bash -c "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh"
+  - docker exec -ti ${CONTAINER_NAME} /bin/bash -c "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh"
   # copying local clone to the running container (volume is currently broken)
   - docker cp . ${CONTAINER_NAME}:/git_clone
   # getting virtualenv setup with dependencies
