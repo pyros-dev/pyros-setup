@@ -60,8 +60,8 @@ def ROS_setup_rosdistro_env(default_distro=None):
     if os.environ.get('ROS_MASTER_URI', None) is None:
                 os.environ['ROS_MASTER_URI'] = 'http://localhost:11311'
 
-    if os.environ.get('ROS_MASTER_URI', None) is None:
-                os.environ['ROS_MASTER_URI'] = '/opt/ros/' + distro + '/etc/ros'
+    if os.environ.get('ROS_ETC_DIR', None) is None:
+                os.environ['ROS_ETC_DIR'] = '/opt/ros/' + distro + '/etc/ros'
 
     # we return here the workspace for the distro
     return '/opt/ros/' + distro
@@ -70,24 +70,29 @@ def ROS_setup_rosdistro_env(default_distro=None):
 def ROS_setup_ros_package_path(workspace):
 
     # setting cmake prefix path - rosout needs this
+    _logger.debug("Checking {0} exists and not in {1}".format(workspace, os.environ.get("CMAKE_PREFIX_PATH", [])))
     if os.path.exists(workspace) and workspace not in os.environ.get("CMAKE_PREFIX_PATH", []):
         _logger.warning("Prepending path {workspace} to CMAKE_PREFIX_PATH".format(workspace=workspace))
         os.environ["CMAKE_PREFIX_PATH"] = workspace + ':' + os.environ.get("CMAKE_PREFIX_PATH", '')
 
     # prepending current path for ros package discovery
+    _logger.debug("Checking {0} exists and is named 'devel'".format(workspace))
     if os.path.basename(workspace) == 'devel':  # special case of devel -> we can find src
         src_path = os.path.join(os.path.dirname(workspace), 'src')
+        _logger.debug("Checking {0} exists".format(src_path))
         if src_path is not None and os.path.exists(src_path):
             _logger.warning("Prepending path {workspace_src} to ROS_PACKAGE_PATH".format(workspace_src=src_path))
             os.environ['ROS_PACKAGE_PATH'] = src_path + ':' + os.environ['ROS_PACKAGE_PATH']
 
-    else:  # TODO : this is a quick fix. investigate this case more
-        stacks_path = os.path.join(os.path.dirname(workspace), 'stacks')
+    else:
+        stacks_path = os.path.join(workspace, 'stacks')
+        _logger.debug("Checking {0} exists".format(stacks_path))
         if stacks_path is not None and os.path.exists(stacks_path):
             _logger.warning("Prepending path {workspace_stacks} to ROS_PACKAGE_PATH".format(workspace_stacks=stacks_path))
             os.environ['ROS_PACKAGE_PATH'] = stacks_path + ':' + os.environ['ROS_PACKAGE_PATH']
 
-        share_path = os.path.join(os.path.dirname(workspace), 'share')
+        share_path = os.path.join(workspace, 'share')
+        _logger.debug("Checking {0} exists".format(share_path))
         if share_path is not None and os.path.exists(share_path):
             _logger.warning("Prepending path {workspace_share} to ROS_PACKAGE_PATH".format(workspace_share=share_path))
             os.environ['ROS_PACKAGE_PATH'] = share_path + ':' + os.environ['ROS_PACKAGE_PATH']

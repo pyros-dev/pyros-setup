@@ -109,8 +109,8 @@ setuptools.setup(name='pyros_setup',
     tests_require=[
     ],
     cmdclass={
-         'prepare_release': PrepareReleaseCommand,
-         'publish': PublishCommand,
+        'prepare_release': PrepareReleaseCommand,
+        'publish': PublishCommand,
     },
     zip_safe=True,
 )
