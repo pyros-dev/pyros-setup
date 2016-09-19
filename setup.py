@@ -11,7 +11,6 @@ with open('pyros_setup/_version.py') as vf:
 # Best Flow :
 # Clean previous build & dist
 # $ gitchangelog >CHANGELOG.rst
-# $ git commit CHANGELOG.rst -m "updating changelog"
 # change version in code and changelog
 # $ python setup.py prepare_release
 # WAIT FOR TRAVIS CHECKS
