@@ -2,5 +2,5 @@
 --extra-index-url https://testpypi.python.org/simple/
 
 #Needed to generate changelog
-gitchangelog
+gitchangelog==2.4.1
 
