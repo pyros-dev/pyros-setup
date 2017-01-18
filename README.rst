@@ -15,6 +15,11 @@ To install it::
 
   pip install pyros_setup
 
+You need to be careful which environmnt you install this package in:
+
+- If you are running in a virtual environment `myvenv`, and you want to access ROS packages outside this environment (since they should be installed on the system in `/opt/ros/$ROS_DISTRO`), you need to install pyros-setup in the virtual environment `myvenv`. Please report bugs you may encounter, this is the proper way to setup the environment without risks to break your system python, but likely not the most tested...
+- If you are running the system python interpreter (not in a virtual environment), you should then install this package on your system (in `/usr/local/lib/python2.7/site-packages`, also via the same pip command). Although this is definitely not a recommended way to setup python packages, it is the defacto standard way for ROS.
+
 To run the self tests, using entry_points defined in setup.py::
 
   pyros_setup --pytest
@@ -47,13 +52,13 @@ HowTo code
 
 Basically it allows you to do this::
 
-  import pyros_setup
   try:
       import rospy
       import roslaunch
       import rosgraph
       import rosnode
   except ImportError:  # if ROS environment is not setup, we emulate it.
+      import pyros_setup
       pyros_setup.configurable_import().configure('mysetup.cfg').activate()  # this will use mysetup.cfg from pyros-setup instance folder
       import rospy
       import roslaunch
@@ -81,7 +86,7 @@ Remarks
 
 Although it would technically be possible to build a ROS package from this source, this will NOT be done.
 The catkin build system is only here to help having pyros-setup in a source workspace while developing on it.
-When using ROS directly this package is not needed, and having it installed among ROS packages would cause much user confusion when importing packages.
+When using ROS directly this package is not needed, and having it installed among ROS packages would cause much useless confusion with python import mechanism.
 
 Troubleshooting
 ^^^^^^^^^^^^^^^
