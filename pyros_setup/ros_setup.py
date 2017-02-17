@@ -140,6 +140,10 @@ def ROS_setup_pythonpath(workspace):
     ]
 
     class WrappedList:
+        """
+        Wrapping a List to override append with custom behavior
+        Necessary since we shouldn't play with builtins directly
+        """
         def __init__(self, lst):
             self._lst = lst
 
