@@ -4,8 +4,8 @@
 
 import sys
 import os
+import site
 import logging
-import collections
 
 from ._version import __version__
 
@@ -18,9 +18,6 @@ _logger = logging.getLogger(__name__)
 # Functions needed to find our ros code from different possible run environments,
 #  even when ROS has not been setup previously ( source setup, roslaunch, rostest ).
 # This is especially useful when debugging directly from Python IDE or so.
-#
-# Note : We dont want to support all the overlays / underlay things here
-# -> only applicable for package on top of core ROS packages.
 #
 # Here we need to setup an environment that can support different types of run:
 #
@@ -98,7 +95,6 @@ def ROS_setup_ros_package_path(workspace):
             os.environ['ROS_PACKAGE_PATH'] = share_path + ':' + os.environ['ROS_PACKAGE_PATH']
 
 
-
 def ROS_setup_ospath(workspace):
 
     binpath = os.path.join(workspace, 'bin')
@@ -143,14 +139,40 @@ def ROS_setup_pythonpath(workspace):
         os.path.join(workspace, 'lib', 'python2.7', 'site-packages'),  # catkin_pip can create this in workspaces and we need to be able to access it
     ]
 
-    for pp in package_paths:
-        if pp is not None and os.path.exists(pp):
-            _logger.warning("Prepending path {pp} to PYTHONPATH".format(**locals()))
-            # Note : virtualenvs are a much better solution to this problem.
-            # nevertheless we here try to simulate ROS behavior ( working with workspaces )
-            sys.path.insert(1, pp)
-            # setting python path needed only to find ros shell commands (rosmaster)
-            os.environ["PYTHONPATH"] = pp + ':' + os.environ.get("PYTHONPATH", '')
+    class WrappedList:
+        def __init__(self, lst):
+            self._lst = lst
+
+        def __getitem__(self, item):
+            return self._lst[item]
+
+        def __setitem__(self, key, item):
+            self._lst[key] = item
+
+        def append(self, elem):
+            """ overriding builtin feature"""
+            # self[len(self):len(self)] = [elem]  # original append (as per the python docs)
+            self[1:1] = [elem]  # insert in position 1
+
+    try:
+        # hijacking append to get it to mean prepend
+        # since ROS logic with package path is *incompatible* with python / venv logic
+        sys.path = WrappedList(sys.path)
+        # Note : virtualenvs are a much better solution to this problem,
+        # but we have to simulate ROS behavior ( to work with ROS workspaces )
+
+        for pp in package_paths:
+            if pp is not None and os.path.exists(pp):
+                _logger.warning("Prepending path {pp} to sys.path".format(**locals()))
+
+                site.addsitedir(pp)  # this makes use of sys.path.append(elem), where what we really want is inster(1,elem)
+
+                # setting python path needed only to find ros shell commands (rosmaster)
+                os.environ["PYTHONPATH"] = pp + ':' + os.environ.get("PYTHONPATH", '')
+
+    finally:
+        # removing our override
+        sys.path = sys.path._lst
 
     # Only this method is enough to fix the python import issues.
     # However it is expected that the whole ROS environment is setup before importing rospy, to avoid unknown issues.
