@@ -1,8 +1,33 @@
 Changelog
 =========
 
+0.1.6 (2017-02-20)
+------------------
+
+- Implemented readdsitedir and readdpackage, inspired from site.py.
+  [AlexV]
+
+- Removing our pyros-setup.cfg from source since pyros_setup should not
+  be run directly from source. [AlexV]
+
+- Bumping version number to denote a change. added class comment for
+  WrappedList. [AlexV]
+
+- Now using site.addsitedir to parse .pth files correctly when adding
+  site-packages and dist-packages into sys.path. [AlexV]
+
+- Update gitchangelog from 2.4.1 to 2.5.1. [pyup-bot]
+
+- Improved README. [alexv]
+
+- Pin gitchangelog to latest version 2.4.1. [pyup-bot]
+
+- Adjusted release flow description. [alexv]
+
 0.1.5 (2016-09-02)
 ------------------
+
+- V0.1.5. [alexv]
 
 - Now doing virtualenvwrapper setup in container at each step. [alexv]
 
