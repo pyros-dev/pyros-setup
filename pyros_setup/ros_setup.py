@@ -6,6 +6,7 @@ import sys
 import os
 import site
 import logging
+import traceback
 
 from ._version import __version__
 
@@ -146,6 +147,7 @@ def ROS_setup_pythonpath(workspace):
         """
         def __init__(self, lst):
             self._lst = lst
+            self.append = self.move_insert_front  # the actual override
 
         def __getitem__(self, item):
             return self._lst[item]
@@ -153,30 +155,85 @@ def ROS_setup_pythonpath(workspace):
         def __setitem__(self, key, item):
             self._lst[key] = item
 
-        def append(self, elem):
+        def move_insert_front(self, elem):
             """ overriding builtin feature"""
+            print("move_insert_front {elem}".format(**locals()))
             # self[len(self):len(self)] = [elem]  # original append (as per the python docs)
+            if elem in self._lst:
+                # If the path is already there, we remove it (to reinsert it in the proper place)
+                # we need this in case there are packages to be added from .pth files from any sitedir
+                self._lst.remove(elem)
             self[1:1] = [elem]  # insert in position 1
 
-    try:
-        # hijacking append to get it to mean prepend
-        # since ROS logic with package path is *incompatible* with python / venv logic
-        sys.path = WrappedList(sys.path)
-        # Note : virtualenvs are a much better solution to this problem,
-        # but we have to simulate ROS behavior ( to work with ROS workspaces )
+        def remove(self, elem):
+            return self._lst.remove(elem)
 
-        for pp in package_paths:
-            if pp is not None and os.path.exists(pp):
-                _logger.warning("Prepending path {pp} to sys.path".format(**locals()))
+    # since ROS logic with package path is *incompatible* with python / venv logic
+    # inspired from python site module (getting rid of known_path)
+    def readdsitedir(sitedir):
+        """Add 'sitedir' argument to sys.path if missing and handle .pth files in
+        'sitedir'"""
+        sitedir, sitedircase = site.makepath(sitedir)
+        print("Re-adding {sitedir} in front of sys.path".format(**locals()))
+        if sitedir in sys.path:
+            sys.path.remove(sitedir)  # Remove path component
+        sys.path.insert(1, sitedir)  # Insert path component in front
+        try:
+            names = os.listdir(sitedir)
+        except os.error:
+            return
+        dotpth = os.extsep + "pth"
+        names = [name for name in names if name.endswith(dotpth)]
+        for name in sorted(names):
+            readdpackage(sitedir, name)
+        return
 
-                site.addsitedir(pp)  # this makes use of sys.path.append(elem), where what we really want is inster(1,elem)
+    # since ROS logic with package path is *incompatible* with python / venv logic
+    # inspired from python site module (getting rid of known_path)
+    def readdpackage(sitedir, name):
+        """Process a .pth file within the site-packages directory:
+           For each line in the file, if it doesnt start with 'import ', combine it with sitedir to a path
+           and remove that from sys.path.
+        """
+        # All this code is inspired from site.addpackage
+        fullname = os.path.join(sitedir, name)
+        try:
+            f = open(fullname, "rU")
+        except IOError:
+            return
+        with f:
+            for n, line in enumerate(f):
+                if line.startswith("#") or line.startswith(("import ", "import\t")):
+                    continue
+                try:
+                    line = line.rstrip()
+                    dir, dircase = site.makepath(sitedir, line)
+                    # If the path is already there, we remove it (to reinsert it in the proper place)
+                    print("Re-adding {dir} in front of sys.path".format(**locals()))
+                    if dir in sys.path:
+                        sys.path.remove(dir)
+                    sys.path.insert(1, dir)
+                except Exception as err:
+                    print >> sys.stderr, "Error processing line {:d} of {}:\n".format(
+                        n + 1, fullname)
+                    for record in traceback.format_exception(*sys.exc_info()):
+                        for line in record.splitlines():
+                            print >> sys.stderr, '  ' + line
+                    print >> sys.stderr, "\nRemainder of file ignored"
+                    break
 
-                # setting python path needed only to find ros shell commands (rosmaster)
-                os.environ["PYTHONPATH"] = pp + ':' + os.environ.get("PYTHONPATH", '')
+    # Note : virtualenvs are a much better solution to this problem,
+    # but we have to simulate ROS behavior ( to work with ROS workspaces )
 
-    finally:
-        # removing our override
-        sys.path = sys.path._lst
+    for pp in package_paths:
+        if pp is not None and os.path.exists(pp):
+            _logger.warning("Prepending path {pp} to sys.path".format(**locals()))
+
+            readdsitedir(pp)
+
+            # setting python path needed only to find ros shell commands (rosmaster)
+            os.environ["PYTHONPATH"] = pp + ':' + os.environ.get("PYTHONPATH", '')
+
 
     # Only this method is enough to fix the python import issues.
     # However it is expected that the whole ROS environment is setup before importing rospy, to avoid unknown issues.
