@@ -66,11 +66,14 @@ class _PyrosSetup(ConfigImport):
         # we want this to except in case of bad config, because default_config has to have these fields.
         ROS_emulate_setup(self.config['DISTRO'], *self.config['WORKSPACES'])
 
-    def configure(self, config=None, ):
+    def configure(self, config=None):
         """
         load configuration
         :param config:
-        :return:
+            if string, it is assumed to be a path to a python configuration file
+            else if dict, it is assumed to directly contain the configuration settings
+            otherwise the object passed will be introspected to attempt to set the configuration settings.
+        :return: self
         """
         super(_PyrosSetup, self).configure(
             config,
