@@ -197,9 +197,8 @@ def ROS_setup_pythonpath(workspace):
     # Note : virtualenvs are a much better solution to this problem,
     # but we have to simulate ROS behavior ( to work with ROS workspaces )
 
-
     # setting python path needed only to find ros shell commands (rosmaster)
-    pplist = os.environ["PYTHONPATH"].split(":")
+    pplist = os.environ.get("PYTHONPATH", "").split(":")
 
     for pp in package_paths:
         if pp is not None and os.path.exists(pp):
