@@ -1,8 +1,21 @@
 Changelog
 =========
 
+0.2.0 (2017-02-21)
+------------------
+
+- Fixing CI bugs... [AlexV]
+
+- Getting rid of hackish module relay. new API allows much simpler code,
+  with similar usage. [AlexV]
+
+- Cleaning up and fixing PYTHONPATH environment setup to match sys.path.
+  [AlexV]
+
 0.1.6 (2017-02-20)
 ------------------
+
+- V0.1.6. [AlexV]
 
 - Implemented readdsitedir and readdpackage, inspired from site.py.
   [AlexV]
