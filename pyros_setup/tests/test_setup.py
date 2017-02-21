@@ -31,19 +31,19 @@ def test_rospy_imported_config(setup, cmdopt):
         import pyros_setup
 
         # no need to change package settings here, but we still need to call the configuration step for the import...
-        pyros_setup = pyros_setup.configurable_import()
+        setup = pyros_setup.configurable_import()
 
         # Loading instance configuration from default file
-        pyros_setup.configure()
+        setup.configure()
 
         if cmdopt:
             # dynamically replacing the configured distro we got from default config
             # with the one specified interactively for this test, if present.
-            pyros_setup.configure({'DISTRO': cmdopt})
+            setup.configure({'DISTRO': cmdopt})
             # We need to allow this to fail if the instance configuration is not setup properly (no option),
             # this way the user can debug and fix his configuration.
 
-        pyros_setup.activate()  # you do the setup as expected by ROS
+        setup.activate()  # you do the setup as expected by ROS
 
         try:
             # we now have access to all imported content (directly or through redirection _PyrosSetup class)
