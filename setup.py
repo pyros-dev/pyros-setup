@@ -103,7 +103,8 @@ setuptools.setup(name='pyros_setup',
         'pytest>=2.5.1'
     ],
     setup_requires=[
-        'pytest-runner'
+        'pytest-runner',
+        # 'twine'  #  this requires requests >= 2.5.0, which breaks on trusty...
     ],
     tests_require=[
     ],

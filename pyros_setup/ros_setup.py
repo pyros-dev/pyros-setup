@@ -140,34 +140,6 @@ def ROS_setup_pythonpath(workspace):
         os.path.join(workspace, 'lib', 'python2.7', 'site-packages'),  # catkin_pip can create this in workspaces and we need to be able to access it
     ]
 
-    class WrappedList:
-        """
-        Wrapping a List to override append with custom behavior
-        Necessary since we shouldn't play with builtins directly
-        """
-        def __init__(self, lst):
-            self._lst = lst
-            self.append = self.move_insert_front  # the actual override
-
-        def __getitem__(self, item):
-            return self._lst[item]
-
-        def __setitem__(self, key, item):
-            self._lst[key] = item
-
-        def move_insert_front(self, elem):
-            """ overriding builtin feature"""
-            print("move_insert_front {elem}".format(**locals()))
-            # self[len(self):len(self)] = [elem]  # original append (as per the python docs)
-            if elem in self._lst:
-                # If the path is already there, we remove it (to reinsert it in the proper place)
-                # we need this in case there are packages to be added from .pth files from any sitedir
-                self._lst.remove(elem)
-            self[1:1] = [elem]  # insert in position 1
-
-        def remove(self, elem):
-            return self._lst.remove(elem)
-
     # since ROS logic with package path is *incompatible* with python / venv logic
     # inspired from python site module (getting rid of known_path)
     def readdsitedir(sitedir):
@@ -225,14 +197,22 @@ def ROS_setup_pythonpath(workspace):
     # Note : virtualenvs are a much better solution to this problem,
     # but we have to simulate ROS behavior ( to work with ROS workspaces )
 
+
+    # setting python path needed only to find ros shell commands (rosmaster)
+    pplist = os.environ["PYTHONPATH"].split(":")
+
     for pp in package_paths:
         if pp is not None and os.path.exists(pp):
             _logger.warning("Prepending path {pp} to sys.path".format(**locals()))
 
             readdsitedir(pp)
 
-            # setting python path needed only to find ros shell commands (rosmaster)
-            os.environ["PYTHONPATH"] = pp + ':' + os.environ.get("PYTHONPATH", '')
+            # similar logic for pythonpath as with readdsitedir
+            if pp in pplist:
+                pplist.remove(pp)
+            pplist.insert(1, pp)
+
+    os.environ["PYTHONPATH"] = ':'.join(pplist)
 
 
     # Only this method is enough to fix the python import issues.
