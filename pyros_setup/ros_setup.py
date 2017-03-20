@@ -7,6 +7,7 @@ import os
 import site
 import logging
 import traceback
+import pkg_resources
 
 from ._version import __version__
 
@@ -210,6 +211,9 @@ def ROS_setup_pythonpath(workspace):
             if pp in pplist:
                 pplist.remove(pp)
             pplist.insert(1, pp)
+
+            # making sure our logic works for namespace packages as well
+            pkg_resources.fixup_namespace_packages(pp)  # ensure that message subpackage is included
 
     os.environ["PYTHONPATH"] = ':'.join(pplist)
 
