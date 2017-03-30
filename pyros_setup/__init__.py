@@ -9,6 +9,16 @@ import os
 import types
 import sys
 
+# forcing minimal version for pyros_config (very important since we play with multiple python environments...)
+# This should allow pkg_resources to go through multiple version fo the same package... Ref : http://bugs.python.org/setuptools/issue139
+# but it seems importing from somewhere else after importing pyros_setup will get another version and replace this one...
+# __requires__ = [
+#     "pyros_config>=0.2"
+# ]
+import pkg_resources
+# This produces a version conflict if the imported version is not the correct one. Fix your distro.
+pkg_resources.require("pyros_config>=0.2")
+
 # Configuring logging default handler
 import logging
 _logger = logging.getLogger(__name__)
