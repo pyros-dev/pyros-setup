@@ -26,6 +26,11 @@ elif os.path.exists('/opt/ros/indigo'):
 else:
     DETECTED_DISTRO = 'unknown'
 
+# TODO : a clever but simple way to choose which distro we need to activate...
+# It should be in environment, but not in source code.
+# maybe similar to configuration file, but we need just one string...
+# maybe we can abuse the '.pth' system ??
+
 
 # TODO : add "is ROS setup.bash sourced?" check method
 # to allow client to raise ImportError directly instead of attempting emulation.

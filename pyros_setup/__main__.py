@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
+import os
 import sys
 
 # logging configuration should be here to not be imported by python users of pyros_setup.
@@ -40,6 +41,26 @@ logging.config.dictConfig(
                 'handlers': ['console'],
                 'level': 'INFO',
                 'propagate': False,
+            },
+            'pyros_setup.common': {
+                'handlers': ['console'],
+                'level': 'INFO',
+                'propagate': False,
+            },
+            'pyros_setup.indigo': {
+                'handlers': ['console'],
+                'level': 'INFO',
+                'propagate': False,
+            },
+            'pyros_setup.jade': {
+                'handlers': ['console'],
+                'level': 'INFO',
+                'propagate': False,
+            },
+            'pyros_setup.kinetic': {
+                'handlers': ['console'],
+                'level': 'INFO',
+                'propagate': False,
             }
         }
     }
@@ -49,7 +70,22 @@ logging.config.dictConfig(
 # TODO : use click for cleaner command line arg parsing.
 def main():
     if len(sys.argv) > 1:
-        if sys.argv[1] == '--pytest':
+        if sys.argv[1] == '--config':
+
+            if os.path.exists('/opt/ros/kinetic'):
+                import pyros_setup.kinetic  # import only if needed
+                pyros_setup.kinetic.configure()  # this will create the configuration if needed
+                pyros_setup.kinetic.show_config()
+            if os.path.exists('/opt/ros/jade'):
+                import pyros_setup.jade  # import only if needed
+                pyros_setup.jade.configure()  # this will create the configuration if needed
+                pyros_setup.jade.show_config()
+            if os.path.exists('/opt/ros/indigo'):
+                import pyros_setup.indigo  # import only if needed
+                pyros_setup.indigo.configure()  # this will create the configuration if needed
+                pyros_setup.indigo.show_config()
+
+        elif sys.argv[1] == '--pytest':
             import pytest  # import only if needed
             errno = pytest.main(['-s', '--pyargs', 'pyros_setup'] + sys.argv[2:])
             sys.exit(errno)
@@ -61,9 +97,9 @@ def main():
         elif sys.argv[1] == '--help':
             print("Pyros_setup is a tool to help you manipulate python environment setup.")
             print("It is especially useful with ROS and other environments that rely on system python with PYTHONPATH modifications.")
-            print("Usage: pyros_setup [--pytest | --version | --help]")
+            print("Usage: pyros_setup [--config | --pytest | --version | --help]")
         else:
-            print("Usage: pyros_setup [--pytest | --version | --help]")
+            print("Usage: pyros_setup [--config | --pytest | --version | --help]")
 
     else:
         print("To validate your pyros_setup installation, use : pyros_setup --pytest [<custom pytest arguments>]")

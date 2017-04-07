@@ -56,4 +56,8 @@ def test_rospy_imported_config(setup, cmdopt):
     assert rospy is not None
 
 
-
+if __name__ == '__main__':
+    pytest.main([
+        '-s',
+        'test_setup.py'
+    ])

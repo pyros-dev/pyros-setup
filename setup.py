@@ -88,6 +88,7 @@ setuptools.setup(name='pyros_setup',
     license='BSD',
     packages=[
         'pyros_setup',
+        'pyros_setup.indigo',
         'pyros_setup.tests',
     ],
     entry_points={
