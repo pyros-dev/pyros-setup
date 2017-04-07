@@ -115,9 +115,13 @@ WORKSPACES=[]
     return setup
 
 
+from .ros_genmsg_py import import_msgsrv
+
+
 __all__ = [
     '__version__',
     'deprecated',
     'configurable_import',
     'DETECTED_DISTRO',
+    'import_msgsrv',
 ]
