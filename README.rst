@@ -15,12 +15,23 @@ To install it::
 
   pip install pyros_setup
 
-You need to be careful which environmnt you install this package in:
+As for any `pip` command, you need to be careful which environment you install this package in:
 
 - If you are running in a virtual environment `myvenv`, and you want to access ROS packages outside this environment (since they should be installed on the system in `/opt/ros/$ROS_DISTRO`), you need to install pyros-setup in the virtual environment `myvenv`. Please report bugs you may encounter, this is the proper way to setup the environment without risks to break your system python, but likely not the most tested...
 - If you are running the system python interpreter (not in a virtual environment), you should then install this package on your system (in `/usr/local/lib/python2.7/site-packages`, also via the same pip command). Although this is definitely not a recommended way to setup python packages, it is the defacto standard way for ROS.
 
-To run the self tests, using entry_points defined in setup.py::
+The usage from python code is quite simple. Example with the REPL (TODO : doctest) ::
+
+>>> import pyros_setup  # usual import of the package
+>>> rosenv = pyros_setup.configurable_import()  # configure the ros environment using the autodetection feature
+>>> rosenv.distro
+'indigo'
+>>> rosenv.distro_mod
+<module 'pyros_setup.jade' from 'pyros_setup/jade/__init__.py'>
+
+
+
+To verify your system is well supported by pyros-setup, you can run the self tests, using entry_points defined in setup.py::
 
   pyros_setup --pytest
 
