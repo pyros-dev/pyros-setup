@@ -27,11 +27,9 @@ search: False
 # allowed: list
 requirements:
   - dev-requirements.txt:
-      update: False
-      pin: False
+      update: False  # blocking update on dev tools to keep running on old platforms
   - doc-requirements.txt:
       update: True
-      pin: True
       
 # add a label to pull requests, default is not set
 # requires private repo permissions, even on public repos
