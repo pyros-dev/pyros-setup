@@ -2,5 +2,5 @@
 
 -e .
 # Needed for release
-twine
+twine==1.11.0
 wheel==0.30.0
