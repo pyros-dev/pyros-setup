@@ -98,7 +98,7 @@ setuptools.setup(name='pyros_setup',
     # this is better than using package data ( since behavior is a bit different from distutils... )
     include_package_data=True,  # use MANIFEST.in when using source dist.
     install_requires=[
-        'six',
+        'six>=1.10.0',  # to be compatible with latest pkg_resources requirements
         'pyros_config>=0.2.0',
         'pytest>=2.5.1'
     ],
