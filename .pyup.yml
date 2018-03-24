@@ -27,7 +27,7 @@ search: False
 # allowed: list
 requirements:
   - dev-requirements.txt:
-      update: False  # blocking update on dev tools to keep running on old platforms
+      update: True
   - doc-requirements.txt:
       update: True
       
