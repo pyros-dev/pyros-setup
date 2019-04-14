@@ -25,7 +25,11 @@ env:
     - ROS_DISTRO=jade PYTHON=3.4
 
     - ROS_DISTRO=kinetic PYTHON=2.7
-    - ROS_DISTRO=kinetic PYTHON=3.4
+    - ROS_DISTRO=kinetic PYTHON=3.5
+
+    # docker image not available yet
+    #- ROS_DISTRO=lunar PYTHON=2.7
+    #- ROS_DISTRO=lunar PYTHON=3.5
   # TODO : pypy + pypy3
 
 before_install:

@@ -27,7 +27,9 @@ from .utils import deprecated
 from pyros_config import ConfigHandler
 
 #: Smart Default distro detection (as early as possible)
-if os.path.exists('/opt/ros/kinetic'):
+if os.path.exists('/opt/ros/lunar'):
+    DETECTED_DISTRO = 'lunar'
+elif os.path.exists('/opt/ros/kinetic'):
     DETECTED_DISTRO = 'kinetic'
 elif os.path.exists('/opt/ros/jade'):
     DETECTED_DISTRO = 'jade'
