@@ -1,4 +1,4 @@
-from __future__ import print_function
+from __future__ import absolute_import, print_function
 
 # A very special ROS hack that emulate a ros environment when imported from python
 # Useful for using all python tools ( tests, IDE, etc. ) without having to do all the ROS setup beforehand
@@ -44,27 +44,33 @@ def ROS_setup_rosdistro_env(default_distro=None):
     # The goal is to minimize code and simplify maintenance.
 
     default_distro = default_distro or 'indigo'
-    # Setting env var like ROS would
-    # TODO : find the proper place in ros where this is set and use it instead
-    if os.environ.get('ROS_DISTRO', None) is None:
-                os.environ['ROS_DISTRO'] = default_distro
-
-    distro = os.environ['ROS_DISTRO']
-    if os.environ.get('ROS_ROOT', None) is None:
-                os.environ['ROS_ROOT'] = '/opt/ros/' + distro + '/share/ros'
-
-    if os.environ.get('ROS_PACKAGE_PATH', None) is None:
-                os.environ['ROS_PACKAGE_PATH'] = ':'.join(['/opt/ros/' + distro + '/share',
-                                                           '/opt/ros/' + distro + '/stacks'])
 
     if os.environ.get('ROS_MASTER_URI', None) is None:
                 os.environ['ROS_MASTER_URI'] = 'http://localhost:11311'
 
-    if os.environ.get('ROS_ETC_DIR', None) is None:
-                os.environ['ROS_ETC_DIR'] = '/opt/ros/' + distro + '/etc/ros'
+    # TODO : find the proper place in ros where this is set and use it instead
+    if os.environ.get('ROS_DISTRO', None) is None:
+        os.environ['ROS_DISTRO'] = default_distro
 
-    # we return here the workspace for the distro
-    return '/opt/ros/' + distro
+    distro = os.environ['ROS_DISTRO']
+
+    # Setting env var like ROS would from install
+    distro_install_path = os.path.join(os.path.sep, 'opt', 'ros', distro)
+    if os.path.exists(distro_install_path):
+
+        if os.environ.get('ROS_ROOT', None) is None:
+                    os.environ['ROS_ROOT'] = os.path.join(distro_install_path, 'share', 'ros')
+
+        if os.environ.get('ROS_PACKAGE_PATH', None) is None:
+                    os.environ['ROS_PACKAGE_PATH'] = ':'.join([os.path.join(distro_install_path, 'share'),
+                                                               os.path.join(distro_install_path, 'stacks')])
+        if os.environ.get('ROS_ETC_DIR', None) is None:
+                    os.environ['ROS_ETC_DIR'] = os.path.join(distro_install_path, 'etc', 'ros')
+
+        # we return here the workspace for the distro
+        return distro_install_path
+    else:
+        return None
 
 
 def ROS_setup_ros_package_path(workspace):
@@ -77,13 +83,13 @@ def ROS_setup_ros_package_path(workspace):
 
     # prepending current path for ros package discovery
     _logger.debug("Checking {0} exists and is named 'devel'".format(workspace))
-    if os.path.basename(workspace) == 'devel':  # special case of devel -> we can find src
+    if os.path.basename(workspace) in ['devel']:  # special case of devel -> we can find src
+        # note : devel_isolated has multiple package path, so isolated package spaces need to be specified one by one
         src_path = os.path.join(os.path.dirname(workspace), 'src')
         _logger.debug("Checking {0} exists".format(src_path))
         if src_path is not None and os.path.exists(src_path):
             _logger.warning("Prepending path {workspace_src} to ROS_PACKAGE_PATH".format(workspace_src=src_path))
             os.environ['ROS_PACKAGE_PATH'] = src_path + ':' + os.environ['ROS_PACKAGE_PATH']
-
     else:
         stacks_path = os.path.join(workspace, 'stacks')
         _logger.debug("Checking {0} exists".format(stacks_path))
@@ -188,7 +194,8 @@ def ROS_setup_pythonpath(workspace):
                         sys.path.remove(dir)
                     sys.path.insert(1, dir)
                 except Exception as err:
-                    print("Error processing line {:d} of {}:\n".format(n + 1, fullname), file=sys.stderr)
+                    print("Error processing line {:d} of {}:\n".format(
+                        n + 1, fullname), file=sys.stderr)
                     for record in traceback.format_exception(*sys.exc_info()):
                         for line in record.splitlines():
                             print('  ' + line, file=sys.stderr)
@@ -242,11 +249,13 @@ def ROS_find_workspaces(distro, base_path):
     workspace_paths = cmake_env_path.split(':')
 
     if not cmake_env_path:  # empty string : we failed looking for it in environment
+        install_isolated_ws = os.path.abspath(os.path.join(base_path, 'install_isolated'))
         install_ws = os.path.abspath(os.path.join(base_path, 'install'))
         devel_ws = os.path.abspath(os.path.join(base_path, 'devel'))
+        # note : we do not want to deal with devel_isolated here, too complex to grab all package spaces.
         workspace_paths = []
         # setting cmake prefix path - rosout needs this
-        for k, p in zip(['devel', 'install'], [devel_ws, install_ws]):
+        for k, p in zip(['devel', 'install', 'install_isolated'], [devel_ws, install_ws, install_isolated_ws]):
             if os.path.exists(p) and p not in os.environ.get("CMAKE_PREFIX_PATH", []):
                 _logger.warning("Appending {key} space to CMake prefix path".format(key=k))
                 os.environ["CMAKE_PREFIX_PATH"] = p + ':' + os.environ.get("CMAKE_PREFIX_PATH", '')
@@ -271,8 +280,9 @@ def ROS_emulate_setup(distro=None, *workspaces):
     distro = distro or 'indigo'  # TODO : investigate if we should use /usr/bin/rosversion to determine default ?
     distro_path = ROS_setup_rosdistro_env(default_distro=distro)
 
-    # adding distro_path to the workspace list
-    workspaces = list(workspaces) + [distro_path]
+    if distro_path:
+        # adding distro_path to the workspace list
+        workspaces = list(workspaces) + [distro_path]
 
     # we need to reverse the order because we prepend in all these functions
     for w in reversed(workspaces):
