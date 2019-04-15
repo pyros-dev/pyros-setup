@@ -1,6 +1,0 @@
---index-url https://pypi.python.org/simple/
-
--e .
-# Needed for release
-twine==1.11.0
-wheel==0.30.0

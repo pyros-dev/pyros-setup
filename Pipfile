@@ -4,10 +4,13 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+gitchangelog = "*"
+twine = "==1.11.0"
+wheel = "==0.30.0"
 
 [packages]
-six = "==1.10.0"
-pytest = "==2.5.1"
+six = ">=1.10.0"
+pytest = ">=2.9.2"
 pyros-config = "*"
 pyros-setup = {editable = true,path = "."}
 
