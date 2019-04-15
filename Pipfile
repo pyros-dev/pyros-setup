@@ -11,8 +11,7 @@ wheel = "==0.30.0"
 [packages]
 six = ">=1.10.0"
 pytest = ">=2.9.2"
-pyros-config = "*"
-pyros-setup = {editable = true,path = "."}
+pyros-config = ">=0.2.1"
 
 [requires]
 # ROS1 officially only supports python 2.7
