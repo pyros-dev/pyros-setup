@@ -1,3 +1,4 @@
+from __future__ import print_function
 
 # A very special ROS hack that emulate a ros environment when imported from python
 # Useful for using all python tools ( tests, IDE, etc. ) without having to do all the ROS setup beforehand
@@ -187,11 +188,11 @@ def ROS_setup_pythonpath(workspace):
                         sys.path.remove(dir)
                     sys.path.insert(1, dir)
                 except Exception as err:
-                    print("Error processing line {:d} of {}:\n".format( n + 1, fullname), file= sys.stderr)
+                    print("Error processing line {:d} of {}:\n".format(n + 1, fullname), file=sys.stderr)
                     for record in traceback.format_exception(*sys.exc_info()):
                         for line in record.splitlines():
-                            print('  ' + line, file= sys.stderr)
-                    print("\nRemainder of file ignored", file = sys.stderr)
+                            print('  ' + line, file=sys.stderr)
+                    print("\nRemainder of file ignored", file=sys.stderr)
                     break
 
     # Note : virtualenvs are a much better solution to this problem,
