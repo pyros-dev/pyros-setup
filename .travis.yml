@@ -22,10 +22,9 @@ env:
     - ROS_DISTRO=indigo PYTHON=3.4
 
     - ROS_DISTRO=kinetic PYTHON=2.7
-    - ROS_DISTRO=kinetic PYTHON=3.4
+    - ROS_DISTRO=kinetic PYTHON=3.5
 
     - ROS_DISTRO=melodic PYTHON=2.7
-    - ROS_DISTRO=melodic PYTHON=3.5
     - ROS_DISTRO=melodic PYTHON=3.6
   # TODO : pypy + pypy3
 
