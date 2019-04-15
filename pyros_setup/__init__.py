@@ -27,7 +27,9 @@ from .utils import deprecated
 from pyros_config import ConfigHandler
 
 #: Smart Default distro detection (as early as possible)
-if os.path.exists('/opt/ros/kinetic'):
+if os.path.exists('/opt/ros/melodic'):
+    DETECTED_DISTRO = 'melodic'
+elif os.path.exists('/opt/ros/kinetic'):
     DETECTED_DISTRO = 'kinetic'
 elif os.path.exists('/opt/ros/jade'):
     DETECTED_DISTRO = 'jade'
@@ -53,8 +55,7 @@ def configurable_import(instance_path=None, instance_relative_config=True, root_
     class PyrosSetup(object):
         def __init__(self, instance_path=None, instance_relative_config=True, root_path=None):
 
-            # TODO : when used from system : use (default) instance path to /opt/ros/DETECTED_DISTRO/pyros
-            # TODO : when used from venv : use calculated instance path (inside venv)
+            # TODO : use calculated instance path (inside venv)
 
             # we delegate config related behavior (including defaults)
             self.config_handler = ConfigHandler(
