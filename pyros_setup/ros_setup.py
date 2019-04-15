@@ -187,12 +187,11 @@ def ROS_setup_pythonpath(workspace):
                         sys.path.remove(dir)
                     sys.path.insert(1, dir)
                 except Exception as err:
-                    print >> sys.stderr, "Error processing line {:d} of {}:\n".format(
-                        n + 1, fullname)
+                    print("Error processing line {:d} of {}:\n".format( n + 1, fullname), file= sys.stderr)
                     for record in traceback.format_exception(*sys.exc_info()):
                         for line in record.splitlines():
-                            print >> sys.stderr, '  ' + line
-                    print >> sys.stderr, "\nRemainder of file ignored"
+                            print('  ' + line, file= sys.stderr)
+                    print("\nRemainder of file ignored", file = sys.stderr)
                     break
 
     # Note : virtualenvs are a much better solution to this problem,
