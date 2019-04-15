@@ -26,10 +26,8 @@ search: False
 # default: empty
 # allowed: list
 requirements:
-  - dev-requirements.txt:
-      update: True
-  - doc-requirements.txt:
-      update: True
+  - Pipfile
+  - Pipfile.lock
       
 # add a label to pull requests, default is not set
 # requires private repo permissions, even on public repos

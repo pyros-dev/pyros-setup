@@ -1,4 +1,3 @@
-sudo: required
 language: generic
 services:
   - docker
@@ -18,14 +17,16 @@ env:
   # This will check any ROS distro supported on this OS
   # checking devel and install separately so that they don't influence each other (dependencies, path, env, etc.)
   matrix:
+    # REMINDER : Python3 is NOT supported by ROS.
+
     - ROS_DISTRO=indigo PYTHON=2.7
-    - ROS_DISTRO=indigo PYTHON=3.4
+    #- ROS_DISTRO=indigo PYTHON=3.4
 
     - ROS_DISTRO=kinetic PYTHON=2.7
-    - ROS_DISTRO=kinetic PYTHON=3.5
+    #- ROS_DISTRO=kinetic PYTHON=3.5
 
     - ROS_DISTRO=melodic PYTHON=2.7
-    - ROS_DISTRO=melodic PYTHON=3.6
+    #- ROS_DISTRO=melodic PYTHON=3.6
   # TODO : pypy + pypy3
 
 before_install:

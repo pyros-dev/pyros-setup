@@ -15,4 +15,5 @@ pyros-config = "*"
 pyros-setup = {editable = true,path = "."}
 
 [requires]
-python_version = "3.6"
+# ROS1 officially only supports python 2.7
+python_version = "2.7"
