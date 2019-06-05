@@ -15,7 +15,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
-with open('../pyros-setup/_version.py') as vf:
+with open('../pyros_setup/_version.py') as vf:
     exec(vf.read())
 
 # -- General configuration ---------------------------------------------------
