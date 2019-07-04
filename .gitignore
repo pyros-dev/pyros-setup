@@ -93,3 +93,7 @@ ENV/
 
 # Pycharm
 .idea
+
+# pipenv for multi version
+Pipfile.lock
+

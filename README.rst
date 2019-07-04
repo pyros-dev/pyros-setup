@@ -4,9 +4,26 @@ Pyros-setup
 .. image:: https://travis-ci.org/asmodehn/pyros-setup.svg?branch=master
     :target: https://travis-ci.org/asmodehn/pyros-setup
 
-Toolsuite for running ROS environments directly from python code, without any specific requirements outside of usual python.
+Toolsuite for using ROS environments directly from python code, without any specific requirements outside of usual python.
 
 This is a pure python package, to be installed in your system, in order to allow easy ROS access from your python environment.
+
+Note : If instead you prefer doing things the other way around, to embed existing python packages in the ROS environment, this is possible thanks to [catkin_pip](https://github.com/asmodehn/catkin_pip)
+
+Prerequisites
+^^^^^^^^^^^^^
+
+ROS should be installed on your system.
+Example with ROS melodic on Ubuntu Bionic::
+
+  sudo apt install ros-melodic-ros-base
+
+This will setup everything you need for using ROS with python2.7
+More information there : http://wiki.ros.org/melodic/Installation/Ubuntu
+
+Then you need to make sure the Python2 virtual environment in which you are working allows access to system packages.
+More information there : https://virtualenv.pypa.io/en/latest/userguide/#the-system-site-packages-option
+
 
 HowTo install
 ^^^^^^^^^^^^^
@@ -47,10 +64,18 @@ This is useful for development along with ROS packages::
   $ py.test -s --pyargs pyros_setup --distro=indigo
 
 
-HowTo code
-^^^^^^^^^^
+HowTo develop
+^^^^^^^^^^^^^
 
-Basically it allows you to do this::
+After cloning the repository, you can use pipenv to setup your development environment.
+Be careful to allow access to system packages::
+
+  pipenv --two --system-packages
+
+HowTo use
+^^^^^^^^^
+
+Basically pyros_setup allows you to do this::
 
   try:
       import rospy
@@ -77,16 +102,43 @@ Note: If you know any easier / less tricky / more pythonic way of handling confi
 HowTo deploy
 ^^^^^^^^^^^^
 
-If you want to use pyros-setup, you should use the pip package, since the whole point is to provide access to ROS from pure python environment.
-This is now possible thanks to [catkin_pip](https://github.com/asmodehn/catkin_pip)
+If you want to use pyros-setup as a dependency of your package, you should depend on the pip package.
+Afterall, the whole point is to provide access to ROS from a pure python environment.
+
+
+Python3
+^^^^^^^
+
+DISCLAIMER: This is not compatible with catkin_pip usage. Also NOT SUPPORTED.
+Attempt this at your own risk.
+
+But since python2 is almost dead, we might want to move to python3 already.
+Just remember that ROS does not support python3 out of the box, and significant tinkering is required.
+
+For python3, you will need to install dependent python packages in your python3 virtual environment.
+For example, pyros-setup itself only requires rospkg and pyyaml for the tests to pass::
+
+  pip3 install pyyaml rospkg
+
+
+More information there : https://answers.ros.org/question/237613/how-to-define-ros-kinetic-to-use-python3-instead-of-python27/
 
 
 Remarks
 ^^^^^^^
 
 Although it would technically be possible to build a ROS package from this source, this will NOT be done.
-The catkin build system is only here to help having pyros-setup in a source workspace while developing on it.
+The catkin_pip build system that was here once, was only here to help having pyros-setup in a source workspace while developing on it.
 When using ROS directly this package is not needed, and having it installed among ROS packages would cause much useless confusion with python import mechanism.
+
+
+Roadmap
+^^^^^^^
+
+- The way forward seems to build a ROS wheel from source, with the basic packages inside...
+This will make it compatible with any python environment, easily installable, and isolate it from the operating system.
+
+- This code might eventually be migrated into rosimport, which, as a larger scope, focuses on python environments interoparability with ROS.
 
 Troubleshooting
 ^^^^^^^^^^^^^^^

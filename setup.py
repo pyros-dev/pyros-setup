@@ -100,13 +100,15 @@ setuptools.setup(name='pyros_setup',
     install_requires=[
         'six>=1.10.0',  # to be compatible with latest pkg_resources requirements
         'pyros_config>=0.2.0',
-        'pytest>=2.5.1'
+        'pytest>=2.9.2'
     ],
     setup_requires=[
         'pytest-runner',
         # 'twine'  #  this requires requests >= 2.5.0, which breaks on trusty...
     ],
     tests_require=[
+        'pyyaml',
+        'rospkg'
     ],
     cmdclass={
         'prepare_release': PrepareReleaseCommand,

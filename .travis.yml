@@ -1,4 +1,3 @@
-sudo: required
 language: generic
 services:
   - docker
@@ -18,18 +17,17 @@ env:
   # This will check any ROS distro supported on this OS
   # checking devel and install separately so that they don't influence each other (dependencies, path, env, etc.)
   matrix:
-    - ROS_DISTRO=indigo PYTHON=2.7
-    - ROS_DISTRO=indigo PYTHON=3.4
+    # REMINDER : Python3 is NOT supported by ROS.
 
-    - ROS_DISTRO=jade PYTHON=2.7
-    - ROS_DISTRO=jade PYTHON=3.4
+    - ROS_DISTRO=indigo PYTHON=2.7
+    #- ROS_DISTRO=indigo PYTHON=3.4
 
     - ROS_DISTRO=kinetic PYTHON=2.7
-    - ROS_DISTRO=kinetic PYTHON=3.5
+    #- ROS_DISTRO=kinetic PYTHON=3.5
 
-    # docker image not available yet
-    #- ROS_DISTRO=lunar PYTHON=2.7
-    #- ROS_DISTRO=lunar PYTHON=3.5
+    - ROS_DISTRO=melodic PYTHON=2.7
+    #- ROS_DISTRO=melodic PYTHON=3.6
+
   # TODO : pypy + pypy3
 
 before_install:
@@ -52,7 +50,7 @@ install:
   # copying local clone to the running container (volume is currently broken)
   - docker cp . ${CONTAINER_NAME}:/git_clone
   # getting virtualenv setup with dependencies
-  - docker exec -ti ${CONTAINER_NAME} /bin/bash -c "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && mkvirtualenv --system-site-packages -i /git_clone -a /git_clone -q python_${PYTHON}_ros"
+  - docker exec -ti ${CONTAINER_NAME} /bin/bash -c "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && mkvirtualenv --python=/usr/bin/python${PYTHON} --system-site-packages -i pip -i \"setuptools>12\" -i /git_clone -a /git_clone -q python_${PYTHON}_ros"
 
 # full ROS setup, build and test
 script:
