@@ -50,7 +50,7 @@ install:
   # copying local clone to the running container (volume is currently broken)
   - docker cp . ${CONTAINER_NAME}:/git_clone
   # getting virtualenv setup with dependencies
-  - docker exec -ti ${CONTAINER_NAME} /bin/bash -c "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && mkvirtualenv --python=/usr/bin/python${PYTHON} --system-site-packages -i pip -i \"setuptools>12\" -i /git_clone -a /git_clone -q python_${PYTHON}_ros"
+  - docker exec -ti ${CONTAINER_NAME} /bin/bash -c "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && mkvirtualenv --python=/usr/bin/python${PYTHON} --system-site-packages -i \"pip>=9\" -i \"setuptools>12\" -i /git_clone -a /git_clone -q python_${PYTHON}_ros"
 
 # full ROS setup, build and test
 script:
