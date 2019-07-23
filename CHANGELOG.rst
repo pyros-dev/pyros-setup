@@ -2,8 +2,55 @@ Changelog
 =========
 
 
+0.3.0 (2019-07-23)
+------------------
+- Adding doc index. [alexv]
+- Fixing typo on doc/conf.py. [alexv]
+- Fixing doc conf.py for rtfm without catkin_pkg. [alexv]
+- Adding example usage script. [alexv]
+- Adding pipfile lock in ignore list (multi python version). [alexv]
+- Adding lunar tests for travis (#59) [AlexV]
+
+  * adding lunar tests for travis
+
+  * improved the case when we do not have distro installed, or when we want to use install_isolated space.
+  remove lunar tests, since docker is not available yet
+
+  * fixing distro install path to be absolute
+- Cleaning up package description and dependencies... [AlexV]
+- Dropping travis attempt for python3. unsupported by ROS. attempting to
+  improve pipfile to allow site packages access... [AlexV]
+- Fixing setuptools dependency in travis venv. [AlexV]
+- Attempting to install recent setuptools in travis. [AlexV]
+- Fixing travis python versions depending on distro. [AlexV]
+- Fixing travis command to create virtualenv from specific python.
+  [AlexV]
+- Removing tox-travis requirement. We realistically cannot test this in
+  virtual env isolation, since it heavily depends on the system to
+  access ROS packages. [AlexV]
+- Transitioning from requirements.txt to pipfile. [AlexV]
+- Importing print function from __future__. fixing python in travis
+  venv. [AlexV]
+- Adding melodic as priority distro when detecting. [AlexV]
+- Rewriting print as function in error case. [AlexV]
+- Adding melodic to travis tests. [AlexV]
+- Adding more python versions for tox testing. [AlexV]
+- Adding pipenv Pipfile for environment with direnv to make it implicit.
+  [AlexV]
+- Pin twine to latest version 1.11.0 (#63) [pyup.io bot]
+- Now allowing update on dev-requirements. [AlexV]
+- Trying to pin six dependency high enough, since we do not need to rely
+  on system debs. [AlexV]
+- Adding pyup config. [AlexV]
+- Pin wheel to latest version 0.30.0. [pyup-bot]
+- Update gitchangelog from 2.5.1 to 3.0.3. [pyup-bot]
+- Comment fixes. [AlexV]
+- Added twine and wheel to dev-requirements. [AlexV]
+
+
 0.2.1 (2017-03-30)
 ------------------
+- V0.2.1. [AlexV]
 - Enforcing pyros_config >=0.2 requirement. [AlexV]
 - Fixup to get it to work with namespace packages as well. added some
   comments. [AlexV]
